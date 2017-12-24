@@ -1,0 +1,548 @@
+<style>
+    .fixedtd {
+        width: 10%;
+    }
+</style>
+
+<div class="box box-solid box-primary" style="overflow-x:scroll">
+    <div class="box-header">
+        <span class="h3" style="color:white">
+            AddTask
+        </span>
+    </div>
+    
+            <form name="AddTaskForm" role="form" class="form-horizontal well well-sm">
+                <fieldset>
+                    <!-- <h5>
+                        Add Task Details
+                        <div data-ng-if="isEditing" class="col-sm-1 pull-right" style="padding-top:2px">
+                            <switch id="active" name="active" ng-model="AddTask.Active" class="switch small"></switch>
+                        </div>
+                        <label data-ng-if="isEditing" class="pull-right" for="active">Active</label>
+                    </h5> -->
+                    <div>
+                        <hr style="border-color:cadetblue" /> <hr />
+                    </div> <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="build" class="control-label col-sm-3">build Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control col-sm-9" id="build" name="build" data-ng-model="AddTask.build_id" required />
+                                    <div ng-show="AddTaskForm.build.$touched  && AddTaskForm.build.$invalid" class="text-danger">*required  Name</div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="team" class="control-label col-sm-3">Team</label>
+                                <div class="col-sm-9">
+                                    <ui-select name="team" ng-class="{'loading': loading}" ng-disabled="checkEditing" ng-change="selectTask()" ng-required="true" ng-model="team.selected" theme="bootstrap" title="Choose a Team">
+                                        <ui-select-match placeholder="Select a Team">{{$select.selected.team_id}}</ui-select-match>
+                                        <ui-select-choices repeat="team in TeamMasterList | propsFilter: {Name: $select.search}">
+                                            <div ng-bind-html="team.team_name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <div ng-show="AddTaskForm.team.$touched && AddTaskForm.team.$invalid" class="text-danger">*required Team</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="task" class="control-label col-sm-3">Task </label>
+                                <div class="col-sm-9">
+                                    <ui-select name="task" ng-class="{'loading': loading}" ng-disabled="checkEditing"  ng-change="selectsubTask()" ng-required="true" ng-model="task.selected" theme="bootstrap" title="Choose a Task">
+                                        <ui-select-match placeholder="Select a Task">{{$select.selected.task_id}}</ui-select-match>
+                                        <ui-select-choices repeat="task in TaskMasterList | propsFilter: {Name: $select.search}">
+                                            <div ng-bind-html="task.task_name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <div ng-show="AddTaskForm.task.$touched && AddTaskForm.task.$invalid" class="text-danger">*required Task</div>
+                                </div>
+                            </div>
+                        
+                        <div class="form-group">
+                            <label for="subtask" class="control-label col-sm-3"> Sub Task </label>
+                            <div class="col-sm-9">
+                                <ui-select name="subtask" ng-class="{'loading': loading}" ng-disabled="checkEditing"  ng-required="true" ng-model="subtask.selected" theme="bootstrap" title="Choose a subtask">
+                                    <ui-select-match placeholder="Select a Task">{{$select.selected.sub_task_id}}</ui-select-match>
+                                    <ui-select-choices repeat="subtask in subTaskMasterList | propsFilter: {Name: $select.search}">
+                                        <div ng-bind-html="subtask.sub_task_name | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <div ng-show="AddTaskForm.sub_task_name.$touched && AddTaskForm.sub_task_name.$invalid" class="text-danger">*required Sub Task</div>
+                            </div>
+                        </div>
+                   
+
+
+                            <!-- <div class="form-group">
+                                <label for="gender" class="control-label col-sm-3">Gender</label>
+                                <div class="col-sm-9">
+                                    <div class="radio-inline"><input type="radio" name="gender" data-ng-model="AddTask.Gender" value="Male" /> Male</div>
+                                    <div class="radio-inline"><input type="radio" name="gender" data-ng-model="AddTask.Gender" value="Female" /> Female</div>
+                                </div>
+                            </div> -->
+                            <div class="form-group">
+                                <label for="dob" class="control-label col-sm-3">Date Of Birth</label>
+                                <div class="col-sm-6">
+                                    <p class="input-group">
+                                        <input date-validator type="text" name="dob" class="form-control" uib-datepicker-popup="dd/MM/yyyy" ng-change="selectDOB()" data-ng-model="AddTask.DateofBirth"
+                                               is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" required />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                    <!--<div ng-show="AddTaskForm.dob.$touched  && AddTaskForm.dob.$invalid" class="text-danger">*required Date Of Birth</div>-->
+                                    <div ng-show="AddTaskForm.dob.$touched && AddTaskForm.dob.$invalid" class="text-danger">*Enter a valid date here : DD/MM/YYYY</div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <input valid-number min="1" maxlength="3" type="text" class="form-control col-sm-9" id="age" name="age" data-ng-model="AddTask.Age" />
+                                    <!--<div ng-show="AddTaskForm.age.$touched && AddTaskForm.age.$invalid" class="text-danger">*required Age</div>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mobile" class="control-label col-sm-3">Mobile</label>
+                                <div class="col-sm-9">
+                                    <input valid-number min="7" maxlength="10" type="text" class="form-control col-sm-9" id="mobile" name="mobile" data-ng-model="AddTask.Mobile" />
+                                    <!--<div ng-show="AddTaskForm.mobile.$touched && AddTaskForm.mobile.$invalid" class="text-danger">*required Mobile</div>-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="alternateNumber" class="control-label col-sm-3">Emercency No</label>
+                                <div class="col-sm-9">
+                                    <input valid-number min="7" maxlength="13" type="text" class="form-control" id="alternateNumber" name="alternateNumber" data-ng-model="AddTask.AlternateNumber" />
+                                    <!--<div ng-show="AddTaskForm.alternateNumber.$touched  && AddTaskForm.alternateNumber.$invalid" class="text-danger">*required  Alternate Number</div>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="marital" class="control-label col-sm-3">Marital status</label>
+                                <div class="col-sm-9">
+                                    <div class="radio-inline"><input type="radio" name="marital" data-ng-model="AddTask.MaritalStatus" value="1" /> Married</div>
+                                    <div class="radio-inline"><input type="radio" name="marital" data-ng-model="AddTask.MaritalStatus" value="0" /> UnMarried</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="caddress" class="control-label col-sm-3">Current Address</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="caddress" name="caddress" data-ng-model="AddTask.CurrentAddress" ng-disabled="!pEditMode" required />
+                                    <!--<div ng-show="AddTaskForm.caddress.$touched && AddTaskForm.caddress.$invalid" class="text-danger">*required Current Address</div>-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="paddress" class="control-label col-sm-3">Permanent Address</label>
+                                <div class="col-sm-9">
+                                    <input type="checkbox" ng-model="sameAddrres" ng-checked="copyAddress()" ng-disabled="!pEditMode" />
+                                    <i class="inside">Select if Permanent address is same as Current address</i>
+
+                                    <textarea type="text" class="form-control" id="paddress" name="paddress" data-ng-model="AddTask.PermanentAddress" ng-disabled="!pEditMode || sameAddrres" required />
+                                    <!--<div ng-show="AddTaskForm.paddress.$touched && AddTaskForm.paddress.$invalid" class="text-danger">*required Permanent Address</div>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="photo" class="control-label col-sm-3">Upload Photo</label>
+                                <div class="col-sm-9">
+                                    <input name="photo" type="file" accept="image/*" class="filestyle" data-ng-disabled="isPhoto" data-input="false"
+                                           onchange="angular.element(this).scope().photoSelected(this)">
+                                    <!--<div ng-show="AddTaskForm.photo.$touched && AddTaskForm.photo.$invalid" class="text-danger">*required Photo</div>-->
+                                </div>
+                            </div>
+
+                           
+
+
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="jobtype" class="control-label col-sm-3">Job Type</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control col-sm-9" id="jobtype" name="jobtype" data-ng-model="AddTask.JobType" />
+                                    <!--<div ng-show="AddTaskForm.jobtype.$touched  && AddTaskForm.jobtype.$invalid" class="text-danger">*required  JobType</div>-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="doj" class="control-label col-sm-3">Date of Join</label>
+                                <div class="col-sm-9">
+                                    <p class="input-group">
+                                        <input date-validator type="text" name="doj" class="form-control" uib-datepicker-popup="dd/MM/yyyy" data-ng-model="AddTask.DateofJoin"
+                                               is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" required />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                    <!--<div ng-show="AddTaskForm.dob.$touched  && AddTaskForm.dob.$invalid" class="text-danger">*required Date Of Birth</div>-->
+                                    <div ng-show="AddTaskForm.doj.$touched && AddTaskForm.doj.$invalid" class="text-danger">*Enter a valid date here : DD/MM/YYYY</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="designation" class="control-label col-sm-3">Designation</label>
+                                <div class="col-sm-9">
+                                    <ui-select name="designation" ng-class="{'loading': loading}" ng-required="true" ng-change="getposition()" ng-model="designation.selected" theme="bootstrap" title="Choose a Designation">
+                                        <ui-select-match placeholder="Select a Designation">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices repeat="designation in DesignationMasterList | propsFilter: {Name: $select.search}">
+                                            <div ng-bind-html="designation.Name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <div ng-show="AddTaskForm.designation.$touched && AddTaskForm.designation.$invalid" class="text-danger">*required Designation</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="previouscompany" class="control-label col-sm-3">Previous Company</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control col-sm-9" id="previouscompany" name="previouscompany" data-ng-model="AddTask.PreviousCompany" />
+                                    <!--<div ng-show="AddTaskForm.previouscompany.$touched  && AddTaskForm.previouscompany.$invalid" class="text-danger">*required Previous Company</div>-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="referenceby" class="control-label col-sm-3">Reference By</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control col-sm-9" id="referenceby" name="referenceby" data-ng-model="AddTask.ReferenceBy" />
+                                    <!--<div ng-show="AddTaskForm.referenceby.$touched  && AddTaskForm.referenceby.$invalid" class="text-danger">*required ReferenceBy</div>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contact1" class="control-label col-sm-3">Reference Contact No 1</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control col-sm-9" id="contact1" name="contact1" data-ng-model="AddTask.ReferenceContact1" />
+                                    <!--<div ng-show="AddTaskForm.contact1.$touched  && AddTaskForm.contact1.$invalid" class="text-danger">*required ReferenceContact1</div>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contact2" class="control-label col-sm-3">Reference Contact No 2</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control col-sm-9" id="contact2" name="contact2" data-ng-model="AddTask.ReferenceContact2" />
+                                    <!--<div ng-show="AddTaskForm.contact2.$touched  && AddTaskForm.contact2.$invalid" class="text-danger">*required ReferenceContact2</div>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="experience" class="control-label col-sm-3">Total Experience</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control col-sm-9" id="experience" name="experience" data-ng-model="AddTask.TotalExperience" required />
+                                    <div ng-show="AddTaskForm.experience.$touched  && AddTaskForm.experience.$invalid" class="text-danger">*required TotalExperience</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Vstatus" class="control-label col-sm-3">Verification Status</label>
+                                <div>
+                                    <div class="radio-inline"><input type="radio" name="Vstatus" data-ng-model="AddTask.VerificationStatus" value="1" /> Yes</div>
+                                    <div class="radio-inline"><input type="radio" name="Vstatus" data-ng-model="AddTask.VerificationStatus" value="0" /> No</div>
+                                </div>
+                                <div ng-show="AddTaskForm.Vstatus.$touched && AddTaskForm.Vstatus.$invalid" class="text-danger">*required Verification Status</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pull-right">
+                        <button class="btn btn-danger" type="button" data-ng-click="backAddTaskModel()">Cancel</button>
+                        <button class="btn btn-primary" ng-disabled="AddTaskForm.$invalid" type="button" data-ng-click="saveAddTask(AddTask)">Save</button>
+                    </div>
+                </fieldset>
+
+
+            </form>
+
+
+            <div ng-if="VerifyDetailForm">
+                <form name="verifyForm" role="form" class="well well-sm">
+                    <fieldset>
+                        <h5>Verification Details</h5>
+                        <hr style="border-color:cadetblue" /> <hr />
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="form-group col-sm-2">
+                                    <label for="proof">Proof Submitted</label>
+                                    <ui-select name="proof" ng-class="{'loading': loading}" ng-required="true" ng-change="selectProof()" ng-model="proof.selected" theme="bootstrap" title="Choose a Proof">
+                                        <ui-select-match placeholder="Select a Proof">{{$select.selected.ProofName}}</ui-select-match>
+                                        <ui-select-choices repeat="proof in ProofMasterList | propsFilter: {ProofName: $select.search}">
+                                            <div ng-bind-html="proof.ProofName | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <div ng-show="verifyForm.proof.$touched && verifyForm.proof.$invalid" class="text-danger">*required Proof</div>
+                                </div>
+
+                                <div class="form-group col-sm-3">
+                                    <label for="proofnumber">Proof Card No</label>
+                                    <input type="text" class="form-control" id="proofnumber" name="proofnumber" data-ng-model="VerifyDetail.ProofCardNo" required />
+                                    <div ng-show="verifyForm.proofnumber.$touched && verifyForm.proofnumber.$invalid" class="text-danger">*required Proof No</div>
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label for="imgProof">Verfication Doc</label>
+                                    <input name="imgProof" type="file" accept="image/*" class="filestyle" data-ng-disabled="false" data-input="false"
+                                           onchange="angular.element(this).scope().fileSelected(this)">
+
+                                    <!--<input type="file" class="form-control" id="Vdoc" name="Vdoc" data-ng-model="VerifyDetail.ProofUrl" />-->
+                                    <div ng-show="verifyForm.imgProof.$touched && verifyForm.imgProof.$invalid" class="text-danger">*required Verfication Doc</div>
+                                </div>
+                                <!--<div class="form-group col-sm-2">
+                                    <label for="Vstatus">Verification Status</label>
+                                    <div>
+                                        <div class="radio-inline"><input type="radio" name="Vstatus" data-ng-model="VerifyDetail.VerificationStatus" value="1" /> Yes</div>
+                                        <div class="radio-inline"><input type="radio" name="Vstatus" data-ng-model="VerifyDetail.VerificationStatus" value="0" /> No</div>
+                                    </div>
+                                    <div ng-show="verifyForm.Vstatus.$touched && verifyForm.Vstatus.$invalid" class="text-danger">*required Verification Status</div>
+                                </div>-->
+
+                                <div class="col-lg-2 col-md-2" style="position:relative;">
+                                    <label><br /></label>
+                                    <div>
+                                        <button type="button" id="addVerifydetail" ng-disabled="" data-ng-click="addVerifydetail(VerifyDetail)" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-plus-sign"></i> Add</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
+                </form>
+
+                <div class="box-body table-responsive">
+                    <table data-ng-if="verifyDetailList.length > 0" st-table="displayedCollection" st-safe-src="verifyDetailList" class="table table-striped table-responsive">
+                        <thead>
+                            <tr>
+                                <th>ProofId</th>
+                                <th>Proof</th>
+                                <th>ProofCardNo</th>
+                                <th>ProofUrl</th>
+                                <th>View</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in displayedCollection">
+                                <td>{{ row.ProofId}}</td>
+                                <td>{{ row.ProofName}}</td>
+                                <td>{{ row.ProofCardNo}}</td>
+                                <td>{{row.ProofUrl}}</td>
+                                <td>
+                                    <div ng-hide="row.ProofUrl ==''">
+                                        <a target="_blank" href="{{$root.endPoint+'/ProofImages/'+row.ProofUrl}}" class="btn btn-sm btn-primary text-center">
+                                            <i class="glyphicon glyphicon-eye-open">
+                                            </i>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <div>
+                                        <button type="button" ng-click="removeVerifyDetail(row)" class="btn btn-sm btn-danger">
+                                            <i class="glyphicon glyphicon-remove-circle">
+                                            </i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div ng-if="FamilydetailForm">
+                <form name="familyForm" role="form" class="well well-sm">
+                    <fieldset>
+                        <h5>Family Details</h5>
+                        <hr style="border-color:cadetblue" /> <hr />
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="form-group col-sm-3">
+                                    <label for="membername">Name</label>
+                                    <input type="text" class="form-control" id="membername" name="membername" data-ng-model="FamilyDetail.MemberName" required />
+                                    <div ng-show="familyForm.membername.$touched && familyForm.membername.$invalid" class="text-danger">*required Name</div>
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label for="relationship">Relationship</label>
+                                    <input type="text" class="form-control" id="relationship" name="relationship" data-ng-model="FamilyDetail.Relationship" required />
+                                    <div ng-show="familyForm.relationship.$touched && familyForm.relationship.$invalid" class="text-danger">*required Relationship</div>
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <label for="relationage">Age</label>
+                                    <input type="text" class="form-control" id="relationage" name="relationage" data-ng-model="FamilyDetail.Age" />
+                                    <div ng-show="familyForm.relationage.$touched && familyForm.relationage.$invalid" class="text-danger">*required Age</div>
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <label for="nomineestatus">Nominee Status</label>
+                                    <div>
+                                        <div class="radio-inline"><input type="radio" name="nomineestatus" data-ng-model="FamilyDetail.NomineeStatus" value="1" /> Yes</div>
+                                        <div class="radio-inline"><input type="radio" name="nomineestatus" data-ng-model="FamilyDetail.NomineeStatus" value="0" /> No</div>
+                                    </div>
+                                    <div ng-show="familyForm.nomineestatus.$touched && familyForm.nomineestatus.$invalid" class="text-danger">*required Nominee Status</div>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2" style="position:relative;">
+                                    <label><br /></label>
+                                    <div>
+                                        <button type="button" id="addFamilydetail" ng-disabled="familyForm.$invalid" data-ng-click="addFamilydetail(FamilyDetail)" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-plus-sign"></i> Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+                <div class="box-body table-responsive" ng-if="familyDetailList.length > 0">
+                    <table st-table="displayedCollection1" st-safe-src="familyDetailList" class="table table-striped table-responsive">
+                        <thead>
+                            <tr>
+                                <th class="text-center" st-sort="MemberName">Name</th>
+                                <th class="text-center" st-sort="Relationship">Relationship</th>
+                                <th class="text-center" st-sort="Age">Age</th>
+                                <th class="text-center" st-sort="NomineeStatus">Nominee Status</</th>
+                                <th class="text-center fixedtd">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in displayedCollection1">
+                                <td class="text-center">{{ row.MemberName }}</td>
+                                <td class="text-center">{{ row.Relationship }}</td>
+                                <td class="text-center">{{ row.Age }}</td>
+                                <td class="text-center">{{ row.NomineeStatus }}</td>
+                                <td class="text-center">
+                                    <div>
+                                        <button type="button" ng-click="removeFamilyDetail(row)" class="btn btn-sm btn-danger">
+                                            <i class="glyphicon glyphicon-remove-circle">
+                                            </i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+
+            <!--<div class="overlay">
+                <i class="fa fa-spinner fa-spin text-green" style="font-size:60px"></i>
+            </div>-->
+        </div>
+
+
+        <div class="box-body table-responsive" ng-hide="AddTaskModel">
+            <table st-table="displayedCollection" st-safe-src="AddTaskList" class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>
+                            <label>No of Rows: </label>
+                            <select data-ng-model="noOfRows" convert-to-number>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <!--<th><input st-search="AddTaskId" class="input-sm form-control" placeholder="Search by AddTaskId" type="text" /></th>-->
+                        <th><input st-search="Name" class="input-sm form-control" placeholder="Search by Name" type="text" /></th>
+                        <th class="fixedtd" st-search="Gender">
+                            <select class="input-sm form-control">
+                                <option value=""> All </option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </th>
+                        <th><input st-search="Mobile" class="input-sm form-control" placeholder="Search by Mobile" type="text" /></th>
+                        <!--<th><input st-search="Email" class="input-sm form-control" placeholder="Search by Email" type="text" /></th>-->
+                        <th><input st-search="DesignationName" class="input-sm form-control" placeholder="Search by Designation" type="text" /></th>
+                        <th><input st-search="StateName" class="input-sm form-control" placeholder="Search by State" type="text" /></th>
+                        <th><input st-search="CityName" class="input-sm form-control" placeholder="Search by City" type="text" /></th>
+                        <th class="fixedtd" st-search="Active">
+                            <select class="input-sm form-control">
+                                <option value=""> All </option>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                       <!--<th st-sort="AddTaskId">AddTask ID</th>-->
+                        <th st-sort="Name">Name</th>
+                        <th st-sort="Gender">Gender</th>
+                        <!--<th st-sort="DateofBirth">DateofBirth</th>-->
+                        <th>Contact</th>
+                        <th st-sort="DesignationName">Designation</th>
+                        <th st-sort="StateName">State</th>
+                        <th st-sort="CityName">City</th>
+                        <th>Photo</th>
+                        <th class="text-center" st-sort="Active">Status</th>
+                        <th class="text-center fixedtd">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in displayedCollection">
+                        <!--<td>{{ (row.AddTaskId }}td>-->
+                        <td>{{ row.Name}}</td>
+                        <td>{{ row.Gender }}</td>
+                        <!--<td>
+                            <div>
+                                <span class="text-left"><strong>DOB: </strong>{{row.DateofBirth | date : 'dd/MM/yyyy'}}</span><br />
+                                <span class="text-left"><strong>Age:</strong>{{row.Age}}</span><br />
+                            </div>
+                        </td>-->
+                        <td>
+                            <div>
+                                <span class="text-left"><strong>Mobile: </strong>{{row.Mobile}}</span><br />
+                                <span class="text-left"><strong>AlternateNO:</strong>{{row.AlternateNumber}}</span><br />
+                            </div>
+                        </td>
+                        <td>{{ row.DesignationName }}</td>
+                        <td>{{ row.StateName }}</td>
+                        <td>{{ row.CityName }}</td>
+                        <td>
+                            <div ng-hide="row.Photo ==''">
+                                <a target="_blank" href="{{$root.endPoint+'/PersonalImages/'+row.Photo}}" cl class="btn btn-sm btn-primary text-center">
+                                    <i class="glyphicon glyphicon-eye-open">
+                                    </i>
+                                </a>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <span data-ng-if="row.Active === 1" class="label label-success">Active</span>
+                            <span data-ng-if="row.Active === 0" class="label label-danger">Inactive</span>
+                        </td>
+                        <td class="text-center fixedtd">
+                            <div>
+                                <button type="button" ng-click="editAddTaskMasterModel(row)" class="btn btn-sm btn-primary">
+                                    <i class="glyphicon glyphicon-pencil">
+                                    </i>
+                                </button>
+
+                                <button type="button" ng-click="removeAddTaskMaster(row)" class="btn btn-sm btn-danger">
+                                    <i class="glyphicon glyphicon-remove-circle">
+                                    </i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div ng-if="isLoading" class="overlay">
+            <i class="fa fa-spinner fa-spin text-green" style="font-size:80px"></i>
+        </div>
+    </div>
+</div>
+
+
+
+
+

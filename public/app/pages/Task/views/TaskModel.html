@@ -1,0 +1,55 @@
+﻿<div class="jumbotron modal-header">
+    <h3 class="modal-title" id="modal-title">Task</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <form name="myForm" role="form" class="well well-sm">
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="TaskName">TaskName</label>
+                    <input type="text" class="form-control" id="TaskName" name="tTaskName" data-ng-model="Task.TaskName" required />
+                    <div ng-show="myForm.tTaskName.$touched  && myForm.tTaskName.$invalid" class="text-danger">*required  TaskName</div>
+                </div>
+                <div class="form-group">
+                    <label for="TypeID">TypeID</label>
+                    <input type="number" class="form-control" id="TypeID" name="tTypeID" data-ng-model="Task.TypeID" />
+                    <div ng-show="myForm.tTypeID.$touched  && myForm.tTypeID.$invalid" class="text-danger">*required  TypeID</div>
+                </div>
+                <div class="form-group">
+                    <label for="Owner">Owner ID</label>
+                    <input type="number" class="form-control" id="Owner" name="tOwner" data-ng-model="Task.Owner" />
+                </div>
+                <div class="form-group">
+                    <label for="StartDate">StartDate</label>
+                    <input type="date" class="form-control" id="StartDate" name="tStartDate" data-ng-model="Task.StartDate" ng-model-options="{timezone:'UTC'}"/>
+                </div>
+                <div class="form-group">
+                    <label for="mid">MID</label>
+                    <input type="number" class="form-control" id="mid" name="tMID" data-ng-model="Task.mid" />
+                </div>
+
+
+                <div class="form-group">
+                    <label for="StatusID">StatusId</label>
+                    <input type="number" class="form-control" id="StatusID" name="tStatusId" data-ng-model="Task.StatusID" />
+                </div>
+
+                <div class="form-group">
+                    <label for="TaskListID">TaskListID</label>
+                    <input type="number" class="form-control" id="TaskListID" name="tTaskListID" data-ng-model="Task.TaskListID" />
+                </div>
+
+                <div class="form-group">
+                    <label for="DTID">DTID</label>
+                    <input type="number" class="form-control" id="DTID" name="tDTID" data-ng-model="Task.DTID" />
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveTask(Task)">Save</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html ng-app="LoginApp">
+<head>
+    <title>TS | Login</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link href="Content/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <link href="Content/font-awesome/font-awesome.min.css" rel="stylesheet" />
+    <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />-->
+    <!-- Ionicons -->
+    <link href="Content/ionicons.css" rel="stylesheet" />
+    <!--<link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />-->
+    <link href="AdminLTE/css/AdminLTE.min.css" rel="stylesheet" />
+    <!-- iCheck -->
+    <!--<link href="AdminLTE/plugins/iCheck/square/blue.css" rel="stylesheet" />
+    <link href="AdminLTE/plugins/iCheck/flat/_all.css" rel="stylesheet" />-->
+    <link href="AdminLTE/plugins/iCheck/all.css" rel="stylesheet" />
+
+
+
+</head>
+<body data-ng-controller="LoginController">
+    <div class="login-box">
+
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <div class="login-logo">
+                <a href="main.html"><b>P2R</b> Dashboard</a>
+            </div>
+            <p class="login-box-msg">Sign in to start your session</p>
+            <form role="form" name="myForm" ng-if="!isPassword">
+                <div>
+                    <span class="text-danger">{{loginSts}} </span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" name="user" class="form-control" placeholder="Username" data-ng-model="User.user_name" data-ng-change="User.user_mail = User.user_name" required="">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    <span class="text-danger" ng-show="myForm.user.$dirty && myForm.user.$invalid">
+                        <span ng-show="myForm.user.$error.required">Username is required.</span>
+                    </span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type={{inputType}} name="password" class="form-control" placeholder="Password" required data-ng-model="User.password" required="">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    <input type="checkbox" class="icheckbox_flat-blue" id="checkbox" ng-model="passwordCheckbox" ng-click="hideShowPassword()" />
+                    <label for="checkbox" ng-if="passwordCheckbox">Hide Password</label>
+                    <label for="checkbox" ng-if="!passwordCheckbox">Show Password</label>
+                    <span class="text-danger" ng-show="myForm.password.$dirty && myForm.password.$invalid">
+                        <span ng-show="myForm.password.$error.required">Password is required.</span>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" name="remember" class="icheckbox_flat-blue" ng-model="User.Remember" /> Remember
+                </div>
+                <button type="button" class="btn btn-primary btn-block btn-flat"  data-ng-click="login(User)">{{subBtn}}</button>
+
+                <div class="row">
+                    <!--<div class="col-xs-8">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input name="remember" type="checkbox" data-ng-model="User.Remember"> Remember Me
+                            </label>
+                        </div>
+                    </div>-->
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <a href="#" ng-click="forgotPassword()">I forgot my password</a><br>
+            </form>
+
+            <form role="form" name="myForm" ng-if="isPassword">
+                <div>
+                    <span class="text-danger">{{loginSts}} </span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" name="user" class="form-control" placeholder="Username or Email" data-ng-model="Reset.user_name" required="">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    <span class="text-danger" ng-show="myForm.user.$dirty && myForm.user.$invalid">
+                        <span ng-show="myForm.user.$error.required">Username is required.</span>
+                    </span>
+                </div>
+                <button type="button" class="btn btn-primary btn-block btn-flat" data-ng-click="Reset(Reset)">Send</button>
+                <a href="#" class="pull-right" ng-click="isLogin()"><strong>Login</strong></a><br>
+            </form>
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+
+    <script src="Scripts/jquery-3.1.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="Scripts/vendors/angular/angular.min.js"></script>
+    <script src="Scripts/vendors/angular/angular-cookies.min.js"></script>
+    <script src="AdminLTE/plugins/iCheck/icheck.min.js"></script>
+    <script src="Scripts/Login.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+
+</body>
+</html>

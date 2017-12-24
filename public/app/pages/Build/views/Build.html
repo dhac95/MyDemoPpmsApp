@@ -1,0 +1,52 @@
+<div class="box box-solid box-primary">
+
+    <div class="box-header">
+        Build
+    </div>
+    <div class="box-body">
+        <button Build="button" ng-click="addBuildModel()" class="btn btn-sm btn-success">
+            <i class="glyphicon glyphicon-plus">
+            </i> Add New
+        </button>
+        <div style="overflow-x:auto;">
+            <table ng-table="tableParams" class="table table-striped table-responsive" show-filter="true">
+
+                <tr ng-repeat="row in $data">
+                    <td class="text-center" title="'build_no'" filter="{build_no : 'text'}" sortable="'build_no'">{{ row.build_no }}</td>
+                    <td class="text-center" title="'team_name'" filter="{team_name : 'text'}" sortable="'team_name'">{{ row.team_name }}</td>
+                    <td class="text-center" title="'build_name'" filter="{build_name : 'text'}" sortable="'build_name'">{{ row.build_name }}</td>
+                    <td class="text-center" title="'build_status'" filter="{build_status : 'text'}" sortable="'build_status'">{{ row.build_status }}</td>
+                    <td class="text-center" title="'user_name'" filter="{user_name : 'text'}" sortable="'user_name'">{{ row.user_name }}</td>
+
+                    <td class="text-center" title="'Modified_by'" filter="{Modified_by : 'text'}" sortable="'Modified_by'">{{ row.Modified_by }}</td>
+     
+                    <td title="'create_date'" filter="{create_date : 'text'}" sortable="'create_date'">{{ row.create_date | date : "dd.MM.y" }}</td>
+                    <td title="'modified_date'" filter="{modified_date : 'text'}" sortable="'modified_date'">{{ row.modified_date | date : "dd.MM.y" }}</td>
+                    <!--<td class="text-center" title="'Owner'" filter="{Owner : 'text'}" sortable="'Owner'">{{ row.Owner }}</td>-->
+                    <td class="text-center" title="'Action'">
+                        <div class="col-md-offset-4">
+                            <button Build="button" ng-click="editBuildModel(row)" class="btn btn-sm btn-primary">
+                                <i class="glyphicon glyphicon-pencil">
+                                </i>
+                            </button>
+                            <button Build="button" ng-click="removeBuild(row)" class="btn btn-sm btn-danger">
+                                <i class="glyphicon glyphicon-remove-circle">
+                                </i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+
+
+                <!--<tfoot>
+                    <tr>
+                        <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
+                    </tr>
+                </tfoot>-->
+            </table>
+        </div>
+    </div>
+</div>
+
+

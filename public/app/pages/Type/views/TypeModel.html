@@ -1,0 +1,25 @@
+﻿<div class="jumbotron modal-header">
+	<h3 class="modal-title" id="modal-title">Type</h3>
+</div>
+<div class="modal-body" id="modal-body">
+	<form name="myForm" role="form" class="well well-sm">
+		<div class="row">
+			<div class="col-md-6 col-lg-6">
+				
+				<div class="form-group">
+					<label for="name">TypeName</label>
+					<input type="text" class="form-control" id="TypeName" name="tTypeName" data-ng-model="Type.TypeName" />
+					<div ng-show="myForm.tTypeName.$touched  && myForm.tTypeName.$invalid" class="text-danger">*required  TypeName</div>
+				</div>
+				<div class="form-group">
+					<label for="NoOfDays">Number Of Days</label>
+					<input type="number" class="form-control" id="NoOfDays" name="tNoOfDays" data-ng-model="Type.NoOfDays"  />
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveType(Type)">Save</button>
+	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
