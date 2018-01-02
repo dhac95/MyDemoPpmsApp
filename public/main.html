@@ -1,57 +1,23 @@
 ﻿<html>
 <head>
     <meta charset="UTF-8">
-    <title>TS</title>
+    <title>P2R Dashboard | Home</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
      
-    <!-- Bootstrap 3.3.2 -->
-    <!-- <link href="Content/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="Content/bootstrap/bootstrap.min.css" rel="stylesheet" /> -->
- 
-    <!-- Font Awesome Icons -->
-    <!-- <link href="Content/font-awesome/font-awesome.min.css" rel="stylesheet" /> -->
+    
     <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />-->
     <!-- Ionicons -->
     <!-- <link href="Content/ionicons.css" rel="stylesheet" /> -->
      <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet"/> 
     <!--<link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />-->
-    <!-- Theme style -->
-    <!-- <link href="Content/ui-bootstrap-csp.css" rel="stylesheet" />
-    <link href="AdminLTE/css/AdminLTE.css" rel="stylesheet" />
-    <link href="AdminLTE/dist/css/skins/_all-skins.css" rel="stylesheet" />
-    <link href="AdminLTE/dist/css/AdminLTE.css" rel="stylesheet" /> -->
-    <!--<link href="AdminLTE/css/AdminLTE.min.css" rel="stylesheet" />--> 
-    <!-- <link href="AdminLTE/bootstrap/css/bootstrap-theme.css" rel="stylesheet" />
-    <link href="AdminLTE/css/skins/_all-skins.css" rel="stylesheet" /> -->
-    <!--<link href="AdminLTE/css/skins/_all-skins.min.css" rel="stylesheet" />-->
-    <!-- <link href="AdminLTE/ng-table.css" rel="stylesheet" />
-    <link href="Content/Site.css" rel="stylesheet" />
-    <link href="Content/ng-table.css" rel="stylesheet" /> -->
-
-    <!--datepicker-->
-    <!-- <link href="AdminLTE/plugins/datepicker/datepicker3.css" rel="stylesheet" /> -->
-
-    <!--icheck-->
-    <!-- <link href="AdminLTE/plugins/iCheck/flat/blue.css" rel="stylesheet" /> -->
+    
 
     <!--bootstrap3-wysihtml5-->
     <link href="AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css" rel="stylesheet" />
 
-     <!--Slider-->
-    <!-- <link href="AdminLTE/plugins/bootstrap-slider/slider.css" rel="stylesheet" /> -->
-
-    <!--TimePicker-->
-    <!-- <link href="AdminLTE/plugins/timepicker/bootstrap-timepicker.css" rel="stylesheet" /> -->
-
-    <!--FAVICON--> 
-    <!-- <link rel="shortcut icon" href="favicon.ico"> -->
-
-    <!--Full Cal-->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-    <link href="AdminLTE/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" /> -->
-
-    <link href="Content/bootstrap/bootstrap.css" rel="stylesheet" />
+    
     <link href="Content/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/ui-bootstrap-csp.css" rel="stylesheet" />
  
     <!-- Font Awesome Icons -->
     <link href="Content/font-awesome/font-awesome.min.css" rel="stylesheet" />
@@ -70,6 +36,7 @@
     <!--<link href="AdminLTE/css/skins/_all-skins.min.css" rel="stylesheet" />-->
     <link href="AdminLTE/ng-table.css" rel="stylesheet" />
     <link href="Content/Site.css" rel="stylesheet" />
+    <link href="Content/select.css" rel="stylesheet" />
     <!--<link href="Content/ng-table.css" rel="stylesheet" />-->
 
     <!--datepicker-->
@@ -87,6 +54,9 @@
     <!--TimePicker-->
     <link href="AdminLTE/plugins/timepicker/bootstrap-timepicker.css" rel="stylesheet" />
 
+    <!-- Angular Switch -->
+    <link href="Content/angular-ui-switch.css" rel="stylesheet" />
+
     <!--FAVICON--> 
     <link rel="shortcut icon" href="favicon.ico">
 
@@ -96,20 +66,14 @@
 
 
    <!-- <link href="Content/Switch.css" rel="stylesheet" />-->
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
     function updateTextInput(val) {
         document.getElementById('textInput').value = val;
     }
-    </script>
-     <!-- <link href="Content/styleDrag.css" rel="stylesheet" />
-     <!--<link href="Content/styleFixedTable.css" rel="stylesheet" />
-     <link href="Content/Site.css" rel="stylesheet" />
-     <link href="Content/angular-ui-switch.css" rel="stylesheet" />
-     <link href="Content/angular-toastr.css" rel="stylesheet" />
-     <link href="Content/select.css" rel="stylesheet" />
-     <link href="Content/lf-ng-md-file-input.css" rel="stylesheet" />
-     <link href="Scripts/nvd3/nv.d3.css" rel="stylesheet" /> -->
+    </script> -->
+        <!-- Angualr Datepicker -->
 
+        <link href="Content/angularjs-datepicker/dist/angular-datepicker.css" />
 
 
 </head>
@@ -133,7 +97,7 @@ desired effect
 |---------------------------------------------------------|
 
 -->
-<body class="skin-green-light fixed" data-ng-app="ERP">
+<body class="skin-green fixed" data-ng-app="ERP">
     <div class="wrapper">
         <header class="main-header"></header>
         <!-- Left side column. contains the logo and sidebar -->
@@ -158,7 +122,7 @@ desired effect
         <footer class="main-footer">
             <!-- To the right -->
             <div class="pull-right hidden-xs">
-                powerd by Node.JS 🔁
+               <strong>Powerd by M*EAN 🔁 </strong> 
             </div>
             <!-- Default to the left -->
             <strong>Version<a href="http://www.amazon.com/"> Alpha 0.1.1 Build(p2ram1)</a>.</strong>.
@@ -166,92 +130,7 @@ desired effect
     </div><!-- ./wrapper -->
 
     <!-- REQUIRED JS SCRIPTS -->    
-  <!--  <script src="Scripts/vendors/jQuery-2.1.3.min.js"></script>-->
-   
-    <!-- <script src="Scripts/vendors/angular/angular.min.js"></script>   
-    <script src="Scripts/vendors/angular/angular-animate.min.js"></script> 
-    <script src="Scripts/vendors/angular/ui-bootstrap-tpls.js"></script> -->
-   <!-- <script src="Scripts/vendors/fastclick.js"></script>-->   
-    <!-- <script src="Scripts/vendors/angular/angular-ui-router.min.js"></script>  
-    <script src="Scripts/vendors/angular/angular-cookies.min.js"></script>
-   
-    <script src="Scripts/vendors/angular/angular-touch.js"></script>
-    <script src="Scripts/vendors/angular/angular-toastr.tpls.js"></script> -->
-    
-  <!--  <script src="Scripts/vendors/jquery.slimscroll.min.js"></script>-->
-   
-    <!-- <script src="Scripts/ng-table.js"></script>
-    <script src="Scripts/vendors/smart-table.js"></script> -->
-    <!--<script src="Scripts/angular-aria/angular-aria.js"></script>
-    <script src="Scripts/angular-material/angular-material.js"></script>-->
-    <!--<script src="Smart-Table-master/dist/smart-table.js"></script>-->
-    
-     <!-- <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    
-    <script src="Scripts/vendors/jquery.slimscroll.min.js"></script> -->
-   <!-- <script src="Scripts/vendors/fastclick.js"></script> -->
-    
-
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-    <script src="AdminLTE/plugins/datepicker/bootstrap-datepicker.js"></script>
-    <script src="AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js"></script>
-    <script src="AdminLTE/plugins/bootstrap-slider/bootstrap-slider.js"></script>
-    <script src="AdminLTE/plugins/timepicker/bootstrap-timepicker.js"></script>
-    <script src="AdminLTE/plugins/fullcalendar/fullcalendar.min.js"></script> -->
-    <!--<script>
-    $(function () {
-
-        //Date picker
-        $('#datepicker').datepicker({
-            autoclose: true
-        });
- //Timepicker
-    $(".timepicker").timepicker({
-      showInputs: false
-    });
-  });
-    </script>-->
-
-   <!-- <script src="AdminLTE/dist/js/pages/dashboard.js"></script>-->
-
-
-<!-- Try This -->
-<!-- <script src="Scripts/vendors/Chart.min.js"></script>
-    <script src="Scripts/vendors/bootstrap.min.js"></script>
-    <script src="Scripts/alasql.min.js"></script>
-    <script src="Scripts/xlsx.core.min.js"></script>
-    <script src="Scripts/jspdf.min.js"></script>
-    <script src="Scripts/jspdf.plugin.autotable.js"></script>
-    <script src="Scripts/vendors/angular/angular-animate.min.js"></script>
-    <script src="Scripts/vendors/angular/angular-aria.min.js"></script>
-    <script src="Scripts/vendors/angular/angular-messages.min.js"></script>
-    <script src="Scripts/vendors/angular/angular-material.min.js"></script>
-    <script src="Scripts/vendors/angular/ui-bootstrap-tpls.js"></script>
-    <script src="Scripts/vendors/angular/angular-ui-router.min.js"></script>
-    <script src="Scripts/vendors/angular/angular-cookies.min.js"></script>
-
-    <script src="Scripts/vendors/angular/angular-touch.js"></script>
-    <script src="Scripts/vendors/angular/angular-toastr.tpls.js"></script>
-
-    <script src="Scripts/vendors/jquery.slimscroll.min.js"></script>
-    <script src="Scripts/vendors/fastclick.js"></script>
-    <script src="Scripts/vendors/lrDragNDrop.js"></script>
-    <script src="Scripts/vendors/smart-table.js"></script>
-    <script src="Scripts/vendors/angular-ui-switch.js"></script>
-    <script src="Scripts/vendors/select.js"></script>   
-    <script src="Scripts/angular-sanitize.js"></script>
-    <script src="Scripts/vendors/angular-file-upload.min.js"></script>
-    <script src="Scripts/nvd3/d3.js"></script>
-    <script src="Scripts/nvd3/nv.d3.js"></script>
-    <script src="Scripts/nvd3/angular-nvd3.js"></script> -->
-
-<!-- Try This -->
-
-
-
-
-
+  
 
    <script src="Scripts/vendors/angular/angular.min.js"></script>   
     <script src="Scripts/vendors/angular/angular-animate.min.js"></script> 
@@ -267,6 +146,7 @@ desired effect
    
     <script src="Scripts/ng-table.js"></script>
     <script src="Scripts/vendors/smart-table.js"></script>
+    <script src="Scripts/ui-bootstrap-tpls-2.5.0.min.js"></script> 
     <!--<script src="Scripts/angular-aria/angular-aria.js"></script>
     <script src="Scripts/angular-material/angular-material.js"></script>-->
     <!--<script src="Smart-Table-master/dist/smart-table.js"></script>-->
@@ -277,9 +157,11 @@ desired effect
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="Scripts/vendors/jquery.slimscroll.min.js"></script>
     <script src="Scripts/vendors/fastclick.js"></script>
+    <script src="Scripts/vendors/select.js"></script>  
+    <script src="Scripts/angular-sanitize.js"></script>
 
  
-    <!--<script src="https://rawgit.com/rzajac/angularjs-slider/master/dist/rzslider.js"></script>-->
+    <!--<script src="https://rawgit.com/rzadjac/angularjs-slider/master/dist/rzslider.js"></script>-->
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
@@ -293,10 +175,14 @@ desired effect
   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.min.js"></script>-->
 
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+  <!-- <script src="../bower_components/angular-smart-table/dist/smart-table.min.js"></script> -->
+
+  <!-- angualr switch -->
+  <script src="Scripts/vendors/angular-ui-switch.js"></script>
 
 
                 
-    <!-- ERP App -->
+    <!-- TS App -->
     <!-- Modules -->
     <script src="app/pages/service.module.js" type="text/javascript"></script>    
     <script src="app/pages/pages.module.js" type="text/javascript"></script>    
@@ -308,6 +194,11 @@ desired effect
     <script src="app/pages/Build/Build.module.js"></script>
     <script src="app/pages/Task/Task.module.js"></script>
     <script src="app/pages/AddTask/AddTask.module.js"></script>
+    <!-- <script src="app/pages/testAdd/test.module.js"></script> -->
+    <script src="app/pages/UserOT/UserOT.module.js"></script>
+    <script src="app/pages/UserReports/UserReport.module.js"></script>
+    <script src="app/pages/SubTask/SubTask.module.js"></script>
+    <script src="app/pages/SdaReports/SdaReports.module.js"></script>
 
     <!-- Controllers -->
     <script src="app/pages/home/Controller/homeController.js" type="text/javascript"></script>
@@ -316,6 +207,11 @@ desired effect
     <script src="app/pages/Build/Controller/BuildController.js" type="text/javascript"></script>
     <script src="app/pages/Task/Controller/TaskController.js" type="text/javascript"></script>
     <script src="app/pages/AddTask/Controller/AddTaskController.js" type="text/javascript"></script>
+    <!-- <script src="app/pages/testAdd/Controller/testController.js" type="text/javascript"></script> -->
+    <script src="app/pages/UserOT/Controller/UserOTController.js" type="text/javascript"></script>
+    <script src="app/pages/UserReports/Controller/UserReportController.js" type="text/javascript"></script>
+    <script src="app/pages/SubTask/Controller/SubTaskController.js" type="text/javascript"></script>
+    <script src="app/pages/SdaReports/Controller/SdaReportController.js" type="text/javascript"></script>
 
     <!-- Services -->
     <script src="app/pages/services/TeamService.js" type="text/javascript"></script>
@@ -323,6 +219,13 @@ desired effect
     <script src="app/pages/services/BuildService.js" type="text/javascript"></script>
     <script src="app/pages/services/TaskService.js" type="text/javascript"></script>
     <script src="app/pages/services/AddTaskService.js" type="text/javascript"></script>
+    <script src="app/pages/services/UserOTServices.js" type="text/javascript"></script>
+    <script src="app/pages/services/UserReportService.js" type="text/javascript"></script>
+    <script src="app/pages/services/SubTaskService.js" type="text/javascript"></script>
+    <script src="app/pages/services/SdaReportService.js" type="text/javascript"></script>
+    <!-- ANGUALR DATEPICKER -->
+    
+    <script src="Content/angularjs-datepicker/dist/angular-datepicker.js"></script>   
 
 
 </body>

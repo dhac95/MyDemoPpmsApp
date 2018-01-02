@@ -5,20 +5,39 @@
 	<form name="myForm" role="form" class="well well-sm">
 		<div class="row">
 			<!-- <div class="col-md-6 col-lg-6"> -->
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+					<label for="date">date</label>
+					<input type="date" class="form-control" id="date" name="date" data-ng-model="date.selected" data-ng-change="getTaskbyDate() ; getTotalTime()" />
+                </div>
                 
-                <div class="form-group col-md-3 col-lg-3">
+                <!-- <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                    <label for="product">Team Name</label>
+                    <input type="text" ng-model="team.selected" placeholder="Select Team" uib-typeahead="Team.team_id as Team.team_name for Team in TeamList | filter:{team_name:$viewValue}" data-ng-change="selectTask();selectBuild();"
+                           class="form-control ng-valid ng-touched ng-dirty ng-valid-parse ng-empty" typeahead-show-hint="true" typeahead-min-length="0" />
+                    <div ng-show="myForm.product.$touched  && myForm.product.$invalid" class="text-danger">*required Team</div>
+                </div> -->
+
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
                     <label for="Team">Team Name</label>
                     <div class="dropdown">
-
-                        <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected">
+                      <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected">
                             <option value="">Select the Team</option>
-               
                         </select>
-                        
                     </div>
                 </div>
 
-                <div class="form-group col-md-3 col-lg-3">
+                <!-- <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                    <label for="Team">Team Name</label>
+                        <ui-select name="team" ng-class="{'loading': loading}" ng-disabled="checkEditing" ng-change="selectTask();selectBuild();" ng-required="true" ng-model="team.selected" theme="bootstrap" title="Choose a Team">
+                            <ui-select-match placeholder="Select a Team">{{$select.selected.team_name}}</ui-select-match>
+                            <ui-select-choices repeat="Team in TeamList | propsFilter: {team_name: $select.search}">
+                                <div ng-bind-html="Team.team_name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                        <div ng-show="myForm.team.$touched && myForm.team.$invalid" class="text-danger">*required Team</div>
+                </div> -->
+       
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
                     <label for="Build">Build Name</label>
                     <div class="dropdown">
 
@@ -30,32 +49,16 @@
                     </div>
                 </div>
 
-				<!-- <div class="form-group col-md-3 col-lg-3">
-					<label for="build">build Name</label>
-					<input type="text" class="form-control" id="build" name="build" data-ng-model="AddTask.build" />
-					<div ng-show="myForm.build.$touched  && myForm.build.$invalid" class="text-danger">*required  build</div>
-				</div> -->
-				<!-- <div class="form-group col-md-3 col-lg-3">
-					<label for="tasks_id">tasks_id </label>
-					<input type="number" class="form-control" id="tasks_id" name="tasks_id" data-ng-model="AddTask.tasks_id"  />
-                </div> -->
-                <div class="form-group col-md-3 col-lg-3">
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
                     <label for="Task">Task Name</label>
                     <div class="dropdown">
-
-                        <select class="form-control" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask()">
+                        <select class="form-control" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask()" >
                             <option value="">Select the Task</option>
-               
                         </select>
                         
                     </div>
                 </div>
-
-                <!-- <div class="form-group col-md-3 col-lg-3">
-					<label for="sub_task_id">sub_task_id</label>
-					<input type="number" class="form-control" id="sub_task_id" name="sub_task_id" data-ng-model="AddTask.sub_task_id"  />
-                </div> -->
-                <div class="form-group col-md-3 col-lg-3">
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
                     <label for="subTask">Sub Task Name</label>
                     <div class="dropdown">
 
@@ -67,120 +70,110 @@
                     </div>
                 </div>
 
-                <div class="form-group col-md-3 col-lg-3">
-					<label for="task_desc">task_desc</label>
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+					<label for="task_desc">Task Description</label>
 					<input type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="AddTask.task_desc"  />
                 </div>
-                <div class="form-group col-md-3 col-lg-3">
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="count">count</label>
-					<input type="text" class="form-control" id="count" name="count" data-ng-model="AddTask.count"  />
+					<input type="number" class="form-control" id="count" name="count" data-ng-model="AddTask.count"  />
                 </div>
-                <div class="form-group col-md-3 col-lg-3">
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="noofdevice">noofdevice</label>
 					<input type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="AddTask.noofdevice"  />
                 </div>
-                <div class="form-group col-md-3 col-lg-3">
-					<label for="time">time</label>
-					<input type="time" class="form-control" id="time" name="time" data-ng-model="AddTask.time"  />
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+					<label for="time">Time <span><strong class="text-danger">  *Remaing Time {{remTime.remain}}</strong></span></label>
+					<input type="text" class="form-control" id="time" name="time" required pattern="[0-0][0-8]:[0-5][0-9]+" placeholder="for example 07:59" data-ng-model="AddTask.time" ng-maxlength="5" maxlength="5" required ng-required="true" />
                 </div>
-                <div class="form-group col-md-3 col-lg-3">
-					<label for="date">date</label>
-					<input type="date" class="form-control" id="date" name="date" data-ng-model="AddTask.date"  />
-                </div>
-                <div class="form-group col-md-3 col-lg-3">
+            
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="cmds">cmds</label>
 					<input type="text" class="form-control" id="cmds" name="cmds" data-ng-model="AddTask.cmds"  />
                 </div>
-
-                <!-- <div class="form-group">
-					<label for="last_modify">last_modify</label>
-					<input type="date" class="form-control" id="last_modify" name="tlast_modify" data-ng-model="AddTask.last_modify"  ng-model-options="{timezone:'UTC'}"/>
-                </div>
-                <div class="form-group">
-					<label for="maintain_date">maintain date</label>
-					<input type="date" class="form-control" id="maintain_date" name="tmaintain_date" data-ng-model="AddTask.maintain_date"  ng-model-options="{timezone:'UTC'}"/>
-                </div>
-                <div class="form-group">
-					<label for="create_date">create_date</label>
-					<input type="date" class="form-control" id="create_date" name="tcreate_date" data-ng-model="AddTask.create_date" ng-model-options="{timezone:'UTC'}" />
-                </div> -->
-                
-			<!-- </div> -->
 		</div>
 	</form>
 </div>
 <div class="modal-footer">
 	<button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveAddTask(AddTask)">Save</button>
-	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
 </div>
 
 
 
+<div class="row">
+    <div class="panel panel-default">
+        <div class="jumbotron modal-header model-title">
+            <strong>Reports  for {{$root.user_name}} on {{date.selected | date : 'dd/MM/yyyy' }} </strong>
+        </div>
+        <div class="panel-body">
+            <div style="overflow-x:auto;">
+            <table st-table="displayedCollection" st-safe-src="Addedtasklist" class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>
+                            <select data-ng-model="noOfRows" convert-to-number>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="3"><input st-search="" class="input-sm form-control" placeholder="Search text" type="text" /></th>
+                    </tr>
+                    <tr>
+                        <th st-sort="team_name">Team Name</th>
+                        <th st-sort="build_name">Build Name</th>
+                        <th st-sort="task_name">Task Name</th>
+                        <th st-sort="sub_task_name">Subtask Name</th>
+                        <th st-sort="task_info">Task Description</th>
+                        <th st-sort="count">count</th>
+                        <th st-sort="time">time</th>
+                        <th st-sort="date">date</th>
+                        <th st-sort="cmds">Comments</th>
 
-
-<div class="box box-solid box-primary">
-
-    <div class="box-header">
-        AddTask
-    </div>
-    <div class="box-body">
-        <button type="button" ng-click="addAddTaskModel()" class="btn btn-sm btn-success">
-            <i class="glyphicon glyphicon-plus">
-            </i> Add New
-        </button>
-        <div style="overflow-x:auto;">
-            <table ng-table="tableParams" class="table table-striped table-responsive" show-filter="true">
-
-                <tr ng-repeat="row in $data">
-                    <td class="text-center" title="'team_id'" filter="{team_id : 'text'}" sortable="'team_id'">{{ row.team_id }}</td>
-                    <td class="text-center" title="'build'" filter="{build : 'text'}" sortable="'build'">{{ row.build }}</td>
-                    <td class="text-center" title="'tasks_id'" filter="{tasks_id : 'text'}" sortable="'tasks_id'">{{ row.tasks_id }}</td>
-                    <td class="text-center" title="'sub_task_id'" filter="{sub_task_id : 'text'}" sortable="'sub_task_id'">{{ row.sub_task_id }}</td>
-                    <td class="text-center" title="'task_desc'" filter="{task_desc : 'text'}" sortable="'task_desc'">{{ row.task_desc }}</td>
-
-                    <td class="text-center" title="'count'" filter="{count : 'text'}" sortable="'password'">{{ row.count }}</td>
-                    <td class="text-center" title="'time'" filter="{time : 'text'}" sortable="'time'">{{ row.time }}</td>
-                    <td class="text-center" title="'date'" filter="{date : 'text'}" sortable="'date'">{{ row.date }}</td>
-
-                    <!-- <td class="text-center" title="'host_name_1'" filter="{host_name_1 : 'text'}" sortable="'host_name_1'">{{ row.host_name_1 }}</td>
-                    <td class="text-center" title="'host_name_2'" filter="{host_name_2 : 'text'}" sortable="'host_name_2'">{{ row.host_name_2 }}</td>
-                    <td class="text-center" title="'below_on'" filter="{below_on : 'text'}" sortable="'below_on'">{{ row.below_on }}</td>
-
-                    <td class="text-center" title="'manager'" filter="{manager : 'text'}" sortable="'manager'">{{ row.manager }}</td>
-                    <td class="text-center" title="'approved_by'" filter="{approved_by : 'text'}" sortable="'approved_by'">{{ row.approved_by }}</td>
-                    <td class="text-center" title="'user_status'" filter="{user_status : 'text'}" sortable="'user_status'">{{ row.user_status }}</td>
-
-                    <td class="text-center" title="'user_activation'" filter="{user_activation : 'text'}" sortable="'user_activation'">{{ row.user_activation }}</td>
-                    <td class="text-center" title="'user_deletion'" filter="{user_deletion : 'text'}" sortable="'user_deletion'">{{ row.user_deletion }}</td>
-
-                    <td title="'last_entry_on'" filter="{last_entry_on : 'text'}" sortable="'last_entry_on'">{{ row.last_entry_on | date : "dd.MM.y" }}</td>
-                    <td title="'create_date'" filter="{create_date : 'text'}" sortable="'create_date'">{{ row.create_date | date : "dd.MM.y" }}</td>
-                    <td title="'maintain_date'" filter="{maintain_date : 'text'}" sortable="'maintain_date'">{{ row.maintain_date | date : "dd.MM.y" }}</td> -->
-                    <!--<td class="text-center" title="'Owner'" filter="{Owner : 'text'}" sortable="'Owner'">{{ row.Owner }}</td>-->
-                    <td class="text-center" title="'Action'">
-                        <div class="col-md-offset-4">
-                            <button AddTask="button" ng-click="editAddTaskModel(row)" class="btn btn-sm btn-primary">
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in displayedCollection">
+                        <td>{{ row.team_name }}</td>
+                        <td>{{ row.build_name }}</td> 
+                        <td>{{ row.task_name }}</td>
+                        <td>{{ row.sub_task_name }}</td>
+                        <td>{{ row.task_info }}</td>
+                        <td>{{ row.count}}</td>
+                        <td>{{ row.time}}</td>
+                        <td>{{ row.date | date : 'dd/MM/yyyy' }}</td>
+                        <td>{{ row.cmds}}</td>
+                        <td>
+                            <button type="button" ng-click="editAddTaskModel(row)" class="btn btn-sm btn-primary">
                                 <i class="glyphicon glyphicon-pencil">
                                 </i>
                             </button>
-                            <button AddTask="button" ng-click="removeAddTask(row)" class="btn btn-sm btn-danger">
+                            <button type="button" ng-click="removeAddTask(row)" class="btn btn-sm btn-danger">
                                 <i class="glyphicon glyphicon-remove-circle">
                                 </i>
                             </button>
-                        </div>
-                    </td>
-                </tr>
-
-
-
-                <!--<tfoot>
-                    <tr>
-                        <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
+                        </td>
                     </tr>
-                </tfoot>-->
+                </tbody>
+                <tfoot>
+                    <tr>
+                            <th colspan="3" class="text-right" style="padding-right: 10px" > Total Time : </th>
+                            <th>{{ remTime.total }}</th>
+                            <th colspan="3" class="text-right" style="padding-right: 10px"> Total Count : </th>
+                            <th>{{ getTotalCount() }}</th>
+                        <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
+                        <td colspan="5" class="text-center">
+                                <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
+                            </td>
+                    </tr>
+                </tfoot>
             </table>
+            </div>
         </div>
     </div>
 </div>
-
 

@@ -10,9 +10,13 @@ var app = angular.module('ERP', [
 	'ngCookies',
 	'ui.bootstrap',
 	'ui.router',
-	'ngTouch',
+	'ui.select',
+	'ngSanitize',
+	'uiSwitch',
+	//'ngTouch',
 	'toastr',
-	//'smart-table',
+	'720kb.datepicker',
+	'smart-table',
 	'ngTable',
 	'ngMessages',
 	'ERP.pages',
@@ -48,13 +52,13 @@ today = yyyy + '-' + mm + '-' + dd;
 
 
 app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
-	$rootScope.endPoint = "http://localhost:3000/";
+	$rootScope.endPoint = "http://localhost:3000/"; //Main Url
   
 	$rootScope.year = (new Date()).getFullYear();
 	$rootScope.date = today;
 	$rootScope.$on('$stateChangeStart', function (event) {
-
-	    if (sessionStorage.getItem('IsAuth')) {
+		//Get data from session when login
+	    if (sessionStorage.getItem('IsAuth')) { 
 			$rootScope.user_id = sessionStorage.getItem('user_id');
 	        $rootScope.IsAuth = sessionStorage.getItem('IsAuth');
 	        $rootScope.first_name = sessionStorage.getItem('first_name');
@@ -88,7 +92,7 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 		else {
 			$rootScope.logout();
 		}
-
+			// Links for homepage
 		var sim = "https://issues.amazon.com/issues/search?q=assignee:" + $rootScope.user_name + "%20status:Open&sort=lastUpdatedConversationDate%20desc&actor=" + $rootScope.user_name;
 		$rootScope.sim = sim;
 
@@ -120,7 +124,7 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 	//loadAppMenu();
 
 
-	$rootScope.logout = function () {
+	$rootScope.logout = function () {           //Data removal
 		sessionStorage.removeItem('user_id');
 		sessionStorage.removeItem('first_name');
 		sessionStorage.removeItem('last_name');
@@ -163,7 +167,7 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 		}
 		return false;
 	}
-
+	//Not working on angualr 1.5 downgrade version or change config
 	$rootScope.showToster = function (type, msg, title) {
 		var toastConfig = {
 			"autoDismiss": true,
@@ -250,10 +254,42 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 
 
 
+//propsFilter
+app.filter('propsFilter', function () {
+    return function (items, props) {
+        var out = [];
+
+        if (angular.isArray(items)) {
+            var keys = Object.keys(props);
+
+            items.forEach(function (item) {
+                var itemMatches = false;
+
+                for (var i = 0; i < keys.length; i++) {
+                    var prop = keys[i];
+                    var text = props[prop].toLowerCase();
+                    if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+                        itemMatches = true;
+                        break;
+                    }
+                }
+
+                if (itemMatches) {
+                    out.push(item);
+                }
+            });
+        } else {
+            // Let the output be the input untouched
+            out = items;
+        }
+
+        return out;
+    };
+});
 
 
 
-
+//Main UI features don't change this just add the features top of it
 
 app.directive('sidebar', function () {
 	return {

@@ -1,40 +1,89 @@
-﻿<div class="box box-solid box-primary">
-	<div class="box-header">
-		user Task
+﻿<div ng-show="$root.team_count > 1">
+	<div class="modal-body" id="modal-body">
+		<form name="myForm" role="form" class="well well-sm">
+			<div class="row">
+					<div class="form-group col-sm-3 col-md-3 col-lg-3">
+							<label for="Team">Change Team</label>
+							<div class="dropdown">
+							  <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="loadGrid()" data-ng-model="team.selected">
+									<option value="">Select the Team</option>
+								</select>
+							</div>
+						</div>
+			</div>
+		</form>
 	</div>
-	<div class="box-body">
-		<button type="button" ng-click="adduTaskModel()" class="btn btn-sm btn-success">
-			<i class="glyphicon glyphicon-plus">
-			</i> Add New
-		</button>
-		<div style="overflow-x:auto;">
-			<table ng-table="tableParams" class="table table-striped table-responsive table-bordered table-condensed table-hover" show-filter="true">
-
-				<tr ng-repeat="row in $data">
-					<td class="text-center" title="'team_name'" filter="{team_name : 'text'}" sortable="'team_name'">{{ row.team_name }}</td>
-					<td class="text-center" title="'build_name'" filter="{build_name : 'text'}" sortable="'build_name'">{{ row.build_name }}</td>
-					<td class="text-center" filter="{task_name : 'text'}" sortable="'task_name'" title="'task_name'">{{ row.task_name }}</td>
-					<td class="text-center" filter="{sub_task_name : 'text'}" sortable="'sub_task_name'" title="'sub_task_name'">{{ row.sub_task_name }}</td>
-					<td class="text-center" filter="{task_info : 'text'}" sortable="'task_info'" title="'task_info'">{{ row.task_info }}</td>
-					<td class="text-center" filter="{date : 'text'}" sortable="'date'" title="'date'">{{ row.date | date:"dd-MM-y" }}</td>
-					<td class="text-center" filter="{count : 'text'}" sortable="'count'" title="'count'">{{ row.count }}</td>
-					<td class="text-center" filter="{noofdevice : 'text'}" sortable="'noofdevice'" title="'noofdevice'">{{ row.noofdevice }}</td>
-					<td class="text-center" filter="{time : 'text'}" sortable="'time'" title="'time'">{{ row.time }}</td>
-					<td class="text-center" filter="{cmds : 'text'}" sortable="'cmds'" title="'cmds'">{{ row.cmds }}</td>
-
-					<td class="text-center" title="'Action'">
-						<button type="button" ng-click="edituTaskModel(row)" class="btn btn-sm btn-primary">
-							<i class="glyphicon glyphicon-pencil">
-							</i>
-						</button>
+	</div>
+	
+	<div class="box box-solid box-primary">
+	
+		<div class="box-header">
+			Task
+		</div>
+		<div class="box-body">
+			<button Task="button" ng-click="addTaskModel()" class="btn btn-sm btn-success">
+				<i class="glyphicon glyphicon-plus">
+				</i> Add New
+			</button>
+			<div style="overflow-x:auto;">
+				<table ng-table="tableParams" class="table table-striped table-responsive" show-filter="true">
+	
+					<tr ng-repeat="row in $data">
+						<td class="text-center" title="'Task #'" filter="{task_id : 'text'}" sortable="'task_id'">{{ row.task_id }}</td>
+						<td class="text-center" title="'Team Name'" filter="{team_name : 'text'}" sortable="'team_name'">{{ row.team_name }}</td>
+						<td class="text-center" title="'Task Name'" filter="{task_name : 'text'}" sortable="'task_name'">{{ row.task_name }}</td>
+						<td class="text-center" title="'Added By'" filter="{AddedBy : 'text'}" sortable="'AddedBy'">{{ row.AddedBy }}</td>
+						<td class="text-center" title="'Device Count'" filter="{device_count : 'text'}" sortable="'device_count'">{{ row.device_count }}</td>
+						<td class="text-center" title="'Task Status'" filter="{status : 'text'}" sortable="'status'">
+							<span data-ng-if="row.status === 1" class="label label-success">Active</span>
+							<span data-ng-if="row.status === 0" class="label label-danger">In Active</span>
+						</td>
+						<td class="text-center" title="'About CF'" filter="{about_cf : 'text'}" sortable="'about_cf'">
+							<span data-ng-if="row.about_cf === 1" class="label label-success">ON</span>
+							<span data-ng-if="row.about_cf === 0" class="label label-danger">OFF</span>
+							<span data-ng-if="row.about_cf === null" class="label label-primary">NULL</span>
+						</td>
+						<td class="text-center" title="'Have ST'" filter="{have_st : 'text'}" sortable="'have_st'">
+							<span data-ng-if="row.have_st === 1" class="label label-success">YES</span>
+							<span data-ng-if="row.have_st === 0" class="label label-danger">NO</span>
+						</td>
 						
-						<button type="button" ng-click="removeuTask(row)" class="btn btn-sm btn-danger">
-							<i class="glyphicon glyphicon-trash">
-							</i>
-						</button>
-					</td>
-				</tr>
-			</table>
+						<td class="text-center" title="'OP Type'" filter="{op_type : 'text'}" sortable="'op_type'">
+							<span data-ng-if="row.op_type === 1" class="label label-success">True</span>
+							<span data-ng-if="row.op_type === 0" class="label label-danger">False</span>
+						</td>
+
+						<td class="text-center" title="'Deletion Status'" filter="{deletion : 'text'}" sortable="'deletion'">
+							<span data-ng-if="row.deletion === 0" class="label label-success">In use</span>
+							<span data-ng-if="row.deletion === 1" class="label label-danger">Not In Use</span>
+						</td>
+						<td class="text-center" title="'Modified By'" filter="{ModifiedBy : 'text'}" sortable="'ModifiedBy'">{{ row.ModifiedBy }}</td>	
+
+						<td class="text-center" title="'Action'">
+							<div class="col-md-offset-4">
+								<button type="button" ng-click="editTaskModel(row)" class="btn btn-sm btn-primary">
+									<i class="glyphicon glyphicon-pencil">
+									</i>
+								</button>
+								<button type="button" ng-click="removeTask(row)" class="btn btn-sm btn-danger">
+									<i class="glyphicon glyphicon-remove-circle">
+									</i>
+								</button>
+							</div>
+						</td>
+					</tr>
+	
+	
+	
+					<!--<tfoot>
+						<tr>
+							<td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
+						</tr>
+					</tfoot>-->
+				</table>
+			</div>
 		</div>
 	</div>
-</div>
+	
+	
+	

@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html ng-app="LoginApp">
 <head>
-    <title>TS | Login</title>
+    <title>P2R Dashboard | Login</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link href="Content/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome Icons -->
@@ -25,7 +25,7 @@
         <!-- /.login-logo -->
         <div class="login-box-body">
             <div class="login-logo">
-                <a href="main.html"><b>P2R</b> Dashboard</a>
+                <a href="index.html"><b>P2R</b> Dashboard</a>
             </div>
             <p class="login-box-msg">Sign in to start your session</p>
             <form role="form" name="myForm" ng-if="!isPassword">
@@ -52,8 +52,10 @@
                 <div class="form-group">
                     <input type="checkbox" name="remember" class="icheckbox_flat-blue" ng-model="User.Remember" /> Remember
                 </div>
-                <button type="button" class="btn btn-primary btn-block btn-flat"  data-ng-click="login(User)">{{subBtn}}</button>
+                <div class="form-group">
+                <button type="button" class="btn btn-primary btn-block btn-flat"  data-ng-disabled="myForm.$invalid" data-ng-click="login(User)">{{subBtn}}</button>
 
+                    </div>
                 <div class="row">
                     <!--<div class="col-xs-8">
                         <div class="checkbox icheck">
@@ -73,22 +75,33 @@
 
             <form role="form" name="myForm" ng-if="isPassword">
                 <div>
-                    <span class="text-danger">{{loginSts}} </span>
+                    <span class="text-danger"><strong>{{loginSts}}</strong></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="text" name="user" class="form-control" placeholder="Username or Email" data-ng-model="Reset.user_name" required="">
+                    <input type="text" name="user" class="form-control" placeholder="Enter Your Username" data-ng-model="Reset.user_name" required="">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     <span class="text-danger" ng-show="myForm.user.$dirty && myForm.user.$invalid">
                         <span ng-show="myForm.user.$error.required">Username is required.</span>
                     </span>
                 </div>
-                <button type="button" class="btn btn-primary btn-block btn-flat" data-ng-click="Reset(Reset)">Send</button>
+                <button type="button" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Reset(Reset)">Send</button>
                 <a href="#" class="pull-right" ng-click="isLogin()"><strong>Login</strong></a><br>
             </form>
         </div>
         <!-- /.login-box-body -->
     </div>
     <!-- /.login-box -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="pull-right hidden-xs">
+            <strong>Powerd by M*EAN 🔁</strong>
+        </div>
+        <!-- Default to the left -->
+        <strong>Version<a href="http://www.amazon.com/"> Alpha 0.1.1 Build(p2ram1)</a>.</strong>.
+    </footer>
+</div><!-- ./wrapper -->
 
     <script src="Scripts/jquery-3.1.1.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

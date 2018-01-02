@@ -1,3 +1,20 @@
+<div ng-show="$root.team_count > 1">
+<div class="modal-body" id="modal-body">
+	<form name="myForm" role="form" class="well well-sm">
+		<div class="row">
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                        <label for="Team">Change Team</label>
+                        <div class="dropdown">
+                          <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="loadGrid()" data-ng-model="team.selected">
+                                <option value="">Select the Team</option>
+                            </select>
+                        </div>
+                    </div>
+        </div>
+    </form>
+</div>
+</div>
+
 <div class="box box-solid box-primary">
 
     <div class="box-header">
@@ -12,24 +29,26 @@
             <table ng-table="tableParams" class="table table-striped table-responsive" show-filter="true">
 
                 <tr ng-repeat="row in $data">
-                    <td class="text-center" title="'build_no'" filter="{build_no : 'text'}" sortable="'build_no'">{{ row.build_no }}</td>
-                    <td class="text-center" title="'team_name'" filter="{team_name : 'text'}" sortable="'team_name'">{{ row.team_name }}</td>
-                    <td class="text-center" title="'build_name'" filter="{build_name : 'text'}" sortable="'build_name'">{{ row.build_name }}</td>
-                    <td class="text-center" title="'build_status'" filter="{build_status : 'text'}" sortable="'build_status'">{{ row.build_status }}</td>
-                    <td class="text-center" title="'user_name'" filter="{user_name : 'text'}" sortable="'user_name'">{{ row.user_name }}</td>
-
-                    <td class="text-center" title="'Modified_by'" filter="{Modified_by : 'text'}" sortable="'Modified_by'">{{ row.Modified_by }}</td>
+                    <td class="text-center" title="'Build #'" filter="{build_no : 'text'}" sortable="'build_no'">{{ row.build_no }}</td>
+                    <td class="text-center" title="'Team Name'" filter="{team_name : 'text'}" sortable="'team_name'">{{ row.team_name }}</td>
+                    <td class="text-center" title="'Build Name'" filter="{build_name : 'text'}" sortable="'build_name'">{{ row.build_name }}</td>
+                    <td class="text-center" title="'Build Status'" filter="{build_status : 'text'}" sortable="'build_status'">
+                        <span data-ng-if="row.build_status === 1" class="label label-success">Active</span>
+                        <span data-ng-if="row.build_status === 0" class="label label-danger">In Active</span>
+                    </td>
+                    <!-- <td class="text-center" title="'Modified By'" filter="{user_name : 'text'}" sortable="'user_name'">{{ row.user_name }}</td> -->
+                    <!-- <td class="text-center" title="'Modified By'" filter="{Modified_by : 'text'}" sortable="'Modified_by'">{{ row.Modified_by }}</td> -->
      
-                    <td title="'create_date'" filter="{create_date : 'text'}" sortable="'create_date'">{{ row.create_date | date : "dd.MM.y" }}</td>
-                    <td title="'modified_date'" filter="{modified_date : 'text'}" sortable="'modified_date'">{{ row.modified_date | date : "dd.MM.y" }}</td>
+                    <!-- <td title="'Created Date'" filter="{create_date : 'text'}" sortable="'create_date'">{{ row.create_date | date : "dd.MM.y" }}</td>
+                    <td title="'Modified Date'" filter="{modified_date : 'text'}" sortable="'modified_date'">{{ row.modified_date | date : "dd.MM.y" }}</td> -->
                     <!--<td class="text-center" title="'Owner'" filter="{Owner : 'text'}" sortable="'Owner'">{{ row.Owner }}</td>-->
                     <td class="text-center" title="'Action'">
                         <div class="col-md-offset-4">
-                            <button Build="button" ng-click="editBuildModel(row)" class="btn btn-sm btn-primary">
+                            <button type="button" ng-click="editBuildModel(row)" class="btn btn-sm btn-primary">
                                 <i class="glyphicon glyphicon-pencil">
                                 </i>
                             </button>
-                            <button Build="button" ng-click="removeBuild(row)" class="btn btn-sm btn-danger">
+                            <button type="button" ng-click="removeBuild(row)" class="btn btn-sm btn-danger">
                                 <i class="glyphicon glyphicon-remove-circle">
                                 </i>
                             </button>

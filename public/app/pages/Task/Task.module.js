@@ -1,22 +1,22 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('ERP.pages.uTask', ['ngTable']).config(routeConfig);
+    angular.module('ERP.pages.Task', ['ngTable']).config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider) {
         $stateProvider
-            .state('uTask', {
-                url: '/uTask',
+            .state('Task', {
+                url: '/Task',
                 template: '<ui-view></ui-view>',
                 abstract: true,
-                title: 'uTask',
+                title: 'Task',
             })
-            .state('uTask.master', {
+            .state('Task.master', {
                 url: '/master',
-                controller: 'uTaskController',
+                controller: 'TaskController',
                 templateUrl: 'app/pages/Task/views/Task.html',
-                title: 'uTask Master',
-            });
+                title: 'Task Master',
+            })
     }
 })();

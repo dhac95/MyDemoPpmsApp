@@ -11,6 +11,7 @@
                 template: '<ui-view></ui-view>',
                 abstract: true,
                 title: 'AddTask',
+                
             })
             .state('AddTask.master', {
                 url: '/master',

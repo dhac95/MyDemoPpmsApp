@@ -6,8 +6,13 @@
         'ERP.pages.home',
         'ERP.pages.Employee',
         'ERP.pages.Build',
-        'ERP.pages.uTask',
-        'ERP.pages.AddTask'
+        'ERP.pages.Task',
+        'ERP.pages.AddTask',
+        'ERP.pages.SubTask',
+        'ERP.pages.UserOT',
+        'ERP.pages.UserReport',
+        'ERP.pages.SdaReport'
+        
     ]).config(['$urlRouterProvider', '$stateProvider', routeConfig]);
 
     function routeConfig($urlRouterProvider, $stateProvider) {

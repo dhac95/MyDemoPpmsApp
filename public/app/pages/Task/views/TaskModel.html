@@ -4,50 +4,67 @@
 <div class="modal-body" id="modal-body">
     <form name="myForm" role="form" class="well well-sm">
         <div class="row">
-            <div class="col-md-6 col-lg-6">
-                <div class="form-group">
-                    <label for="TaskName">TaskName</label>
-                    <input type="text" class="form-control" id="TaskName" name="tTaskName" data-ng-model="Task.TaskName" required />
-                    <div ng-show="myForm.tTaskName.$touched  && myForm.tTaskName.$invalid" class="text-danger">*required  TaskName</div>
+                <div class="form-group col-md-2 col-lg-2">
+                        <label for="status">Status</label>
+                        <switch id="status" name="status" ng-model="Task.status" class="switch small green" data-ng-init="Task.status"></switch>
+                    </div>
+ 
+                    <div class="form-group col-md-2 col-lg-2">
+                            <label for="deletion">Deletion</label>
+                            <switch id="deletion" name="deletion" ng-model="Task.deletion" class="switch small green" data-ng-init="Task.deletion"></switch>
+                        </div>
+        
+            <div ng-show="$root.team_count > 1">
+                <div class="form-group col-md-4 col-lg-4">
+                    <label for="Team">Team Name</label>
+                    <div class="dropdown">
+                        <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="loadGrid()" data-ng-model="team.selected" data-ng-init="team.selected = Task.team_id">
+                            <option value="">Select the Team</option>
+                        </select>               
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="TypeID">TypeID</label>
-                    <input type="number" class="form-control" id="TypeID" name="tTypeID" data-ng-model="Task.TypeID" />
-                    <div ng-show="myForm.tTypeID.$touched  && myForm.tTypeID.$invalid" class="text-danger">*required  TypeID</div>
-                </div>
-                <div class="form-group">
-                    <label for="Owner">Owner ID</label>
-                    <input type="number" class="form-control" id="Owner" name="tOwner" data-ng-model="Task.Owner" />
-                </div>
-                <div class="form-group">
-                    <label for="StartDate">StartDate</label>
-                    <input type="date" class="form-control" id="StartDate" name="tStartDate" data-ng-model="Task.StartDate" ng-model-options="{timezone:'UTC'}"/>
-                </div>
-                <div class="form-group">
-                    <label for="mid">MID</label>
-                    <input type="number" class="form-control" id="mid" name="tMID" data-ng-model="Task.mid" />
-                </div>
-
-
-                <div class="form-group">
-                    <label for="StatusID">StatusId</label>
-                    <input type="number" class="form-control" id="StatusID" name="tStatusId" data-ng-model="Task.StatusID" />
-                </div>
-
-                <div class="form-group">
-                    <label for="TaskListID">TaskListID</label>
-                    <input type="number" class="form-control" id="TaskListID" name="tTaskListID" data-ng-model="Task.TaskListID" />
-                </div>
-
-                <div class="form-group">
-                    <label for="DTID">DTID</label>
-                    <input type="number" class="form-control" id="DTID" name="tDTID" data-ng-model="Task.DTID" />
-                </div>
-
             </div>
-        </div>
+            
+                <div class="form-group col-md-4 col-lg-4">
+                    <label for="Task_name">Task Name</label>
+                    <input type="text" class="form-control" id="task_name" name="task_name" data-ng-model="Task.task_name"/>
+                </div>
 
+                <div class="form-group col-md-2 col-lg-2">
+                    <label for="about_cf">About CF</label>
+                    <switch id="about_cf" name="about_cf" ng-model="Task.about_cf" class="switch small green" data-ng-init="Task.about_cf"></switch>
+                </div>
+
+                <div class="form-group col-md-2 col-lg-2">
+                        <label for="device_count">Device Count</label>
+                        <input type="number" class="form-control" id="device_count" name="device_count" data-ng-model="Task.device_count" max="6" ng-max="6" placeholder="Only 0-6"/>
+                    </div>
+
+                <div class="form-group col-md-2 col-lg-2">
+                    <label for="have_st">Have ST</label>
+                    <div class="dropdown">
+                    <select class="form-control" data-ng-model="Task.have_st" data-ng-init = " Task.have_st = Task.have_st">
+                        <option value="">---SELECT---</option>
+                        <option value="1">YES</option>
+                        <option value="0">NO</option>
+                    </select>
+                </div>
+             </div>
+
+                <div class="form-group col-md-2 col-lg-2">
+                        <label for="op_type">OP Type</label>
+                        <div class="dropdown">
+                        <select class="form-control" data-ng-model="Task.op_type" data-ng-init = "Task.op_type = Task.op_type">
+                            <option value="">---SELECT---</option>
+                            <option value="1">True</option>
+                            <option value="0">False</option>
+                        </select>
+                    </div>
+                 </div
+        </div>
+    </div>
     </form>
+
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveTask(Task)">Save</button>

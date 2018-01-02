@@ -1,43 +1,38 @@
-﻿(function () {
+﻿
+(function () {
     'use strict';
 
     angular
-        .module('ERP.pages.uTask')
-        .controller('uTaskController', uTaskController)
-        .controller('uTaskModelController', uTaskModelController);
+        .module('ERP.pages.Task')
+        .controller('TaskController', TaskController)
+        .controller('TaskModelController', TaskModelController);
 
 
-    uTaskController.$inject = ['$scope', '$rootScope', '$http', 'uTaskService', '$uibModal', 'NgTableParams'];
-    function uTaskController($scope, $rootScope, $http, uTaskService, $uibModal, NgTableParams) {
+    TaskController.$inject = ['$scope', '$rootScope', '$http', 'TaskService', '$uibModal', 'NgTableParams', 'AddTaskService'];
+    function TaskController($scope, $rootScope, $http, TaskService, $uibModal, NgTableParams , AddTaskService) {
 
-        $rootScope.title = "uTask";
+        $rootScope.title = "Task";
         $rootScope.isLoginPage = false;
         $scope.noOfRows = "10";
         $scope.items = {};
+        $scope.temp_team = {};
+        $scope.team = {};
         $scope.isEditing = false;
         $scope.items.isEditing = $scope.isEditing;
 
-        $scope.removeuTask = removeuTask;
+        $scope.removeTask = removeTask;
+        $scope.getTeamList = getTeamList;
+    
+        //loadGrid();
 
-        loadGrid();
-  
-        function loadGrid() {
-            var self = this;
-            uTaskService.getAlluTaskbyID($scope, $rootScope, $http , $rootScope.user_id).then(function (responce) {
-                $scope.tableParams = new NgTableParams({}, { dataset: responce.data });
-
-            });
-        }
-
-
-        $scope.adduTaskModel = function () {
+        $scope.addTaskModel = function () {
             $scope.items.isEditing = false;
             var modalInstance = $uibModal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
                 templateUrl: 'app/pages/Task/views/TaskModel.html',
-                controller: 'uTaskModelController',
+                controller: 'TaskModelController',
                 size: 'lg',
                 resolve: {
                     items: function () {
@@ -47,20 +42,20 @@
             });
 
             modalInstance.result.then(function () {
-                loadGrid();
+                $scope.loadGrid();
             }, function () {
             });
         };
 
-        $scope.edituTaskModel = function (uTask) {
+        $scope.editTaskModel = function (Task) {
             $scope.items.isEditing = true;
-            $scope.items.uTask = uTask;
+            $scope.items.Task = Task;
             var modalInstance = $uibModal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
-                templateUrl: 'app/pages/uTask/views/uTaskModel.html',
-                controller: 'uTaskModelController',
+                templateUrl: 'app/pages/Task/views/TaskModel.html',
+                controller: 'TaskModelController',
                 size: 'lg',
                 resolve: {
                     items: function () {
@@ -70,73 +65,216 @@
             });
 
             modalInstance.result.then(function () {
-                loadGrid();
+                $scope.loadGrid();
             }, function () {
             });
         };
 
-
-
-        function removeuTask(uTask) {
-            //if (uTask.Active === 0) {
-                var removeuTask = {
-                    TID: uTask.TID,
-                 //   Active: uTask.Active,
-                 //   ActionBy: $rootScope.loggedUserId
-                }
-                if (window.confirm("Do you really want to delte this uTask")) {
-                    uTaskService.deleteuTask($scope, $rootScope, $http, removeuTask).then(function (res) {
-                        if (res.data.result) {
-                            alert("Deleted Successful");
-                            loadGrid();
-                        } else {
-                            alert("Error! Try Again.");
+        getTeamList();
+        function getTeamList() {
+            var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
+            promiseGet.then(function (pl) {
+                 $scope.TeamList = pl.data; 
+                if(pl.data.length > 1) {
+                   if ($scope.isEditing) { 
+                                   for (var team in $scope.TeamList) {
+                                    if ($scope.TeamList[team].team_id == $scope.Task.team_id) {
+                                       $scope.team.selected = $scope.TeamList[team];
+                                 }
+                            }
+                         }
                         }
-                    }, function (err) {
-                        alert("Error! Try Again.");
-                    });
+                else {
+                    $scope.temp_team = $scope.TeamList[0].team_id;
                 }
-        } 
-    //else {
-    //            alert("Active Status Can't be Delete")
-    //        }
-        //}
+                    
+                $scope.loadGrid();
+            },
+                  function (errorPl) {
+                    alert('Some Error in Getting Records.', errorPl);
+                  });
+        }
+
+        $scope.loadGrid = function() {
+            if($rootScope.team_count > 1) {
+                var id = $scope.team.selected;
+            }
+            else {
+                  var id =  $scope.temp_team;
+            }
+            var self = this;
+            TaskService.getAllTaskbyID($scope, $rootScope, $http , id).then(function (responce) {
+                $scope.tableParams = new NgTableParams({}, { dataset: responce.data });
+
+            });
+
+        };
+
+        function removeTask(Task) {
+            if (Task.deletion === 1) {
+               var id = Task.task_id;
+            if (window.confirm("Do you really want to delte this Task")) {
+                TaskService.deleteTask($scope, $rootScope, $http, id).then(function (res) {
+                    if (res.data.code === 200) {
+                        alert("Deleted Successful");
+                        $scope.loadGrid();
+                    } else {
+                        alert("Error Occurred");
+                        // loadGrid();
+                    }
+                }, function (err) {
+                    alert("Error while processing! Try Again.");
+                });
+            }
+            } else {
+                alert("Active Status Can't be Delete");
+            }
+        }
     }
 
-    uTaskModelController.$inject = ['$scope', '$rootScope', '$http', 'items', '$uibModalInstance', 'uTaskService'];
-    function uTaskModelController($scope, $rootScope, $http, items, $uibModalInstance, uTaskService) {
+    TaskModelController.$inject = ['$scope', '$rootScope', '$http','$filter' ,'items', '$uibModalInstance', 'TaskService' ,'AddTaskService','NgTableParams' ];
+    function TaskModelController($scope, $rootScope, $http,$filter ,items, $uibModalInstance, TaskService , AddTaskService, NgTableParams) {
         $scope.items = items;
         if (items.isEditing)
-            $scope.uTask = angular.copy(items.uTask);
+            $scope.Task = angular.copy(items.Task);
         else
-            $scope.uTask = null;
+            $scope.Task = null;
 
-        $scope.saveuTask = function (uTask) {
+        $scope.saveTask = function (Task) {
             if (items.isEditing) {
-                $scope.uTask.ModifiedBy = "15";
-                uTaskService.updateuTask($scope, $rootScope, $http, $scope.uTask).then(function (res) {
-                    if (res.data.result) {
+                var id = Task.task_id;
+                if($rootScope.team_count > 1) {
+                    $scope.Task.team_id = $scope.team.selected;
+                }
+                else {
+                    $scope.Task.team_id =  $scope.temp_team;
+                } 
+                $scope.Task.last_modified_by = $rootScope.user_id;
+               
+                $scope.Task.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+                if($scope.Task.status == true)
+                {
+                    $scope.Task.status = 1;
+                }
+                else {
+                    $scope.Task.status = 0;
+                }
+
+                if($scope.Task.deletion == true)
+                {
+                    $scope.Task.deletion = 0;
+                }
+                else {
+                    $scope.Task.deletion = 1;
+                }
+
+                if($scope.Task.about_cf == true)
+                {
+                    $scope.Task.about_cf = 1;
+                }
+                else {
+                    $scope.Task.about_cf = 0;
+                }
+
+                $scope.Task.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+                TaskService.updateTask($scope, $rootScope, $http, $scope.Task,id).then(function (res) {
+                    if (res.data.code === 200) {
                         alert("Update Successful");
                         $uibModalInstance.close();
                     } else {
-                        alert("Error! Try Again.");
+                        alert("Error while updating! Try Again.");
                     }
                 }, function (err) {
-                    alert("Error! Try Again.");
+                    alert("Error while processing! Try Again.");
                 });
             } else {
-                $scope.uTask.CreatedBy = "12";
-                uTaskService.adduTask($scope, $rootScope, $http, $scope.uTask).then(function (res) {
-                    if (res.data.result) {
+                // $scope.Task.last_entry_on = $rootScope.date;
+                if($rootScope.team_count > 1) {
+                    $scope.Task.team_id = $scope.team.selected;
+                }
+                else {
+                    $scope.Task.team_id =  $scope.temp_team;
+                } 
+                $scope.Task.last_modified_by = $rootScope.user_id;
+                $scope.Task.added_by = $rootScope.user_id;
+               
+                $scope.Task.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+                if($scope.Task.status == true)
+                {
+                    $scope.Task.status = 1;
+                }
+                else {
+                    $scope.Task.status = 0;
+                }
+                
+
+                if($scope.Task.deletion == true)
+                {
+                    $scope.Task.deletion = 0;
+                }
+                else {
+                    $scope.Task.deletion = 1;
+                }
+
+                if($scope.Task.about_cf == true)
+                {
+                    $scope.Task.about_cf = 1;
+                }
+                else {
+                    $scope.Task.about_cf = 0;
+                }
+                $scope.Task.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+                TaskService.addTask($scope, $rootScope, $http, $scope.Task).then(function (res) {
+                    if (res.data.code === 200) {
                         alert("Added Successful");
                         $uibModalInstance.close();
                     } else {
-                        alert("Error! Try Again.");
+                        alert("Error while saving! Try Again.");
                     }
                 }, function (err) {
-                    alert("Error! Try Again.");
+                    alert("Error in processing sever error 500! Try Again.");
                 });
             }
+        };
+
+        getTeamList();
+        function getTeamList() {
+            var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
+            promiseGet.then(function (pl) {
+                 $scope.TeamList = pl.data; 
+                if(pl.data.length > 1) {
+                   if ($scope.isEditing) { 
+                                   for (var team in $scope.TeamList) {
+                                    if ($scope.TeamList[team].team_id == $scope.Task.team_id) {
+                                       $scope.team.selected = $scope.TeamList[team];
+                                 }
+                            }
+                         }
+                        }
+                else {
+                    $scope.temp_team = $scope.TeamList[0].team_id;
+                }
+                    
+                $scope.loadGrid();
+            },
+                  function (errorPl) {
+                    alert('Some Error in Getting Records.', errorPl);
+                  });
+        }
+
+        $scope.loadGrid = function() {
+            if($rootScope.team_count > 1) {
+                var id = $scope.team.selected;
+            }
+            else {
+                  var id =  $scope.temp_team;
+            }
+            var self = this;
+            TaskService.getAllTaskbyID($scope, $rootScope, $http , id).then(function (responce) {
+                $scope.tableParams = new NgTableParams({}, { dataset: responce.data });
+
+            });
+
         };
 
         $scope.cancel = function () {

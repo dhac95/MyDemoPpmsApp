@@ -19,6 +19,7 @@
         this.getLoadedTasks = getLoadedTasks;
         this.getLoadedsubTasks = getLoadedsubTasks;
         this.getLoadedBuilds = getLoadedBuilds;
+        this.getRemaingTime = getRemaingTime;
 
         this.getAddedTask = getAddedTask;
 
@@ -35,8 +36,8 @@
         function addAddTask($scope, $rootScope, $http, AddTask) {
             return $http.post($rootScope.endPoint + 'test/', AddTask);
         }
-        function getAddedTask($scope, $rootScope, $http, user_id , date) {
-            return $http.post($rootScope.endPoint + 'getAddedTask/', user_id , date);
+        function getAddedTask($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'getAddedTask/', obj);
         }
 
         function updateAddTask($scope, $rootScope, $http, AddTask, id) {
@@ -45,6 +46,10 @@
 
         function deleteAddTask($scope, $rootScope, $http, id) {
             return $http.delete($rootScope.endPoint + 'test/' + id);
+        }
+
+        function getRemaingTime($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'test/getTime/' , obj);
         }
 
         function getLoadedTeam($scope, $rootScope, $http, id) {

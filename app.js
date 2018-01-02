@@ -1,7 +1,7 @@
 // Core modules
-
 var express = require('express');  
 var path = require('path');  
+var dotenv = require('dotenv').config();
 var favicon = require('serve-favicon');  
 var logger = require('morgan');  
 var cookieParser = require('cookie-parser');  
@@ -12,6 +12,9 @@ var md5 = require('md5');
 var datetime = require('node-datetime');
 var strtotime = require('strtotime');
 var nodestrtotime = require('nodestrtotime');
+var in_array = require('in_array');
+var moment = require('moment');
+
 
 //Custom modules
 var routes = require('./routes/index');  
@@ -30,14 +33,19 @@ var loadTeam = require('./routes/loadTeam');
 var loadTasks = require('./routes/loadTasks');
 var loadBuilds = require('./routes/loadBuilds');
 var testGetDate = require('./routes/testGetDate');
+var UserOT = require('./routes/UserOtTasks');
+var UserReports = require('./routes/UserReports');
+var SdaReports = require('./routes/SdaReports');
 
-// Express init - This is the ultimate init of node
+// Express init
 var app = express();  
 
 
 // view engine setup  
-// app.set('views', path.join(__dirname, 'views'));  
-// app.set('view engine', 'jade');  
+// app.engine('html', require('ejs').renderFile);
+// app.set('view engine', 'html');
+app.set('views', path.join(__dirname, 'views'));  
+app.set('view engine', 'jade');  
 
 
 // Custom  favicon in /public only this favicon will be used  
@@ -71,6 +79,9 @@ app.use('/loadTeam', loadTeam);
 app.use('/loadTasks', loadTasks);
 app.use('/loadBuilds', loadBuilds);
 app.use('/testGetDate', testGetDate);
+app.use('/userot', UserOT);
+app.use('/userReports' , UserReports );
+app.use('/SdaReports' , SdaReports); 
 
 // catch 404 and forward to error handler  
 app.use(function(req, res, next) {  
@@ -113,7 +124,12 @@ app.get('/*', function(req, res, next) {
 // console.log(date.getTime() / 1000);
 // var time = nodestrtotime('08:00:00') ;
 // console.log(time);
+//console.log(!in_array(1, ['1', '2', '3']));
 
+// var startDate = moment('2017-05-11', 'YYYY-MM-DD');
+// var endDate = moment('2017-05-12', 'YYYY-MM-DD');
+// var secondsDiff = endDate.diff(startDate, 'hours');
+// console.log(secondsDiff);
 
-console.log('Node is now listening at port 3000');
+console.log('Node is now listening at port 3000' + ' host : http://localhost:3000/');
 module.exports = app; 

@@ -153,7 +153,7 @@
 
                   }
               }).error(function (response) {
-                  $scope.loginSts = "Server is Busy";
+                  $scope.loginSts = "Server is Busy!!! Try Again After Sometime!!!";
                   $scope.subBtn = "Log In";
                   sessionStorage.removeItem('user_id');
                   sessionStorage.removeItem('first_name');

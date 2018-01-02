@@ -5,37 +5,37 @@
 
     angular
          .module('ERP.service')
-         .service('uTaskService', uTaskService);
+         .service('TaskService', TaskService);
 
-    uTaskService.$inject = [];
+    TaskService.$inject = [];
 
-    function uTaskService() {
-        this.adduTask = adduTask;
-        this.updateuTask = updateuTask;
-        this.deleteuTask = deleteuTask;
-        this.getAlluTask = getAlluTask;
-        this.getAlluTaskbyID = getAlluTaskbyID;
+    function TaskService() {
+        this.addTask = addTask;
+        this.updateTask = updateTask;
+        this.deleteTask = deleteTask;
+        this.getAllTask = getAllTask;
+        this.getAllTaskbyID = getAllTaskbyID;
 
         /////////////
 
-        function getAlluTask($scope, $rootScope, $http) {
-            return $http.get($rootScope.endPoint + 'uTasks/');
+        function getAllTask($scope, $rootScope, $http) {
+            return $http.get($rootScope.endPoint + 'Tasks/');
         }
 
-        function getAlluTaskbyID($scope, $rootScope, $http, id) {
-            return $http.get($rootScope.endPoint + 'uTasks/' + id);
+        function getAllTaskbyID($scope, $rootScope, $http, id) {
+            return $http.get($rootScope.endPoint + 'Tasks/' + id);
         }
 
-        function adduTask($scope, $rootScope, $http, uTask) {
-            return $http.post($rootScope.endPoint + 'uTasks/', uTask);
+        function addTask($scope, $rootScope, $http, Task) {
+            return $http.post($rootScope.endPoint + 'Tasks/', Task);
         }
 
-        function updateuTask($scope, $rootScope, $http, uTask, id) {
-            return $http.put($rootScope.endPoint + 'uTasks/' + id , uTask);
+        function updateTask($scope, $rootScope, $http, Task, id) {
+            return $http.put($rootScope.endPoint + 'Tasks/' + id , Task);
         }
 
-        function deleteuTask($scope, $rootScope, $http, id) {
-            return $http.delete($rootScope.endPoint + 'uTasks/' + id);
+        function deleteTask($scope, $rootScope, $http, id) {
+            return $http.delete($rootScope.endPoint + 'Tasks/' + id);
         }
     }
 
