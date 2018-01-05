@@ -138,9 +138,7 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 		sessionStorage.removeItem('below_on');
 		sessionStorage.removeItem('manager');
 		sessionStorage.removeItem('user_status');
-
-  
-			  
+	  
 		localStorage.removeItem('user_id');
 		localStorage.removeItem('first_name');
 		localStorage.removeItem('last_name');
@@ -287,6 +285,21 @@ app.filter('propsFilter', function () {
     };
 });
 
+//Export to excel
+app.factory('Excel',function($window){
+	var uri='data:application/vnd.ms-excel;base64,',
+		template='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="https://www.w3.org/TR/html401/"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+		base64=function(s){return $window.btoa(unescape(encodeURIComponent(s)));},
+		format=function(s,c){return s.replace(/{(\w+)}/g,function(m,p){return c[p];});};
+	return {
+		tableToExcel:function(tableId,worksheetName){
+			var table=$(tableId),
+				ctx={worksheet:worksheetName,table:table.html()},
+				href=uri+base64(format(template,ctx));
+			return href;
+		}
+	};
+});
 
 
 //Main UI features don't change this just add the features top of it
@@ -300,6 +313,9 @@ app.directive('sidebar', function () {
 		}
 	};
 });
+
+
+
 app.directive('header', function () {
 	return {
 		restrict: 'E',

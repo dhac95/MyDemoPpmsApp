@@ -58,7 +58,11 @@
 
 
 <div class="row">
-    <div class="panel panel-default">
+        <button class="btn btn-link" ng-click="exportToExcel('#userData')">
+                <span class="glyphicon glyphicon-share"></span>
+                            Export to Excel
+              </button>
+    <div class="panel panel-default" id="userData">
         <div class="jumbotron modal-header model-title">
             <strong>Reports  for {{$root.user_name}} on {{UserReport.From | date : 'dd/MM/yyyy' }}  to {{UserReport.To | date : 'dd/MM/yyyy' }} </strong>
         </div>
@@ -69,10 +73,10 @@
                     <tr>
                         <td>
                             <select data-ng-model="noOfRows" convert-to-number>
-                                <option value="10">10</option>
                                 <option value="25">25</option>
-                                <option value="50">50</option>
                                 <option value="100">100</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
                             </select>
                         </td>
                     </tr>
@@ -122,10 +126,10 @@
                             <th>{{ remTime.total }}</th>
                             <th colspan="3" class="text-right" style="padding-right: 10px"> Total Count : </th>
                             <th>{{ getTotalCount() }}</th>
-                        <!-- <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td> -->
-                        <td colspan="10" class="text-center">
+                        <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
+                        <!-- <td colspan="10" class="text-center">
                                 <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
-                            </td>
+                            </td> -->
                     </tr>
                 </tfoot>
             </table>

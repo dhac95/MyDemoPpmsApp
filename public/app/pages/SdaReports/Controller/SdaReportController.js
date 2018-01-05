@@ -8,8 +8,8 @@
         .controller('SdaReportModelController', SdaReportModelController);
 
 
-    SdaReportController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'SdaReportService','AddTaskService' ,'$uibModal','NgTableParams'];
-    function SdaReportController($scope, $rootScope, $http, $filter, SdaReportService,AddTaskService ,$uibModal, NgTableParams) {
+    SdaReportController.$inject = ['$scope', '$rootScope', '$http', '$filter','Excel','$timeout', 'SdaReportService','AddTaskService' ,'$uibModal','NgTableParams'];
+    function SdaReportController($scope, $rootScope, $http, $filter,Excel,$timeout, SdaReportService,AddTaskService ,$uibModal, NgTableParams) {
 
         $rootScope.title = "SdaReport";
         $rootScope.isLoginPage = false;
@@ -143,6 +143,22 @@
                         });
           };
 
+          $scope.exportToExcel=function(tableId){ // ex: '#my-table'
+          for (var i in $scope.UserList) {
+              if( $scope.UserList[i].user_id == $scope.user.selected)
+              {
+                    var uname =  $scope.UserList[i].user_name;
+              }
+          }
+          var name = "Reports For " + uname + " From " + $filter('date')($scope.SdaReport.From, "dd-MM-yyyy") + " To " + $filter('date')($scope.SdaReport.To, "dd-MM-yyyy") ;
+          var exportHref=Excel.tableToExcel(tableId,'User Data');
+          var a = document.createElement('a');
+            a.href = exportHref;
+            a.download = name + '.xls';
+            a.click();
+          //$timeout(function(){location.href=exportHref;},100); // trigger download
+      };
+
           function getTotalCount() {
             var totCount = 0;
             for (var i in $scope.ReportList) {
@@ -182,10 +198,7 @@
                   function (errorPl) {
                     alert('Some Error in Getting Records.', errorPl);
                 });
-
-        };
-
-
+        }
 
        // getTotalTime();
          $scope.getTotalTime =function() {

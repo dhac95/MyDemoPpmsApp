@@ -28,7 +28,7 @@
                 <a href="index.html"><b>P2R</b> Dashboard</a>
             </div>
             <p class="login-box-msg">Sign in to start your session</p>
-            <form role="form" name="myForm" ng-if="!isPassword">
+            <form role="form" name="myForm" ng-if="!isPassword && !isReg">
                 <div>
                     <span class="text-danger">{{loginSts}} </span>
                 </div>
@@ -70,10 +70,11 @@
                     </div>
                     <!-- /.col -->
                 </div>
-                <a href="#" ng-click="forgotPassword()">I forgot my password</a><br>
+               <b> <a href="#" ng-click="forgotPassword()">I forgot my password</a></b>
+               <b> <a href="#" class="pull-right" ng-click="Reg()">Register</a> </b><br>
             </form>
 
-            <form role="form" name="myForm" ng-if="isPassword">
+            <form role="form" name="myForm" ng-if="isPassword && !isReg">
                 <div>
                     <span class="text-danger"><strong>{{loginSts}}</strong></span>
                 </div>
@@ -81,12 +82,38 @@
                     <input type="text" name="user" class="form-control" placeholder="Enter Your Username" data-ng-model="Reset.user_name" required="">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     <span class="text-danger" ng-show="myForm.user.$dirty && myForm.user.$invalid">
-                        <span ng-show="myForm.user.$error.required">Username is required.</span>
+                        <span ng-show="myForm.user.$error.required">Username is required....</span>
                     </span>
                 </div>
                 <button type="button" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Reset(Reset)">Send</button>
-                <a href="#" class="pull-right" ng-click="isLogin()"><strong>Login</strong></a><br>
+                <a href="#" class="pull-right" ng-click="isLogin()"><strong>Login</strong></a>
+                <b> <a href="#" ng-click="Reg()">Register</a> </b><br>
             </form>
+
+
+            <form role="form" name="myForm" ng-if="isReg && !isPassword">
+                <div>
+                    <span class="text-danger"><strong>{{loginSts}}</strong></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" name="user" class="form-control" placeholder="Enter Your Username" data-ng-model="Reset.user_name" required="">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    <span class="text-danger" ng-show="myForm.user.$dirty && myForm.user.$invalid">
+                        <span ng-show="myForm.user.$error.required">Username is required....</span>
+                    </span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" name="user" class="form-control" placeholder="Enter Your Username" data-ng-model="Reset.user_name" required="">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    <span class="text-danger" ng-show="myForm.user.$dirty && myForm.user.$invalid">
+                        <span ng-show="myForm.user.$error.required">Username is required....</span>
+                    </span>
+                </div>
+                <button type="button" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Reset(Reset)">Send</button>
+                <a href="#" class="pull-right" ng-click="isLogin()"><strong>Login</strong></a>
+                <a href="#" ng-click="forgotPassword()">I forgot my password</a><br>
+            </form>
+
         </div>
         <!-- /.login-box-body -->
     </div>
@@ -99,7 +126,7 @@
             <strong>Powerd by M*EAN 🔁</strong>
         </div>
         <!-- Default to the left -->
-        <strong>Version<a href="http://www.amazon.com/"> Alpha 0.1.1 Build(p2ram1)</a>.</strong>.
+        <strong>Version<a href="http://www.amazon.com/"> Alpha 0.3 Build(p2r1218)</a>.</strong>.
     </footer>
 </div><!-- ./wrapper -->
 

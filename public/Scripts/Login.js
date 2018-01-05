@@ -2,8 +2,10 @@
   (function () {
       angular.module('LoginApp', ['ngCookies']).controller('LoginController', function ($scope, $http, $cookieStore) {
           var endPoint = "login";
+          var forgot = "fp";
         
           $scope.isPassword = false;
+          $scope.isReg = false;
 
           if (localStorage.getItem('IsAuth') == "false" && sessionStorage.getItem('IsAuth') == "false") {
               sessionStorage.removeItem('user_id');
@@ -136,20 +138,20 @@
 
       
                   
-              localStorage.removeItem('user_id');
-              localStorage.removeItem('first_name');
-              localStorage.removeItem('last_name');
-              localStorage.removeItem('IsAuth');
-              localStorage.removeItem('user_name');
-              localStorage.removeItem('team_count');
-              localStorage.removeItem('user_type');
-              localStorage.removeItem('user_mail');
-              localStorage.removeItem('host_name_1');
-              localStorage.removeItem('host_name_2');
-              localStorage.removeItem('below_on');
-              localStorage.removeItem('manager');
-              localStorage.removeItem('user_status');
-        
+                        localStorage.removeItem('user_id');
+                        localStorage.removeItem('first_name');
+                        localStorage.removeItem('last_name');
+                        localStorage.removeItem('IsAuth');
+                        localStorage.removeItem('user_name');
+                        localStorage.removeItem('team_count');
+                        localStorage.removeItem('user_type');
+                        localStorage.removeItem('user_mail');
+                        localStorage.removeItem('host_name_1');
+                        localStorage.removeItem('host_name_2');
+                        localStorage.removeItem('below_on');
+                        localStorage.removeItem('manager');
+                        localStorage.removeItem('user_status');
+                    
 
                   }
               }).error(function (response) {
@@ -185,12 +187,35 @@
               });
           };
 
+          $scope.Reset = function(Reset) {
+            var obj = { name : $scope.Reset.user_name };
+          $http.post(forgot, obj).then(function(response) { 
+                  if(response.data.code === 200) {
+                      alert('success ' + ' Check the mail ' + ' password updated' );
+                  }
+                  else {
+                       alert('error ' + ' Processing error ' + ' password not updated' );
+                  }
+           }).error(function(response) {
+              $scope.error = "An Error has occured while resetting password! " + response;  
+           });
+        };
 
           $scope.forgotPassword = function () {
               $scope.isPassword = true;
+              $scope.isReg = false;
           };
+
+         
           $scope.isLogin = function () {
               $scope.isPassword = false;
+              $scope.isReg = false;
+          };
+
+          $scope.Reg = function() {
+                $scope.isPassword = false ; 
+                //$scope.isLogin = false;
+                $scope.isReg = true;
           };
 
           $scope.inputType = 'password';

@@ -36,6 +36,7 @@ var testGetDate = require('./routes/testGetDate');
 var UserOT = require('./routes/UserOtTasks');
 var UserReports = require('./routes/UserReports');
 var SdaReports = require('./routes/SdaReports');
+var FP = require('./routes/fp');
 
 // Express init
 var app = express();  
@@ -82,6 +83,7 @@ app.use('/testGetDate', testGetDate);
 app.use('/userot', UserOT);
 app.use('/userReports' , UserReports );
 app.use('/SdaReports' , SdaReports); 
+app.use('/fp' , FP);
 
 // catch 404 and forward to error handler  
 app.use(function(req, res, next) {  

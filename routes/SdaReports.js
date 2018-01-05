@@ -14,7 +14,7 @@ function secondsToHms(d) {
     var m = Math.floor(d % 3600 / 60);
     var s = Math.floor(d % 3600 % 60);
 
-    return ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+    return ('0' + h).slice(-3) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
 }
 
 router.post('/' , function(req , res , next){
@@ -126,8 +126,8 @@ router.post('/getTotalTime' , function(req , res , next) {
                     {
                         secs = secs + nodestrtotime(results[i].time) - nodestrtotime('00:00:00');
                     }
-                   // var remainSecs = 28800 - secs;
-                  //  var remainHours = secondsToHms(remainSecs);
+                    // var remainSecs = 28800 - secs;
+                   //  var remainHours = secondsToHms(remainSecs);
                     var TotalHours = secondsToHms(secs);
                     res.json({
                         total :TotalHours

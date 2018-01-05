@@ -8,8 +8,8 @@
         .controller('UserReportModelController', UserReportModelController);
 
 
-    UserReportController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'UserReportService','AddTaskService' ,'$uibModal','NgTableParams'];
-    function UserReportController($scope, $rootScope, $http, $filter, UserReportService,AddTaskService ,$uibModal, NgTableParams) {
+    UserReportController.$inject = ['$scope', '$rootScope', '$http', '$filter','Excel' ,'UserReportService','AddTaskService' ,'$uibModal','NgTableParams'];
+    function UserReportController($scope, $rootScope, $http, $filter, Excel , UserReportService,AddTaskService ,$uibModal, NgTableParams) {
 
         $rootScope.title = "UserReport";
         $rootScope.isLoginPage = false;
@@ -133,7 +133,7 @@
             return totCount;
         }
 
-      
+        
         function showUserReports() {
             var Date1 = $scope.UserReport.From;
             var formatDate1 =  $filter('date')(Date1, "yyyy-MM-dd");
@@ -163,7 +163,16 @@
 
         };
 
-
+        
+        $scope.exportToExcel=function(tableId){ // ex: '#my-table'
+        var name = $rootScope.user_name;
+        var exportHref=Excel.tableToExcel(tableId,'User Data');
+        var a = document.createElement('a');
+          a.href = exportHref;
+          a.download = name + ' report.xls';
+          a.click();
+        //$timeout(function(){location.href=exportHref;},100); // trigger download
+    };
 
        // getTotalTime();
          $scope.getTotalTime =function getTotalTime() {
