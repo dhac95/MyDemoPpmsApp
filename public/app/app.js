@@ -18,6 +18,7 @@ var app = angular.module('ERP', [
 	'720kb.datepicker',
 	'smart-table',
 	'ngTable',
+	'ui-notification',
 	'ngMessages',
 	'ERP.pages',
 	'ERP.service'
@@ -250,7 +251,18 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 	};
 }]);
 
-
+// NotificationProvider config
+app.config(function(NotificationProvider) {
+	NotificationProvider.setOptions({
+		delay: 10000,
+		startTop: 20,
+		startRight: 10,
+		verticalSpacing: 20,
+		horizontalSpacing: 20,
+		positionX: 'left',
+		positionY: 'bottom'
+	});
+});
 
 //propsFilter
 app.filter('propsFilter', function () {

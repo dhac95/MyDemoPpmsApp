@@ -11,7 +11,8 @@
         'ERP.pages.SubTask',
         'ERP.pages.UserOT',
         'ERP.pages.UserReport',
-        'ERP.pages.SdaReport'
+        'ERP.pages.SdaReport',
+        'ERP.pages.Approve'
         
     ]).config(['$urlRouterProvider', '$stateProvider', routeConfig]);
 

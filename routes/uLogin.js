@@ -13,7 +13,7 @@ router.post('/', function(req, res, next) {
   var username= req.body.user_name;
   var password = md5(req.body.password);
   var IsAuth ;
-  db.query('SELECT * FROM amz_login WHERE user_name = ? AND user_deletion=0',[username], function (error, results, fields) {
+  db.query('SELECT * FROM amz_login WHERE user_name = ? AND user_deletion=0 AND user_activation=1',[username], function (error, results, fields) {
   if (error) {
     // console.log("error ocurred",error);
     IsAuth = false;

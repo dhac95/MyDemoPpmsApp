@@ -296,9 +296,16 @@
        
 
 
-    AddTaskModelController.$inject = ['$scope', '$rootScope', '$http', 'items', '$uibModalInstance', 'AddTaskService'];
-    function AddTaskModelController($scope, $rootScope, $http, items, $uibModalInstance, AddTaskService) {
-        $scope.items = items; 
+    AddTaskModelController.$inject = ['$scope', '$rootScope', '$http','$filter' ,'items', '$uibModalInstance', 'AddTaskService'];
+    function AddTaskModelController($scope, $rootScope, $http,$filter ,items, $uibModalInstance, AddTaskService) {
+        var time = items.AddTask.time.substring(0,5); 
+       var formatDate =  $filter('date')(items.AddTask.date, "yyyy-MM-dd");
+        // items.push({ "time" : time } );
+        items.AddTask.time = time;
+        items.AddTask.date = formatDate;
+
+        $scope.items = items;
+     
         if (items.isEditing)
             $scope.AddTask = angular.copy(items.AddTask);
         else
@@ -438,6 +445,25 @@
                     });
       };
 
+      getTotalTime();
+        function getTotalTime() {
+            var Date = $scope.AddTask.date;
+            var formatDate =  $filter('date')(Date, "yyyy-MM-dd");
+            var obj = {
+                    date : formatDate,
+                    user_id : $rootScope.user_id
+            };
+            var promiseGet = AddTaskService.getRemaingTime($scope, $rootScope, $http ,obj );
+            promiseGet.then(function (pl) {
+                 $scope.remTime = pl.data; 
+                //var grandTot = $scope.remTime.time;
+                // $scope.AddTask.TotalTime = grandTot;
+                // return grandTot;
+            },
+                  function (errorPl) {
+                    alert('Some Error in Getting Records.', errorPl);
+                });
+        }
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');

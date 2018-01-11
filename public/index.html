@@ -15,9 +15,9 @@
     <!--<link href="AdminLTE/plugins/iCheck/square/blue.css" rel="stylesheet" />
     <link href="AdminLTE/plugins/iCheck/flat/_all.css" rel="stylesheet" />-->
     <link href="AdminLTE/plugins/iCheck/all.css" rel="stylesheet" />
-
-
-
+     <!-- UI - Notifications -->
+     <link href="Scripts\Ui-Notifications\angular-ui-notification.min.css" rel="stylesheet" />
+ 
 </head>
 <body data-ng-controller="LoginController">
     <div class="login-box">
@@ -96,20 +96,21 @@
                     <span class="text-danger"><strong>{{loginSts}}</strong></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="text" name="user" class="form-control" placeholder="Enter Your Username" data-ng-model="Reset.user_name" required="">
+                    <input type="text" name="user" class="form-control" placeholder="Enter Your Username" data-ng-model="Register.user_name" required="">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     <span class="text-danger" ng-show="myForm.user.$dirty && myForm.user.$invalid">
                         <span ng-show="myForm.user.$error.required">Username is required....</span>
                     </span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="text" name="user" class="form-control" placeholder="Enter Your Username" data-ng-model="Reset.user_name" required="">
-                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    <span class="text-danger" ng-show="myForm.user.$dirty && myForm.user.$invalid">
-                        <span ng-show="myForm.user.$error.required">Username is required....</span>
-                    </span>
+                    <label for="Team">Team Name</label>
+                    <div class="dropdown">
+                      <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-model="Register.team_id">
+                            <option value="">Select the Team</option>
+                        </select>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Reset(Reset)">Send</button>
+                <button type="button" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Register(Register)">Register</button>
                 <a href="#" class="pull-right" ng-click="isLogin()"><strong>Login</strong></a>
                 <a href="#" ng-click="forgotPassword()">I forgot my password</a><br>
             </form>
@@ -137,6 +138,8 @@
     <script src="AdminLTE/plugins/iCheck/icheck.min.js"></script>
     <script src="Scripts/Login.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+      <!-- ui - notifications -->
+  <script src="Scripts\Ui-Notifications\angular-ui-notification.min.js"></script>
 
 </body>
 </html>

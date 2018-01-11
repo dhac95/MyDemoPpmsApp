@@ -63,7 +63,7 @@ var holidays = [];
                                           //  var size = arrDates.length;
 
                                          for(var i=0; i < arrDates.length ; i++){
-                                             if(!in_array(arrDates[i] , holidays)) {
+                                             if(!in_array( holidays , arrDates[i]) == true) {
                                               var singleDate = arrDates[i];
                                                  var timeDiff = getTimes(singleDate , todayDate);
                                                  if(timeDiff >= 24) {
@@ -75,6 +75,7 @@ var holidays = [];
                                                         else {
                                                             if(r2.length > 0) {
                                                                 for(var j=0 ; j < r2.length ; j++) {
+        
                                                                     totHours += nodestrtotime(r2[j].time) - nodestrtotime('00:00:00'); 
                                                                 }
                                                             
@@ -95,7 +96,7 @@ var holidays = [];
                                     }
                                 }
                             }
-                 )}     
+                 )}    
         });
         
 });

@@ -101,7 +101,7 @@ router.put('/:id', function(req, res, next) {
   //  var TasksID = req.body.tasks_id;
 
     var secs = 0;
-    db.query("SELECT time FROM user_tasks WHERE date=? AND user_id=?", [Date, userID ],function (error, results, fields) {
+    db.query("SELECT time FROM user_tasks WHERE date=? AND user_id=? AND task_id != ?", [Date, userID, id ],function (error, results, fields) {
         if(results.length > 0){
             for (var i=0 ; i < results.length ; i++)
             {

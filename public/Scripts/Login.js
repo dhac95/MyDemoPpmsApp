@@ -1,8 +1,22 @@
 ﻿
   (function () {
-      angular.module('LoginApp', ['ngCookies']).controller('LoginController', function ($scope, $http, $cookieStore) {
+      angular.module('LoginApp', ['ngCookies', 'ui-notification']).controller('LoginController', function ($scope, $http, $cookieStore,Notification) {
+        angular.module('LoginApp', ['ui-notification'])
+        .config(function(NotificationProvider) {
+            NotificationProvider.setOptions({
+                delay: 10000,
+                startTop: 20,
+                startRight: 10,
+                verticalSpacing: 20,
+                horizontalSpacing: 20,
+                positionX: 'left',
+                positionY: 'bottom'
+            });
+        });
           var endPoint = "login";
           var forgot = "fp";
+          var register = "reg";
+          var team = "Teams";
         
           $scope.isPassword = false;
           $scope.isReg = false;
@@ -38,7 +52,7 @@
             //   localStorage.removeItem('manager');
             //   localStorage.removeItem('user_status');
                 localStorage.removeItem('token');
-
+                alert("User name or password is wrong");
                $scope.LoginBanner = { 'display': 'inline' };
           }
           else if ((localStorage.getItem('user_id')&&localStorage.getItem('user_name')&&localStorage.getItem('user_type')&&localStorage.getItem('user_mail')&&(localStorage.getItem('IsAuth') == "true")) || (sessionStorage.getItem('user_id')&&sessionStorage.getItem('user_name')&&sessionStorage.getItem('user_type')&&sessionStorage.getItem('user_mail')&&(sessionStorage.getItem('IsAuth') == "true"))) {
@@ -74,7 +88,7 @@
             //   localStorage.removeItem('below_on');
             //   localStorage.removeItem('manager');
             //   localStorage.removeItem('user_status');
-
+             //   alert('UserName or password mismatch');
                $scope.LoginBanner = { 'display': 'inline' };
           }
           $scope.subBtn = "Log In";
@@ -121,7 +135,8 @@
                   else {
                       $scope.loginSts = response.Message;
                       $scope.subBtn = "Log In";
-
+                      //$scope.loginSts = "User name or password is wrong!!! ";
+                      Notification({message : 'User name or password is wrong!!!'} , 'error');
                       sessionStorage.removeItem('user_id');
                       sessionStorage.removeItem('first_name');
                       sessionStorage.removeItem('last_name');
@@ -155,7 +170,9 @@
 
                   }
               }).error(function (response) {
-                  $scope.loginSts = "Server is Busy!!! Try Again After Sometime!!!";
+                  //$scope.loginSts = "Server is Busy!!! Try Again After Sometime!!!";
+                  Notification({message : 'Server is Busy!!! Try Again After Sometime!!!'} , 'warning');
+                  
                   $scope.subBtn = "Log In";
                   sessionStorage.removeItem('user_id');
                   sessionStorage.removeItem('first_name');
@@ -191,10 +208,13 @@
             var obj = { name : $scope.Reset.user_name };
           $http.post(forgot, obj).then(function(response) { 
                   if(response.data.code === 200) {
-                      alert('success ' + ' Check the mail ' + ' password updated' );
+                    Notification.success('Success ' + 'Check the mail ' + 'password updated' );
+                  }
+                  else if(response.data.code === 300){
+                    Notification({message : 'User does not exist !!! Register first'} , 'warning');
                   }
                   else {
-                       alert('error ' + ' Processing error ' + ' password not updated' );
+                    Notification({message: 'Password not updated!!! Error occoured'}, 'error' );
                   }
            }).error(function(response) {
               $scope.error = "An Error has occured while resetting password! " + response;  
@@ -206,11 +226,42 @@
               $scope.isReg = false;
           };
 
+        getTeamList();
+
+        function getTeamList() {
+            $http.get(team).then(function(response) { 
+                    $scope.TeamList = response.data;
+            });
+        }
+
+          $scope.Register = function(Register) {
+              var obj = {
+                    user_name : $scope.Register.user_name,
+                    team_id : $scope.Register.team_id
+              };
+              $http.post(register, obj).then(function(response) { 
+                if(response.data.code === 200) {
+                    Notification.success('success ' + 'Check the mail '  );
+                }
+                else if(response.data.code === 300){
+                    Notification({message: 'error ' +  'user already registered in team'}, 'warning' );
+                }
+                else if(response.data.code === 204) {
+                    Notification('User already registerd Wait for approval' );
+                }
+                else {
+                    Notification({message :'Processing error , Try after sometimes !!!'} , 'error');
+                }
+         }).error(function(response) {
+            $scope.error = "An Error has occured while resetting password! " + response;  
+       });
+    };
+
          
-          $scope.isLogin = function () {
+      $scope.isLogin = function () {
               $scope.isPassword = false;
               $scope.isReg = false;
-          };
+            };
 
           $scope.Reg = function() {
                 $scope.isPassword = false ; 

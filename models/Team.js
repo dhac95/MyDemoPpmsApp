@@ -1,7 +1,7 @@
 var db = require('../dbconnections'); //reference of dbconnection.js  
 var Team = {  
     getAllTeams: function(callback) {  
-        return db.query("Select * from amz_teams limit 500", callback);  
+        return db.query("Select * from amz_teams order by team_name ASC", callback);  
     },  
     getTeamById: function(id, callback) {  
         return db.query("select * from amz_teams where team_id=?", [id], callback);  

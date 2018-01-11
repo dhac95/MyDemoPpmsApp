@@ -108,7 +108,7 @@
 
             });
 
-        }
+        };
 
         function removeBuild(Build) {
             if (Build.build_status === 0) {
