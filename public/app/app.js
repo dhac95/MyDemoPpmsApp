@@ -18,6 +18,7 @@ var app = angular.module('ERP', [
 	'720kb.datepicker',
 	'smart-table',
 	'ngTable',
+	'ngIdle',
 	'ui-notification',
 	'ngMessages',
 	'ERP.pages',
@@ -51,9 +52,21 @@ today = yyyy + '-' + mm + '-' + dd;
 //  	$rootScope.user_name = 'cdhanase';
 // }]);
 
+app.config(function (IdleProvider, KeepaliveProvider) {
+	IdleProvider.idle(600); // 10 min
+	IdleProvider.timeout(11);
+	//KeepaliveProvider.interval(600); // heartbeat every 10 min
+	//KeepaliveProvider.http('/api/heartbeat'); // URL that makes sure session is alive
+});
 
-app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
+
+app.run(['$rootScope', 'toastr', '$http', 'Idle', 'Notification', function ($rootScope, toastr, $http, Idle, Notification) {
 	$rootScope.endPoint = "http://localhost:3000/"; //Main Url
+
+	Idle.watch();
+	$rootScope.$on('IdleStart', function () { Notification({ message: 'Do something to keep it alive <iframe src="https://giphy.com/embed/d3yxg15kJppJilnW" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>', title: 'Sessions is about to expire'} , 'warning' ); });
+	$rootScope.$on('IdleTimeout', function () { $rootScope.logout(); });
+
   
 	$rootScope.year = (new Date()).getFullYear();
 	$rootScope.date = today;
@@ -73,6 +86,11 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 			$rootScope.below_on = sessionStorage.getItem('below_on');
 			$rootScope.manager = sessionStorage.getItem('manager');
 			$rootScope.user_status = sessionStorage.getItem('user_status');
+			$rootScope.user_activation = sessionStorage.getItem('user_activation');
+			$rootScope.user_deletion = sessionStorage.getItem('user_deletion');
+			$rootScope.last_entry_on = sessionStorage.getItem('last_entry_on');
+			$rootScope.create_date = sessionStorage.getItem('create_date');
+			$rootScope.maintain_date = sessionStorage.getItem('maintain_date');
 		
 		}
 	    else if (localStorage.getItem('IsAuth')) {
@@ -89,6 +107,11 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 			 $rootScope.below_on = localStorage.getItem('below_on');
 			 $rootScope.manager = localStorage.getItem('manager');
 			 $rootScope.user_status = localStorage.getItem('user_status');
+			$rootScope.user_activation = localStorage.getItem('user_activation');
+			$rootScope.user_deletion = localStorage.getItem('user_deletion');
+			$rootScope.last_entry_on = localStorage.getItem('last_entry_on');
+			$rootScope.create_date = localStorage.getItem('create_date');
+			$rootScope.maintain_date = localStorage.getItem('maintain_date');
 		}
 		else {
 			$rootScope.logout();
@@ -101,6 +124,14 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 		$rootScope.wiki = wiki;
 	});
 
+	// $rootScope.$on('$stateChangeStart', function (event, next, nextParams, prev, prevParams) {
+	// 	if (next.data && next.data.needSda && $rootScope.user_type === 1) {
+	// 		event.preventDefault();
+	// 		$state.go(prev.name, prevParams); //send to previous
+	// 		$state.go('home'); //send to some other state
+
+	// 	}
+	// });
 
 	$rootScope.appMenuList = [];
 
@@ -124,8 +155,8 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 	//}
 	//loadAppMenu();
 
-
-	$rootScope.logout = function () {           //Data removal
+//Data removal
+	$rootScope.logout = function () {           
 		sessionStorage.removeItem('user_id');
 		sessionStorage.removeItem('first_name');
 		sessionStorage.removeItem('last_name');
@@ -156,7 +187,7 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 		
 	    window.location.replace("/index.html");
 	
-	}
+	};
 
 	$rootScope.checkMenu = function (menuId) {
 		for (var i in $rootScope.appMenuList) {
@@ -165,7 +196,7 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 			}
 		}
 		return false;
-	}
+	};
 	//Not working on angualr 1.5 downgrade version or change config
 	$rootScope.showToster = function (type, msg, title) {
 		var toastConfig = {
@@ -251,6 +282,17 @@ app.run(['$rootScope', 'toastr', '$http', function ($rootScope, toastr, $http) {
 	};
 }]);
 
+// app.run(function ($rootScope, $state) {
+// 	$rootScope.$on('$stateChangeStart', function (event, next, nextParams, prev, prevParams) {
+// 		if (next.data && next.data.needSda && $rootScope.user_type === 1) {
+// 			event.preventDefault();
+// 			$state.go(prev.name, prevParams); //send to previous
+// 			$state.go('home'); //send to some other state
+
+// 		}
+// 	});
+// });
+
 // NotificationProvider config
 app.config(function(NotificationProvider) {
 	NotificationProvider.setOptions({
@@ -259,10 +301,36 @@ app.config(function(NotificationProvider) {
 		startRight: 10,
 		verticalSpacing: 20,
 		horizontalSpacing: 20,
-		positionX: 'left',
+		positionX: 'right',
 		positionY: 'bottom'
 	});
 });
+
+// Timeout count
+// app.directive('idleCountdown', ['Idle', function (Idle) {
+// 	return {
+// 		restrict: 'A',
+// 		scope: {
+// 			value: '=idleCountdown'
+// 		},
+// 		link: function ($scope) {
+// 			// Initialize the scope's value to the configured timeout.
+// 			$scope.value = Idle.getTimeout();
+
+// 			$scope.$on('IdleWarn', function (e, countdown) {
+// 				$scope.$evalAsync(function () {
+// 					$scope.value = countdown;
+// 				});
+// 			});
+
+// 			$scope.$on('IdleTimeout', function () {
+// 				$scope.$evalAsync(function () {
+// 					$scope.value = 0;
+// 				});
+// 			});
+// 		}
+// 	};
+// }]);
 
 //propsFilter
 app.filter('propsFilter', function () {

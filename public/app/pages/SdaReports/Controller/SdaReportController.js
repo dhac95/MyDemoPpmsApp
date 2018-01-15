@@ -8,8 +8,8 @@
         .controller('SdaReportModelController', SdaReportModelController);
 
 
-    SdaReportController.$inject = ['$scope', '$rootScope', '$http', '$filter','Excel','$timeout', 'SdaReportService','AddTaskService' ,'$uibModal','NgTableParams'];
-    function SdaReportController($scope, $rootScope, $http, $filter,Excel,$timeout, SdaReportService,AddTaskService ,$uibModal, NgTableParams) {
+    SdaReportController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'Excel', '$timeout', 'SdaReportService', 'AddTaskService', '$uibModal', 'NgTableParams', 'Notification'];
+    function SdaReportController($scope, $rootScope, $http, $filter, Excel, $timeout, SdaReportService, AddTaskService, $uibModal, NgTableParams, Notification) {
 
         $rootScope.title = "SdaReport";
         $rootScope.isLoginPage = false;
@@ -58,7 +58,7 @@
 
             modalInstance.result.then(function () {
                 $scope.getTotalTime();
-                        showSdaReports();
+                showSdaReports();
             }, function () {
             });
         };
@@ -80,7 +80,7 @@
                     $scope.selectUsers();
                 },
                       function (errorPl) {
-                        alert('Some Error in Getting Records.', errorPl);
+                          Notification('Some Error in Getting Records.');
                       });
             }
     
@@ -100,7 +100,7 @@
     
                   },
                         function (errorPl) {
-                          alert('Some Error in Getting Records.', errorPl);
+                            Notification('Some Error in Getting Records.');
                        });
                };
     
@@ -120,7 +120,7 @@
                         $scope.selectsubTask();
                     },
                           function (errorPl) {
-                            alert('Some Error in Getting Records.', errorPl);
+                              Notification('Some Error in Getting Records.');
                          });
                  };
     
@@ -139,7 +139,7 @@
                  }
                   },
                         function (errorPl) {
-                            alert('Some Error in Getting Records.', errorPl);
+                            Notification('Some Error in Getting Records.');
                         });
           };
 
@@ -190,16 +190,20 @@
                 task_desc : taskDesc,
 
             };
+            if (formatDate1 > formatDate2 ) {
+                Notification({ message: "The From date cannot be greate than To date <b> Try chaning the date 🤦</b>"} , 'warning');
+            }
+            else {
             var promiseGet = SdaReportService.getSdaReports($scope, $rootScope, $http ,obj );
             promiseGet.then(function (pl) {
                  $scope.ReportList = pl.data;
                  $scope.getTotalTime(); 
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                 });
         }
-
+    }
        // getTotalTime();
          $scope.getTotalTime =function() {
             var Date1 = $scope.SdaReport.From;
@@ -225,7 +229,7 @@
                  $scope.remTime = pl.data; 
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                 });
         };
 
@@ -240,19 +244,19 @@
             if (window.confirm("Do you really want to delte this SdaReport")) {
                 AddTaskService.deleteAddTask($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Deleted Successful");
+                        Notification.success("Deleted Successful");
                         $scope.getTotalTime();
                         showSdaReports();
                     } else {
-                        alert("Try Again");
+                        Notification.error("Try Again");
                         
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             }
             //} else {
-            //    alert("Active Status Can't be Delete")
+            //    Notification("Active Status Can't be Delete")
             //}
         }
     }
@@ -281,18 +285,18 @@
                // $scope.SdaReport.create_date = $rootScope.date;
                AddTaskService.updateAddTask($scope, $rootScope, $http, $scope.SdaReport,id).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Updated Successful");
+                        Notification.success("Updated Successful");
                         $uibModalInstance.close();
                         // $scope.getTotalTime();
                         // showSdaReports();
                     } else if(res.data.results){
-                        alert("Error occoured !! Check the entered time");
+                        Notification({message : "Error occoured !! Check the entered time" , title : "Time total must be total of 8 hours"} , 'error');
                     }
                     else {
-                        alert("Error occoured !! Please try again");
+                        Notification.error("Error occoured !! Please try again");
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             } else {
                 $scope.SdaReport.user_id = $rootScope.user_id;
@@ -303,16 +307,16 @@
                 
                 SdaReport.addSdaReport($scope, $rootScope, $http, $scope.SdaReport).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Added Successful");
+                        Notification.success("Added Successful");
                         $uibModalInstance.close();
                     } else if(res.data.results){
-                        alert("Error occoured !! Check the entered time");
+                        Notification.error("Error occoured !! Check the entered time");
                     }
                     else {
-                        alert("Error occoured !! Please try again");
+                        Notification.error("Error occoured !! Please try again");
                     }
                 }, function (err) {
-                    alert("Error in processing sever error 500! Try Again.");
+                    Notification("Error in processing sever error 500! Try Again.");
                 });
             }
         };
@@ -335,7 +339,7 @@
                 $scope.selectBuild();
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                   });
         }
 
@@ -374,7 +378,7 @@
                     $scope.selectsubTask();
                 },
                       function (errorPl) {
-                        alert('Some Error in Getting Records.', errorPl);
+                          Notification('Some Error in Getting Records.', 'error');
                      });
              };
 
@@ -393,7 +397,7 @@
              }
               },
                     function (errorPl) {
-                        alert('Some Error in Getting Records.', errorPl);
+                        Notification('Some Error in Getting Records.', errorPl);
                     });
       };
 

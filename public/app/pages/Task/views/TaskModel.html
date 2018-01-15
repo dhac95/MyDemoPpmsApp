@@ -18,16 +18,18 @@
                 <div class="form-group col-md-4 col-lg-4">
                     <label for="Team">Team Name</label>
                     <div class="dropdown">
-                        <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="loadGrid()" data-ng-model="team.selected" data-ng-init="team.selected = Task.team_id">
+                        <select class="form-control" id="Team" name="Team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="loadGrid()" data-ng-model="team.selected" data-ng-init="team.selected = Task.team_id" required>
                             <option value="">Select the Team</option>
                         </select>               
                     </div>
+                    <span ng-show="myForm.Team.$touched && myForm.Team.$invalid" class="text-danger">*required Team</span>
                 </div>
-            </div>
+            </div> 
             
                 <div class="form-group col-md-4 col-lg-4">
-                    <label for="Task_name">Task Name</label>
-                    <input type="text" class="form-control" id="task_name" name="task_name" data-ng-model="Task.task_name"/>
+                    <label for="task">Task Name</label>
+                    <input type="text" class="form-control" id="task" name="task" data-ng-model="Task.task_name" required/>
+                    <span ng-show="myForm.task.$touched && myForm.task.$invalid" class="text-danger">*required Task</span>
                 </div>
 
                 <div class="form-group col-md-2 col-lg-2">

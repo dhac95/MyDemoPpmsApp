@@ -184,6 +184,19 @@ router.post('/getTime' , function(req,res,next){
                 remain : remainHours
             });
         }
+        else {
+            for (var i = 0; i < results.length; i++) {
+                secs = secs + nodestrtotime(results[i].time) - nodestrtotime('00:00:00');
+            }
+            var remainSecs = 28800 - secs;
+            var remainHours = secondsToHms(remainSecs);
+            var TotalHours = secondsToHms(secs);
+            res.json({
+                total: '00:00:00',
+                remain: remainHours
+
+            });
+        }
         }
     });
 });

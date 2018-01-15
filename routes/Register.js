@@ -9,12 +9,44 @@ var generator = require('generate-password');
 var nodemailer = require('nodemailer');
 var in_array = require('in_array');
 //var inArray = require('in-array');
+
 var db = require('../dbconnections');
-//var os = require('os');
+
+var os = require('os');
 
 router.post('/' , function(req , res , next){ 
 
-    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+   var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  var ip2 = req.headers.host;
+    var ip3 = os.hostname();
+    var ifaces = os.networkInterfaces();
+    function getIP(address) { 
+    Object.keys(ifaces).forEach(function (ifname) {
+        var alias = 0;
+
+        ifaces[ifname].forEach(function (iface) {
+            if ('IPv4' !== iface.family || iface.internal !== false) {
+                // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+                return;
+            }
+            if (alias >= 1) {
+                // this single interface has multiple ipv4 addresses
+                return(ifname + ':' + alias, iface.address);
+               
+            } else {
+                // this interface has only one ipv4 adress
+                return(iface.address);
+            
+            }
+            ++alias;
+        });
+    });
+}
+    var ip5 = [];
+    ip5 = getIP();
+   // var ip4 = ifaces.WI-FI[1].address;
+   // var ip7 = ip5;
+
     var name = req.body.user_name;
     var email = name + '@amazon.com';
     var team = req.body.team_id;

@@ -8,8 +8,8 @@
         .controller('TaskModelController', TaskModelController);
 
 
-    TaskController.$inject = ['$scope', '$rootScope', '$http', 'TaskService', '$uibModal', 'NgTableParams', 'AddTaskService'];
-    function TaskController($scope, $rootScope, $http, TaskService, $uibModal, NgTableParams , AddTaskService) {
+    TaskController.$inject = ['$scope', '$rootScope', '$http', 'TaskService', '$uibModal', 'NgTableParams', 'AddTaskService', 'Notification'];
+    function TaskController($scope, $rootScope, $http, TaskService, $uibModal, NgTableParams, AddTaskService, Notification) {
 
         $rootScope.title = "Task";
         $rootScope.isLoginPage = false;
@@ -83,7 +83,7 @@
                                  }
                             }
                          }
-                        }
+                        } 
                 else {
                     $scope.temp_team = $scope.TeamList[0].team_id;
                 }
@@ -91,7 +91,7 @@
                 $scope.loadGrid();
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                   });
         }
 
@@ -113,27 +113,27 @@
         function removeTask(Task) {
             if (Task.deletion === 1) {
                var id = Task.task_id;
-            if (window.confirm("Do you really want to delte this Task")) {
+            if (window.confirm("Do you really want to delete this Task")) {
                 TaskService.deleteTask($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code === 200) {
-                        alert("Deleted Successful");
+                        Notification.success("Deleted Successful");
                         $scope.loadGrid();
                     } else {
-                        alert("Error Occurred");
+                        Notification.error("Error Occurred");
                         // loadGrid();
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             }
             } else {
-                alert("Active Status Can't be Delete");
+                Notification({ message: "Active Status Can't be removed", title: "The selected Task has status of active" }, 'warning');
             }
         }
     }
 
-    TaskModelController.$inject = ['$scope', '$rootScope', '$http','$filter' ,'items', '$uibModalInstance', 'TaskService' ,'AddTaskService','NgTableParams' ];
-    function TaskModelController($scope, $rootScope, $http,$filter ,items, $uibModalInstance, TaskService , AddTaskService, NgTableParams) {
+    TaskModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance', 'TaskService', 'AddTaskService', 'NgTableParams','Notification' ];
+    function TaskModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, TaskService, AddTaskService, NgTableParams, Notification) {
         $scope.items = items;
         if (items.isEditing)
             $scope.Task = angular.copy(items.Task);
@@ -179,13 +179,13 @@
                 $scope.Task.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 TaskService.updateTask($scope, $rootScope, $http, $scope.Task,id).then(function (res) {
                     if (res.data.code === 200) {
-                        alert("Update Successful");
+                        Notification.success("Update Successful");
                         $uibModalInstance.close();
                     } else {
-                        alert("Error while updating! Try Again.");
+                        Notification.error("Error while updating! Try Again.");
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             } else {
                 // $scope.Task.last_entry_on = $rootScope.date;
@@ -226,13 +226,13 @@
                 $scope.Task.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 TaskService.addTask($scope, $rootScope, $http, $scope.Task).then(function (res) {
                     if (res.data.code === 200) {
-                        alert("Added Successful");
+                        Notification.success("Added Successful");
                         $uibModalInstance.close();
                     } else {
-                        alert("Error while saving! Try Again.");
+                        Notification.error("Error while saving! Try Again.");
                     }
                 }, function (err) {
-                    alert("Error in processing sever error 500! Try Again.");
+                    Notification("Error in processing sever error 500! Try Again.");
                 });
             }
         };
@@ -258,7 +258,7 @@
                 $scope.loadGrid();
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                   });
         }
 

@@ -8,8 +8,8 @@
         .controller('ApproveModelController', ApproveModelController);
 
 
-    ApproveController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'ApproveService','AddTaskService' ,'$uibModal','NgTableParams'];
-    function ApproveController($scope, $rootScope, $http, $filter, ApproveService, AddTaskService,$uibModal, NgTableParams) {
+    ApproveController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'ApproveService', 'AddTaskService', '$uibModal','Notification','NgTableParams'];
+    function ApproveController($scope, $rootScope, $http, $filter, ApproveService, AddTaskService, $uibModal, Notification , NgTableParams) {
 
         $rootScope.title = "Approve";
         $rootScope.isLoginPage = false;
@@ -69,8 +69,9 @@
                                    for (var team in $scope.TeamList) {
                                     if ($scope.TeamList[team].team_id == $scope.Build.team_id) {
                                        $scope.team.selected = $scope.TeamList[team];
-                                       $scope.loadGrid();
+                                        $scope.loadGrid();
                                  }
+                                       
                             }
                          }
                         }
@@ -82,7 +83,7 @@
                
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                   });
         }
 
@@ -95,7 +96,10 @@
             }
             var self = this;
             ApproveService.getRegisteredUsers($scope, $rootScope, $http , id).then(function (responce) {
-                $scope.tableParams = new NgTableParams({}, { dataset: responce.data });
+                $scope.ApproveList = responce.data;
+                $scope.tableParams = new NgTableParams({}, { 
+                    dataset: responce.data
+                 });
 
             });
 
@@ -107,22 +111,22 @@
             if (window.confirm("Do you really want to delete this Request !!! this action can't be undone")) {
                 ApproveService.deleteApprove($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Request Denied");
+                        Notification.success("User Request is Denied by you");
                         $scope.loadGrid();
                     } else {
-                        alert("Try Again");
+                        Notification({message :"Try Again"} , 'error');
                         
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             }
         }
     }
 
        
-    ApproveModelController.$inject = ['$scope', '$rootScope', '$http','$filter' ,'items', '$uibModalInstance', 'ApproveService'];
-    function ApproveModelController($scope, $rootScope, $http,$filter ,items, $uibModalInstance, ApproveService) {
+    ApproveModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance','Notification' ,'ApproveService'];
+    function ApproveModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, Notification ,ApproveService) {
 
         $scope.items = items;
      
@@ -133,21 +137,18 @@
 
         $scope.saveApprove = function (Approve) {
             if (items.isEditing) {
-                
-                // Approve.user_id = $scope.Approve.user_id;
-                // Approve.team_id = $scope.team.selected;
                 Approve.modify = $rootScope.user_id;
 
                 ApproveService.updateApprove($scope, $rootScope, $http, $scope.Approve).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Request Approved");
+                        Notification.success("Request Approved");
                         $uibModalInstance.close();
                     } 
                     else {
-                        alert("Error occoured !! Please try again");
+                        Notification({message : "Error occoured !! Please try again"} , 'error');
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             } else {
 

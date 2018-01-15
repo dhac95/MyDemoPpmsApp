@@ -8,7 +8,9 @@ var uEntry = {
         return db.query("Select * from amz_holidays where status= 1 and deleted = 0", callback);  
     },  
     getLastUserEntry: function(id, callback) {  
+        
         return db.query("SELECT user_id,user_mail,last_entry_on,create_date FROM amz_login where user_id=?", [id], callback);  
+       
     },  
     getLastEntryTime : function(uEntry , callback) {
         return db.query("SELECT time FROM user_tasks WHERE date=? AND user_id= ?", uEntry.date, uEntry.user_id);

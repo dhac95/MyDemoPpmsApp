@@ -97,14 +97,14 @@
             if (window.confirm("Do you really want to delte this Team")) {
                 TeamService.deleteTeam($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.result) {
-                        alert("Deleted Successful")
+                        alert("Deleted Successful");
                         loadGrid();
                     } else {
-                        alert("Team is gone")
+                        alert("Team is gone");
                         loadGrid();
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.")
+                    alert("Error while processing! Try Again.");
                 });
             }
             //} else {
@@ -137,7 +137,7 @@
                         $uibModalInstance.close();
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.")
+                    alert("Error while processing! Try Again.");
                 });
             } else {
                 $scope.Team.last_modify = $rootScope.date;
@@ -154,7 +154,7 @@
                         $uibModalInstance.close();
                     }
                 }, function (err) {
-                    alert("Error in processing sever error 500! Try Again.")
+                    alert("Error in processing sever error 500! Try Again.");
                 });
             }
         };

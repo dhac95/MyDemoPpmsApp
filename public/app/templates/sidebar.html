@@ -9,17 +9,16 @@
         <li data-ng-if="$root.user_type == 2" class="active"> <a href="#/home"><i class="fa fa-home"></i><span>SDA Home</span></a></li>
         <li data-ng-if="$root.user_type == 3" class="active"><a href="#/home"><i class="fa fa-home"></i><span>Manager Home</span></a></li>
         <li data-ng-if="$root.user_type == 4" class="active"><a href="#/home"><i class="fa fa-home"></i><span>Admin Home</span></a></li>
-        <li data-ng-if="$root.user_type != 1" class="active"><a href="#/Approve/master"><i class="fa fa-check-square"></i><span>Approve User</span></a></li>
-        <li data-ng-if="$root.user_type == 2 || $root.user_type == 3 || $root.user_type == 4"><a href="#/Build/master"><i class="fa fa-cubes"></i><span>Build</span></a></li>
-        <li data-ng-if="$root.user_type == 2 || $root.user_type == 3 || $root.user_type == 4" ><a href="#/Task/master"><i class="fa fa-tasks"></i><span>Task</span></a></li>
-        <li  data-ng-if="$root.user_type == 2 || $root.user_type == 3 || $root.user_type == 4"><a href="#/SubTask/master"><i class="fa fa-bug "></i> Subtasks</a></li>  
-        <li  data-ng-if="$root.user_type == 2 || $root.user_type == 3 || $root.user_type == 4" ><a href="#/SdaReport/master"><i class="fa fa-stack-exchange "></i> View User Reports</a></li>  
+        <li data-ng-if="$root.user_type != 1"><a href="#/Approve/master"><i class="fa fa-check-square"></i><span>Approve User</span></a></li>
+        <li data-ng-if="$root.user_type != 1"><a href="#/Build/master"><i class="fa fa-cubes"></i><span>Build</span></a></li>
+        <li data-ng-if="$root.user_type != 1" ><a href="#/Task/master"><i class="fa fa-tasks"></i><span>Task</span></a></li>
+        <li  data-ng-if="$root.user_type != 1"><a href="#/SubTask/master"><i class="fa fa-bug "></i> Subtasks</a></li>  
+        <li  data-ng-if="$root.user_type != 1" ><a href="#/SdaReport/master"><i class="fa fa-stack-exchange "></i> View User Reports</a></li>  
         <li data-ng-if="$root.user_type == 2"><a href="#/mileStone/master"><i class="fa fa-magic"></i><span>Daily Target</span></a></li>
         <li data-ng-if="$root.user_type == 3" ><a href="#/client/master"><i class="fa fa-suitcase"></i><span>pTeam Info</span></a></li>
         <li data-ng-if="$root.user_type == 4"><a href="#/Employee/master"><i class="fa fa-coffee"></i><span>Employee</span></a></li>
         <!-- <li class="active"><a href="#/Type/master"><i class="fa fa-intersex"></i><span>Type</span></a></li> -->
         <li data-ng-if="$root.user_type == 4 || $root.user_type == 3"><a href="#/Team/master"><i class="fa fa-suitcase"></i><span>Team</span></a></li>
-        <li class="active"></li>
         <li class="treeview" data-ng-if="$root.user_type == 1">
             <a href="#">
                 <i class="fa fa-gg-circle"></i>

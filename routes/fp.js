@@ -9,6 +9,7 @@ var nodestrtotime = require('nodestrtotime');
 var generator = require('generate-password');
 var nodemailer = require('nodemailer');
 var db = require('../dbconnections');
+var moment = require('moment');
 
 router.post('/' , function(req , res , next){ 
     var password = generator.generate({
@@ -29,6 +30,7 @@ router.post('/' , function(req , res , next){
                             res.send(errors);
                     }
                     else  {
+                        var today = moment().format('LLLL');
                       //  nodemailer.createTestAccount(function(err, account) {
         
                             // create reusable transporter object using the default SMTP transport
@@ -49,7 +51,7 @@ router.post('/' , function(req , res , next){
                                 to: email, // list of receivers
                                 subject: 'Password change request ✔', // Subject line
                                 text: password, // plain text body
-                                html: '<b> Hi ' + user + ',</b><br /> Your mail id is used to request a new password. Use this temp password to update your password  <strong> """ '+ password + ' """</strong> <br /> If you are not requested for password change please contact your manager for further actions.<b><br /> Thanks</b>' // html body
+                                html: '<b> Hi ' + user + ',</b><br /> Your mail id is used to request a new password at ' + today + '. Use this temp password to update your password  <strong> """ '+ password + ' """</strong> <br /> If you are not requested for password change please contact your manager for further actions.<b><br /> Thanks</b>' // html body
                             };
                         
                             // send mail with defined transport object
@@ -57,15 +59,6 @@ router.post('/' , function(req , res , next){
                                 if (error) {
                                     return console.log(error);
                                 }
-                                console.log('Message sent: %s', info.messageId);
-                                // Preview only available when sending through an Ethereal account
-                                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                        
-                                // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@blurdybloop.com>
-                                // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-        
-                                
-                          //  });
                             
                         });
                         res.send({

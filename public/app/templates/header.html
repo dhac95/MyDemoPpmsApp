@@ -11,15 +11,19 @@
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                   <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                      <img src="../../AdminLTE/img/avatar04.png" class="user-image" alt="User Image">
-                      <span class="hidden-xs">{{$root.user_name}}</span>
+                      <!-- <img src="../../AdminLTE/img/avatar04.png" class="user-image" alt="User Image"> -->
+                     <img ng-if='$root.below_on == "null"' class="user-image" src="../../AdminLTE/img/avatar04.png" alt="User profile picture">
+                    <img ng-if="$root.below_on == 1" class="user-image" src="../../AdminLTE/img/avatar3.png" alt="User profile picture">
+                      <span class="hidden-xs">{{$root.first_name}}</span>
                   </a>
                   <ul class="dropdown-menu">
                       <!-- User image -->
                       <li class="user-header">
-                          <img src="../../AdminLTE/img/avatar04.png" class="img-circle" alt="User Image">
+                          <!-- <img src="../../AdminLTE/img/avatar04.png" class="img-circle" alt="User Image"> -->
+                             <img ng-if='$root.below_on == "null"' class="img-circle" src="../../AdminLTE/img/avatar04.png" alt="User profile picture">
+                              <img ng-if="$root.below_on == 1" class="img-circle" src="../../AdminLTE/img/avatar3.png" alt="User profile picture">
                           <p>
-                               {{$root.user_name}} - <span ng-if="$root.user_type == 1" > DA</span>
+                               {{$root.first_name}} - <span ng-if="$root.user_type == 1" > DA</span>
                                                      <span ng-if="$root.user_type == 2" > SDA</span>
                                                      <span ng-if="$root.user_type == 3" > Manager</span>
                                                      <span ng-if="$root.user_type == 4" > Admin</span>
@@ -30,7 +34,7 @@
                       <!-- Menu Footer-->
                       <li class="user-footer">
                           <div class="pull-left">
-                              <a href="#" class="btn btn-default btn-flat">New Registration</a>
+                              <a href="#/Profile/master" class="btn btn-default btn-flat">View Profile</a>
                           </div>
                           <div class="pull-right">
                               <a href="#" class="btn btn-default btn-flat" data-ng-click="$root.logout()">Sign out</a>

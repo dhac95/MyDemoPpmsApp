@@ -7,7 +7,8 @@
 			<!-- <div class="col-md-6 col-lg-6"> -->
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="date">date</label>
-					<input type="date" class="form-control" id="date" name="date" data-ng-model="date.selected" data-ng-change="getTaskbyDate() ; getTotalTime()" />
+                    <input type="date" class="form-control" id="date" name="date" data-ng-model="date.selected" data-ng-change="getTaskbyDate() ; getTotalTime()" required ng-disabled="$root.prop"/>
+                    <div ng-show="myForm.date.$touched && myForm.date.$invalid" class="text-danger">*required Date</div>
                 </div>
                 
                 <!-- <div class="form-group col-sm-3 col-md-3 col-lg-3">
@@ -18,84 +19,82 @@
                 </div> -->
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                    <label for="Team">Team Name</label>
+                    <label for="team">Team Name</label>
                     <div class="dropdown">
-                      <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected">
+                      <select class="form-control" id="team" name="team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected" required>
                             <option value="">Select the Team</option>
                         </select>
                     </div>
+                    <div ng-show="myForm.team.$touched && myForm.team.$invalid" class="text-danger">*required Team</div>
                 </div>
-
-                <!-- <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                    <label for="Team">Team Name</label>
-                        <ui-select name="team" ng-class="{'loading': loading}" ng-disabled="checkEditing" ng-change="selectTask();selectBuild();" ng-required="true" ng-model="team.selected" theme="bootstrap" title="Choose a Team">
-                            <ui-select-match placeholder="Select a Team">{{$select.selected.team_name}}</ui-select-match>
-                            <ui-select-choices repeat="Team in TeamList | propsFilter: {team_name: $select.search}">
-                                <div ng-bind-html="Team.team_name | highlight: $select.search"></div>
-                            </ui-select-choices>
-                        </ui-select>
-                        <div ng-show="myForm.team.$touched && myForm.team.$invalid" class="text-danger">*required Team</div>
-                </div> -->
        
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                    <label for="Build">Build Name</label>
+                    <label for="build">Build Name</label>
                     <div class="dropdown">
 
-                        <select class="form-control" data-ng-options="Build.build_no as Build.build_name for Build in BuildList" data-ng-model="build.selected">
+                        <select class="form-control" id="build" name="build" data-ng-options="Build.build_no as Build.build_name for Build in BuildList" data-ng-model="build.selected" required>
                             <option value="">Select the Build</option>
                
                         </select>
                         
                     </div>
+                    <div ng-show="myForm.build.$touched && myForm.build.$invalid" class="text-danger">*required Build</div>
                 </div>
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                    <label for="Task">Task Name</label>
+                    <label for="task">Task Name</label>
                     <div class="dropdown">
-                        <select class="form-control" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask()" >
+                        <select class="form-control"  id="task" name="task"  data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask()">
                             <option value="">Select the Task</option>
                         </select>
                         
                     </div>
+                    <div ng-show="myForm.task.$touched && myForm.task.$invalid" class="text-danger">*required Task</div>
                 </div>
-                <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                    <label for="subTask">Sub Task Name</label>
-                    <div class="dropdown">
 
-                        <select class="form-control" data-ng-options="subTask.sub_task_id as subTask.sub_task_name for subTask in subTaskList" data-ng-model="subtask.selected">
+                <div class="form-group col-sm-3 col-md-3 col-lg-3" >
+                    <label for="subTask">Sub Task Name</label>
+                    <div class="dropdown" data-ng-disabled="subTaskList == NA">
+
+                        <select class="form-control" id="subTask" name="subTask" data-ng-options="subTask.sub_task_id as subTask.sub_task_name for subTask in subTaskList" data-ng-model="subtask.selected" data-ng-disabled='subTaskList == ""' ng-required='subTaskList != ""'>
                             <option value="">Select the subTask</option>
                
                         </select>
                         
                     </div>
+                    <div ng-show="myForm.subTask.$touched && myForm.subTask.$invalid" class="text-danger">*required Sub Task</div>
                 </div>
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="task_desc">Task Description</label>
-					<input type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="AddTask.task_desc"  />
+					<input type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="AddTask.task_desc"  disabled/>
                 </div>
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="count">count</label>
-					<input type="number" class="form-control" id="count" name="count" data-ng-model="AddTask.count"  />
+                    <input type="number" class="form-control" id="count" name="count" data-ng-model="AddTask.count"/>
+                    <!-- <div ng-show="myForm.count.$touched && myForm.count.$invalid" class="text-danger">*required Count</div> -->
                 </div>
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="noofdevice">noofdevice</label>
-					<input type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="AddTask.noofdevice"  />
+                    <input type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="AddTask.noofdevice"  disabled/>
+                    <!-- <div ng-show="myForm.count.$touched && myForm.count.$invalid" class="text-danger">*required Count</div> -->
                 </div>
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="time">Time <span><strong class="text-danger">  *Remaing Time {{remTime.remain}}</strong></span></label>
-					<input type="text" class="form-control" id="time" name="time" required pattern="[0-0][0-8]:[0-5][0-9]+" placeholder="for example 07:59" data-ng-model="AddTask.time" ng-maxlength="5" maxlength="5" required ng-required="true" />
+                    <input type="text" class="form-control" id="time" name="time" required pattern="[0-0][0-8]:[0-5][0-9]+" placeholder="for example 07:59" data-ng-model="AddTask.time" ng-maxlength="5" maxlength="5" required />
+                    <div ng-show="myForm.time.$touched && myForm.time.$invalid" class="text-danger">*required Time</div>
                 </div>
             
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-					<label for="cmds">cmds</label>
-					<input type="text" class="form-control" id="cmds" name="cmds" data-ng-model="AddTask.cmds"  />
+					<label for="cmds">Comments</label>
+                    <input type="text" class="form-control" id="cmds" name="cmds" data-ng-model="AddTask.cmds"  />
+                    
                 </div>
 		</div>
 	</form>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveAddTask(AddTask)">Save</button>
+	<button class="btn btn-primary" ng-disabled="myForm.$invalid || remTime.remain == '00:00:00'" type="button" ng-click="saveAddTask(AddTask)">Save</button>
 </div>
 
 
@@ -103,7 +102,7 @@
 <div class="row">
     <div class="panel panel-default">
         <div class="jumbotron modal-header model-title">
-            <strong>Reports  for {{$root.user_name}} on {{date.selected | date : 'dd/MM/yyyy' }} </strong>
+            <strong>Reports  for {{$root.user_name}} on {{date.selected | date : 'MM/dd/yyyy' }} </strong>
         </div>
         <div class="panel-body">
             <div style="overflow-x:auto;">
@@ -153,7 +152,7 @@
                                 </i>
                             </button>
                             <button type="button" ng-click="removeAddTask(row)" class="btn btn-sm btn-danger">
-                                <i class="glyphicon glyphicon-remove-circle">
+                                <i class="glyphicon glyphicon-trash">
                                 </i>
                             </button>
                         </td>

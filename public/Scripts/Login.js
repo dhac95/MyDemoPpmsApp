@@ -112,6 +112,11 @@
                           localStorage.setItem('below_on', response.data[0].below_on);
                           localStorage.setItem('manager', response.data[0].manager);
                           localStorage.setItem('user_status', response.data[0].user_status);
+                          localStorage.setItem('user_activation', response.data[0].user_activation);
+                          localStorage.setItem('user_deletion', response.data[0].user_deletion);
+                          localStorage.setItem('last_entry_on', response.data[0].last_entry_on);
+                          localStorage.setItem('create_date', response.data[0].create_date);
+                          localStorage.setItem('maintain_date', response.data[0].maintain_date);
                           window.location.replace("/main.html");
                       }
                       else {
@@ -128,6 +133,11 @@
                         sessionStorage.setItem('below_on', response.data[0].below_on);
                         sessionStorage.setItem('manager', response.data[0].manager);
                         sessionStorage.setItem('user_status', response.data[0].user_status);
+                          sessionStorage.setItem('user_activation', response.data[0].user_activation);
+                          sessionStorage.setItem('user_deletion', response.data[0].user_deletion);
+                          sessionStorage.setItem('last_entry_on', response.data[0].last_entry_on);
+                          sessionStorage.setItem('create_date', response.data[0].create_date);
+                          sessionStorage.setItem('maintain_date', response.data[0].maintain_date);
 
                           window.location.replace("/main.html");
                       }
@@ -136,7 +146,7 @@
                       $scope.loginSts = response.Message;
                       $scope.subBtn = "Log In";
                       //$scope.loginSts = "User name or password is wrong!!! ";
-                      Notification({message : 'User name or password is wrong!!!'} , 'error');
+                      Notification({ message: 'User Name or password is wrong!!! <iframe src="https://giphy.com/embed/11SJ52YouBaDFS" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'} , 'error');
                       sessionStorage.removeItem('user_id');
                       sessionStorage.removeItem('first_name');
                       sessionStorage.removeItem('last_name');
@@ -150,6 +160,11 @@
                       sessionStorage.removeItem('below_on');
                        sessionStorage.removeItem('manager');
                       sessionStorage.removeItem('user_status');
+                      sessionStorage.removeItem('user_activation');
+                      sessionStorage.removeItem('user_deletion');
+                      sessionStorage.removeItem('last_entry_on');
+                      sessionStorage.removeItem('create_date');
+                      sessionStorage.removeItem('maintain_date');
 
       
                   
@@ -166,12 +181,18 @@
                         localStorage.removeItem('below_on');
                         localStorage.removeItem('manager');
                         localStorage.removeItem('user_status');
+                      localStorage.removeItem('user_activation');
+                      localStorage.removeItem('user_deletion');
+                      localStorage.removeItem('last_entry_on');
+                      localStorage.removeItem('create_date');
+                      localStorage.removeItem('maintain_date'); 
+
                     
 
                   }
               }).error(function (response) {
                   //$scope.loginSts = "Server is Busy!!! Try Again After Sometime!!!";
-                  Notification({message : 'Server is Busy!!! Try Again After Sometime!!!'} , 'warning');
+                  Notification({ message: 'Server is Busy!!! Try Again After Sometime!!! <iframe src="https://giphy.com/embed/r7zNTsMZ1XV6g" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'} , 'warning');
                   
                   $scope.subBtn = "Log In";
                   sessionStorage.removeItem('user_id');
@@ -187,6 +208,11 @@
                   sessionStorage.removeItem('below_on');
                   sessionStorage.removeItem('manager');
                   sessionStorage.removeItem('user_status');
+                  sessionStorage.removeItem('user_activation');
+                  sessionStorage.removeItem('user_deletion');
+                  sessionStorage.removeItem('last_entry_on');
+                  sessionStorage.removeItem('create_date');
+                  sessionStorage.removeItem('maintain_date');
 
                   localStorage.removeItem('user_id');
                   localStorage.removeItem('first_name');
@@ -201,6 +227,11 @@
                   localStorage.removeItem('below_on');
                   localStorage.removeItem('manager');
                   localStorage.removeItem('user_status');
+                  localStorage.removeItem('user_activation');
+                  localStorage.removeItem('user_deletion');
+                  localStorage.removeItem('last_entry_on');
+                  localStorage.removeItem('create_date');
+                  localStorage.removeItem('maintain_date');
               });
           };
 
@@ -208,16 +239,16 @@
             var obj = { name : $scope.Reset.user_name };
           $http.post(forgot, obj).then(function(response) { 
                   if(response.data.code === 200) {
-                    Notification.success('Success ' + 'Check the mail ' + 'password updated' );
+                      Notification.success('Success password updated! Check the mail <iframe src="https://giphy.com/embed/l0MYxef0mpdcnQnvi" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>' );
                   }
                   else if(response.data.code === 300){
-                    Notification({message : 'User does not exist !!! Register first'} , 'warning');
+                      Notification({ message: 'User does not exist !!! Register first <iframe src="https://giphy.com/embed/3ohzdYt5HYinIx13ji" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'} , 'warning');
                   }
                   else {
-                    Notification({message: 'Password not updated!!! Error occoured'}, 'error' );
+                      Notification({ message: 'Password not updated!!! Error occoured <iframe src="https://giphy.com/embed/r7zNTsMZ1XV6g" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'}, 'error' );
                   }
-           }).error(function(response) {
-              $scope.error = "An Error has occured while resetting password! " + response;  
+           },function(eresponse) {
+               Notification({ message: 'Password not updated!!! Error occoured <iframe src="https://giphy.com/embed/r7zNTsMZ1XV6g" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>' }, 'error');  
            });
         };
 
@@ -231,7 +262,7 @@
         function getTeamList() {
             $http.get(team).then(function(response) { 
                     $scope.TeamList = response.data;
-            });
+            }); 
         }
 
           $scope.Register = function(Register) {
@@ -252,8 +283,9 @@
                 else {
                     Notification({message :'Processing error , Try after sometimes !!!'} , 'error');
                 }
-         }).error(function(response) {
-            $scope.error = "An Error has occured while resetting password! " + response;  
+         },
+         function(errorresponse) {
+             Notification({ message : 'An Error has occured while resetting password! <iframe src="https://giphy.com/embed/r7zNTsMZ1XV6g" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'} , 'warning') ;  
        });
     };
 

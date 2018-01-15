@@ -39,6 +39,7 @@ var SdaReports = require('./routes/SdaReports');
 var FP = require('./routes/fp');
 var reg = require('./routes/Register');
 var approve = require('./routes/approve');
+var CP = require('./routes/cp');
 
 // Express init
 var app = express();  
@@ -88,6 +89,7 @@ app.use('/SdaReports' , SdaReports);
 app.use('/fp' , FP);
 app.use('/reg' ,  reg);
 app.use('/approve' ,  approve);
+app.use('/cp', CP);
 
 // catch 404 and forward to error handler  
 app.use(function(req, res, next) {  

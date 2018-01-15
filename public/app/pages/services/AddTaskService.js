@@ -20,8 +20,8 @@
         this.getLoadedsubTasks = getLoadedsubTasks;
         this.getLoadedBuilds = getLoadedBuilds;
         this.getRemaingTime = getRemaingTime;
-
         this.getAddedTask = getAddedTask;
+        this.getRemaingDate = getRemaingDate;
 
         /////////////
 
@@ -46,6 +46,9 @@
 
         function deleteAddTask($scope, $rootScope, $http, id) {
             return $http.delete($rootScope.endPoint + 'test/' + id);
+        }
+        function getRemaingDate($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'testGetDate/' , obj);
         }
 
         function getRemaingTime($scope, $rootScope, $http, obj) {

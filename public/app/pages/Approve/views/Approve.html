@@ -18,8 +18,12 @@
     <div class="box box-solid box-primary">
     
         <div class="box-header">
-            Approve User
+            Approve User(s)
         </div>
+        <div ng-show='ApproveList ==""'>
+            <h3 class="text-muted">No user requested to join in the <span ng-show="$root.team_count > 1">selected</span> team</small>
+        </div>
+        <div ng-if='ApproveList !=""'>
         <h3>
             <small class="text-muted">The below User(s) requested to join your team</small>
           </h3>
@@ -46,6 +50,7 @@
 
                 </table>
             </div>
+        </div>
         </div>
     </div>
     

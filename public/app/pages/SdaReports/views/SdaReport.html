@@ -7,30 +7,34 @@
 			<!-- <div class="col-md-6 col-lg-6"> -->
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="from">Date From</label>
-					<input type="date" class="form-control" id="from" name="from" data-ng-model="SdaReport.From" />
+                    <input type="date" class="form-control" id="from" name="from" data-ng-model="SdaReport.From" required/>
+                    <span ng-show="myForm.from.$touched && myForm.from.$invalid" class="text-danger">*required From Date</span>
                 </div>
                 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-					<label for="to">Date TO</label>
-					<input type="date" class="form-control" id="to" name="to" data-ng-model="SdaReport.To" />
+					<label for="to">Date To</label>
+                    <input type="date" class="form-control" id="to" name="to" data-ng-model="SdaReport.To" required/>
+                    <span ng-show="myForm.to.$touched && myForm.to.$invalid" class="text-danger">*required To Date</span>
                 </div>
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
                     <label for="Team">Team Name</label>
                     <div class="dropdown">
-                      <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="selectTask();selectBuild();selectUsers();" data-ng-model="team.selected">
+                      <select class="form-control" id="Team" name="Team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="selectTask();selectBuild();selectUsers();" data-ng-model="team.selected" required>
                             <option value="">Select the Team</option>
                         </select>
                     </div>
+                    <span ng-show="myForm.Team.$touched && myForm.Team.$invalid" class="text-danger">*required Team</span>
                 </div>
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                    <label for="user_name">User Name</label>
+                    <label for="user">User Name</label>
                     <div class="dropdown">
-                      <select class="form-control" data-ng-options="User.user_id as User.user_name for User in UserList " data-ng-model="user.selected">
+                      <select class="form-control" id="user" name="user" data-ng-options="User.user_id as User.user_name for User in UserList " data-ng-model="user.selected" required>
                             <option value="">Select the User</option>
                         </select>
                     </div>
+                    <span ng-show="myForm.user.$touched && myForm.user.$invalid" class="text-danger">*required user</span>
                 </div>
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
@@ -60,12 +64,13 @@
 	<button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showSdaReports()">Show Results</button>
 </div>
 
-
 <div class="row">
+    <div class="model-header">
         <button class="btn btn-link" ng-click="exportToExcel('#userData')">
                 <span class="glyphicon glyphicon-share"></span>
                             Export to Excel
               </button>
+            </div>
     <div class="panel panel-default" id="userData">
         <div class="jumbotron modal-header model-title" >
             <strong>Reports  for <span ng-repeat="u in UserList" ng-if="u.user_id == user.selected"><strong>{{u.user_name}}</strong> </span> from {{SdaReport.From | date : 'dd/MM/yyyy' }}  to {{SdaReport.To | date : 'dd/MM/yyyy' }} </strong>
@@ -85,7 +90,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="3"><input st-search="" class="input-sm form-control" placeholder="Search text" type="text" /></th>
+                        <th colspan="3"><input st-search="" class="input-sm form-control" placeholder="Search anthing - This will return exact result" type="text" /></th>
                     </tr>
                     <tr>
                         <th st-sort="team_name">Team Name</th>

@@ -9,7 +9,10 @@ var sizeof = require('object-sizeof');
 var in_array = require('in_array');
 var mktime = require('locutus/php/datetime/mktime');
 var db = require('../dbconnections'); //reference of dbconnection.js \\
+//var conn = require('../singleConnection');
 var moment = require('moment');
+var async = require("async");
+var pending = require('../models/testAddTask');
 
 function java_mktime(hour,minute,seconds,month,day,year) {
     return new Date(year, month, day, hour, minute, 0, 0).getTime() / 1000;
@@ -44,7 +47,11 @@ var totHours = 0;
 var holidays = [];
         db.query("SELECT date FROM amz_holidays where status='1' AND deleted='0'" , function(error, results, fields) {
                    if(results.length > 0 ) {
-                           holidays = new Array(results);
+                       for(var i= 0 ; i< results.length ; i++) {
+                           var tempData = moment(results[i].date).format('YYYY-MM-DD');
+                           holidays.push(tempData);
+                        //    holidays = new Array(results);
+                             }
                                db.query("SELECT user_id,user_mail,last_entry_on,create_date FROM amz_login where user_id=?" ,[userID], function (e1,r1,f1) {
                                    if(r1.length) {
                                        var lastEntered = null;
@@ -61,43 +68,66 @@ var holidays = [];
                                           var arrDates = getDates(lastEntered , todayDate);
                                            //  var arrDates = temp_arrDates;
                                           //  var size = arrDates.length;
+                                                 var newArr = [];
+                                         for (var date in arrDates) {
+                                             if (in_array(arrDates[date], holidays ) == false) {
+                                              var singleDate = arrDates[date];
+                                                //  var timeDiff = getTimes(singleDate , todayDate);
+                                                
+                                                 newArr.push(singleDate);
+                                             }
+                                            }
+                                               //  if(timeDiff >= 24) {
+                                                var totHours = 0;
+                                                  //   async.forEachOf(singleDate , function(value, key, callback) {
+                            
 
-                                         for(var i=0; i < arrDates.length ; i++){
-                                             if(!in_array( holidays , arrDates[i]) == true) {
-                                              var singleDate = arrDates[i];
-                                                 var timeDiff = getTimes(singleDate , todayDate);
-                                                 if(timeDiff >= 24) {
-                                                // var totHours = 0;
-                                                db.query("SELECT time FROM user_tasks WHERE date=? AND user_id=?",[singleDate , userID] , function(e2,r2,f2){
+                                                       async.each(newArr, function (single , callback) {
+                                                          // var timeDiff = getTimes(single, todayDate);
+                                                         //  if (timeDiff >= 24) {
+                                                 //        db.query("SELECT time FROM user_tasks WHERE date= ? AND user_id= ?", [single, userID ] , function(e2, r2, f2) {
+                                                                    var obj = {
+                                                                        date : single,
+                                                                        user_id : userID
+                                                                    };
+                                                           pending.getPendingDates(obj , function(e2, r2){
+                                                                    
                                                         if(e2) {
                                                             res.send(e2);
+                                                            
                                                          }
                                                         else {
-                                                            if(r2.length > 0) {
-                                                                for(var j=0 ; j < r2.length ; j++) {
-        
+                                                            totHours = 0;
+                                                            if (r2.length > 0) {
+                                                                for (var j = 0; j < r2.length ; j++) {
                                                                     totHours += nodestrtotime(r2[j].time) - nodestrtotime('00:00:00'); 
-                                                                }
+                                                                   
+                                                                } 
                                                             
-                                                            }
+                                                           }
                                                             if(totHours < 28800) {
-                                                                pendingDates.push(singleDate);
-                                                                res.send(pendingDates);
+                                                                pendingDates.push(single);
+                                                               // res.send(pendingDates); 
+                                                                //setValue(pendingDates); 
+                                                              
                                                             }
-                                                            else {
-                                                                pendingDates.push(singleDate);
-                                                                res.send(pendingDates);
-                                                            }
-                                                           // res.send(pendingDates);
-                                                        }
-                                                });
-                                           }
-                                        }
-                                    }
+
+                                                        }     
+                                                               callback();                  
+                                                });     
+                                                         
+                                            } , function(response){
+                                                res.send(pendingDates
+                                                );
+                                            });
                                 }
-                            }
-                 )}    
+                            
+                            });
+                            
+                        }    
+           
         });
+  
         
 });
 

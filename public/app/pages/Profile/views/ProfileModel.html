@@ -1,0 +1,73 @@
+<div class="jumbotron modal-header">
+    <h3 class="modal-title" id="modal-title">Profile</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <form name="myForm" role="form" class="well well-sm" ng-if="items.isEditing">
+        <div class="row center-content center-block centre">
+            <div class="col-md-6 col-lg-6">
+                <div class="row">
+                <div class="pull-left form-check">
+                  <img class="profile-user-img img-responsive img-circle" src="../../../../AdminLTE/img/avatar04.png" alt="User profile picture"> 
+                    <input class="form-check-input" type="radio" name="pic" value ="" checked> <label for="pic">Profile 1</label>
+                    </div>
+
+                    <div class="pull-right form-check">
+                     <img  class="profile-user-img img-responsive img-circle" src="../../../../AdminLTE/img/avatar3.png" alt="User profile picture"> 
+                    <input type="radio" class="form-check-input" name="pic" ng-model="Profile.pic" value="1"><label for="pic">Profile 2</label>
+                    </div>
+               
+                     </div><br>
+                <div class="form-group">
+                    <label for="fName">First Name</label>
+                    <input type="text" class="form-control" id="fName" name="fName" data-ng-model="Profile.first_name" />
+                    <div ng-show="myForm.fName.$touched  && myForm.fName.$invalid" class="text-danger">*required FirstName</div>
+                </div>
+               
+                <div class="form-group">
+                    <label for="lName">Last Name</label>
+                    <input type="text" class="form-control" id="lName" name="lName" data-ng-model="Profile.last_name" />
+                    <div ng-show="myForm.lName.$touched  && myForm.lName.$invalid" class="text-danger">*required LastName</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveProfile(Profile)">Save</button>
+            <button class="btn btn-warning" Profile="button" ng-click="cancel()">Cancel</button>
+        </div>
+     </form>
+ </div>
+<h3 class="modal-title text-muted" id="modal-title">Change Password</h3>
+<div class="modal-body" id="modal-body">
+
+        <form role="form" name="myForm" ng-if="!items.isEditing" class="center center-block center-content centre push-center">
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="oldPassword">Old Password</label>
+                    <input type="password" class="form-control" id="oldPassword" name="oldPassword" data-ng-model="Profile.old" minlength="6" maxlength="15" required/>
+                    <div ng-show="myForm.oldPassword.$touched  && myForm.oldPassword.$invalid" class="text-danger">*required old Password Min length *6* max length *15*</div>
+                </div>
+                
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" class="form-control" id="newPassword" name="newPassword" data-ng-model="Profile.new" minlength="6" maxlength="15" required/>
+                <div ng-show="myForm.newPassword.$touched  && myForm.newPassword.$invalid" class="text-danger">*required new Password Min length *6* max length *15*</div>
+            </div>
+
+            <div class="form-group">
+                <label for="confPassword">Confirm Password</label>
+                <input type="password" class="form-control" id="confPassword" name="confPassword" data-ng-model="Profile.conf" required />
+                <div ng-show="myForm.confPassword.$touched  && myForm.confPassword.$invalid" class="text-danger">*required Password Confirm</div>
+            </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveProfile(Profile)">Save</button>
+            <button class="btn btn-warning" Profile="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </form>
+    
+</div>
+

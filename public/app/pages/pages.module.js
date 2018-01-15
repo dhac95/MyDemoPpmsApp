@@ -12,9 +12,20 @@
         'ERP.pages.UserOT',
         'ERP.pages.UserReport',
         'ERP.pages.SdaReport',
-        'ERP.pages.Approve'
+        'ERP.pages.Approve',
+        'ERP.pages.Profile'
         
-    ]).config(['$urlRouterProvider', '$stateProvider', routeConfig]);
+    ]).config(['$urlRouterProvider', '$stateProvider', routeConfig])
+        .run(function ($rootScope, $state) {
+            $rootScope.$on('$stateChangeStart', function (event, next, nextParams, prev, prevParams) {
+                if (next.data && next.data.needSda && $rootScope.user_type == 1 || undefined) {
+                    event.preventDefault();
+                    $state.go(prev.name, prevParams); //send to previous
+                    $state.go('home'); //send to some other state
+
+                } 
+            });
+        });
 
     function routeConfig($urlRouterProvider, $stateProvider) {
         $urlRouterProvider.when('', ['$state', '$match', function ($state, $match) {

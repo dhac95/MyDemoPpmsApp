@@ -8,8 +8,8 @@
         .controller('AddTaskModelController', AddTaskModelController);
 
 
-    AddTaskController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'AddTaskService','$uibModal','NgTableParams'];
-    function AddTaskController($scope, $rootScope, $http, $filter, AddTaskService, $uibModal, NgTableParams) {
+    AddTaskController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'AddTaskService', '$uibModal', 'Notification', 'NgTableParams'];
+    function AddTaskController($scope, $rootScope, $http, $filter, AddTaskService, $uibModal, Notification , NgTableParams) {
 
         $rootScope.title = "AddTask";
         $rootScope.isLoginPage = false;
@@ -24,6 +24,7 @@
 
         $scope.removeAddTask = removeAddTask;
         $scope.saveAddTask = saveAddTask;
+       // $scope.getTaskbyDate = getTaskbyDate;
        
 
         $scope.team = {};
@@ -32,7 +33,7 @@
         $scope.subtask = {};
         $scope.date = {};
         $scope.getTeamList = getTeamList;
-        $scope.getTaskbyDate = getTaskbyDate;
+        $scope.getRemaingDate = getRemaingDate;
       
       //  loadGrid();
 
@@ -77,20 +78,11 @@
             });
 
             modalInstance.result.then(function () {
-                getTaskbyDate();
+                $scope.getTaskbyDate();
                 getTotalTime();
             }, function () {
             });
         };
-
-        // function loadGrid() {
-        //     var self = this;
-        //     AddTaskService.getAddedTask($scope, $rootScope, $http, $scope.AddTask, $rootScope.user_id).then(function (responce) {
-        //         $scope.tableParams = new NgTableParams({}, { 
-        //             dataset: responce.data 
-        //         });
-        //     });
-        // }
 
         
         function saveAddTask(AddTask) {
@@ -102,26 +94,63 @@
                 AddTask.date = $scope.date.selected;
                 AddTaskService.addAddTask($scope, $rootScope, $http, $scope.AddTask).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Added Successful");
-                        getTaskbyDate();
+                        Notification.success("Task Added");
+                        $scope.getTaskbyDate();
                         getTotalTime();
                     } else if(res.data.results){
-                        alert("Error occoured !! Check the entered time");
+                        Notification({ message: "Time total must be total of 8 hours", title: "Error! Check entered time" }, 'error');
                     }
                     else {
-                        alert("Error occoured !! Please try again");
+                        Notification({message :"Error occoured !! Please try again"} , 'error');
                     }
                 }, function (err) {
-                    alert("Error in processing sever error 500! Try Again.");
+                    Notification("Error in processing sever error 500! Try Again.");
                 });
             }
 
 
-            getTaskbyDate();
+            getRemaingDate();
+            function getRemaingDate(){
+                var obj = {
+                    user_id: $rootScope.user_id
+                };
+                var promiseGet = AddTaskService.getRemaingDate($scope, $rootScope, $http, obj);
+                promiseGet.then(function (pl) {
+                  
+                    if(pl.data.length > 0) {
+                        $rootScope.prop = true;
+                        Notification("You have pending dates! Complete the pending dates");
+                        $scope.DateList = $filter('orderBy')(pl.data); 
+                    var formatmyDate = $scope.DateList[0];
+                    $scope.date.selected = new Date(formatmyDate);
+                    // for (var i in $scope.DateList) {
+                    //     if ($scope.DateList[i] == $scope.AddTask.date) {
+                    //         $scope.date.selected = $scope.DateList[i];
+                    //     }
+                    //     else {
+                    //         $scope.date.selected = $scope.DateList[0];
+                    //     }
+                    // }
+                    $scope.getTaskbyDate();
+                        getTotalTime();
+                    }
+                    else {
+                        $rootScope.prop = false;
+                        $scope.date.selected = new Date();
+                        $scope.getTaskbyDate();
+                        getTotalTime();
+                    }
+                },
+                    function (errorPl) {
+                        Notification({ message: 'Some Error in Getting Records.' }, 'error');
+                    });
+            }
+
+          //  getTaskbyDate();
            
-            function getTaskbyDate() {
-                var Date = $scope.date.selected;
-                var formatDate =  $filter('date')(Date, "yyyy-MM-dd");
+        $scope.getTaskbyDate = function() {
+                var myDate = $scope.date.selected;
+            var formatDate = $filter('date')(myDate, "yyyy-MM-dd");
                 var obj = {
                         date : formatDate,
                         user_id : $rootScope.user_id
@@ -138,7 +167,7 @@
                  }
                 },
                       function (errorPl) {
-                        alert('Some Error in Getting Records.', errorPl);
+                          Notification({message :'Some Error in Getting Records.'}, 'error');
                     });
             }
 
@@ -161,7 +190,7 @@
                     $scope.selectBuild();
                 },
                       function (errorPl) {
-                        alert('Some Error in Getting Records.', errorPl);
+                          Notification({message :'Some Error in Getting Records.'}, 'error');
                       });
             }
     
@@ -180,7 +209,7 @@
                      }
                   },
                         function (errorPl) {
-                            alert('Some Error in Getting Records.', errorPl);
+                            Notification({message : 'Some Error in Getting Records.'}, 'error');
                         });
           };
     
@@ -202,7 +231,7 @@
                         $scope.selectsubTask();
                     },
                           function (errorPl) {
-                            alert('Some Error in Getting Records.', errorPl);
+                              Notification({message :'Some Error in Getting Records.'}, 'errorl');
                          });
                  };
     
@@ -216,12 +245,16 @@
                        for (var subtask in $scope.subTaskList) {
                           if ($scope.subTaskList[subtask].sub_task_id == $scope.AddTask.sub_task_id) {
                               $scope.subtask.selected = $scope.subTaskList[subtask];
+                              
                           }
+                          
                       }
-                 }
+                 
+                }
+               
                   },
                         function (errorPl) {
-                            alert('Some Error in Getting Records.', errorPl);
+                            Notification({message :'Some Error in Getting Records.'}, 'error');
                         });
           };
 
@@ -235,16 +268,6 @@
             return totCount;
         }
 
-        //   function getTotalTime() {
-        //     var grandTot =  $filter('date')('00:00:00','HH:mm:ss');
-        //     for (var i in $scope.Addedtasklist) {
-        //         var filterTime = $scope.Addedtasklist[i].time;
-        //         grandTot += $filter('date')(grandTot,'HH:mm:ss') + $filter('date')(filterTime,'HH:mm:ss');
-        //     }
-
-        //     // $scope.AddTask.TotalTime = grandTot;
-        //     return grandTot;
-        // }
 
         getTotalTime();
         function getTotalTime() {
@@ -262,7 +285,7 @@
                 // return grandTot;
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification({message :'Some Error in Getting Records.'}, 'error');
                 });
         }
 
@@ -276,15 +299,15 @@
             if (window.confirm("Do you really want to delte this AddTask")) {
                 AddTaskService.deleteAddTask($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Deleted Successful");
-                        getTaskbyDate();
+                        Notification("Removed successfully");
+                        $scope.getTaskbyDate();
                         getTotalTime();
                     } else {
-                        alert("Try Again");
+                        Notification({message : "Try Again"} , 'error');
                         
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             }
             //} else {
@@ -296,8 +319,8 @@
        
 
 
-    AddTaskModelController.$inject = ['$scope', '$rootScope', '$http','$filter' ,'items', '$uibModalInstance', 'AddTaskService'];
-    function AddTaskModelController($scope, $rootScope, $http,$filter ,items, $uibModalInstance, AddTaskService) {
+    AddTaskModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance','Notification' ,'AddTaskService'];
+    function AddTaskModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, Notification ,AddTaskService) {
         var time = items.AddTask.time.substring(0,5); 
        var formatDate =  $filter('date')(items.AddTask.date, "yyyy-MM-dd");
         // items.push({ "time" : time } );
@@ -324,16 +347,16 @@
                // $scope.AddTask.create_date = $rootScope.date;
                 AddTaskService.updateAddTask($scope, $rootScope, $http, $scope.AddTask,id).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Updated Successful");
+                        Notification.success("Task Updated");
                         $uibModalInstance.close();
                     } else if(res.data.results){
-                        alert("Error occoured !! Check the entered time");
+                        Notification({ message: "Time must be total of 8 hours", title: "Error! Check entered time" }, 'error');
                     }
                     else {
-                        alert("Error occoured !! Please try again");
+                        Notification({message : "Error occoured !! Please try again"} , 'error');
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             } else {
                 $scope.AddTask.user_id = $rootScope.user_id;
@@ -461,7 +484,7 @@
                 // return grandTot;
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.', errorPl);
                 });
         }
 

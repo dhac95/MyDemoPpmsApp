@@ -8,8 +8,8 @@
         .controller('BuildModelController', BuildModelController);
 
 
-    BuildController.$inject = ['$scope', '$rootScope', '$http', 'BuildService', '$uibModal', 'NgTableParams', 'AddTaskService'];
-    function BuildController($scope, $rootScope, $http, BuildService, $uibModal, NgTableParams , AddTaskService) {
+    BuildController.$inject = ['$scope', '$rootScope', '$http', 'BuildService', '$uibModal', 'NgTableParams','Notification' , 'AddTaskService'];
+    function BuildController($scope, $rootScope, $http, BuildService, $uibModal, NgTableParams, Notification , AddTaskService) {
 
         $rootScope.title = "Build";
         $rootScope.isLoginPage = false;
@@ -80,18 +80,20 @@
                                    for (var team in $scope.TeamList) {
                                     if ($scope.TeamList[team].team_id == $scope.Build.team_id) {
                                        $scope.team.selected = $scope.TeamList[team];
+                                        $scope.loadGrid();
                                  }
                             }
                          }
                         }
                 else {
                     $scope.temp_team = $scope.TeamList[0].team_id;
+                    $scope.loadGrid();
                 }
                     
-                $scope.loadGrid();
+                
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                   });
         }
 
@@ -116,24 +118,24 @@
             if (window.confirm("Do you really want to delte this Build")) {
                 BuildService.deleteBuild($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code === 200) {
-                        alert("Deleted Successful");
+                        Notification.success("Deleted Successful");
                         $scope.loadGrid();
                     } else {
-                        alert("Error Occurred");
+                        Notification({message :"Error Occurred"} , 'error');
                         // loadGrid();
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             }
             } else {
-                alert("Active Status Can't be Delete");
+                Notification({message : "Active Status Can't be removed" , title : "The selected build has status of active"} , 'warning');
             }
         }
     }
 
-    BuildModelController.$inject = ['$scope', '$rootScope', '$http','$filter' ,'items', '$uibModalInstance', 'BuildService' ,'AddTaskService','NgTableParams' ];
-    function BuildModelController($scope, $rootScope, $http,$filter ,items, $uibModalInstance, BuildService , AddTaskService, NgTableParams) {
+    BuildModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance', 'BuildService', 'AddTaskService', 'NgTableParams', 'Notification' ];
+    function BuildModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, BuildService, AddTaskService, NgTableParams, Notification) {
         $scope.items = items;
         if (items.isEditing)
             $scope.Build = angular.copy(items.Build);
@@ -162,13 +164,13 @@
                 $scope.Build.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 BuildService.updateBuild($scope, $rootScope, $http, $scope.Build,id).then(function (res) {
                     if (res.data.code === 200) {
-                        alert("Update Successful");
+                        Notification.success("Updated Successful");
                         $uibModalInstance.close();
                     } else {
-                        alert("Error while updating! Try Again.");
+                        Notification.error("Error while updating! Try Again.");
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             } else {
                 // $scope.Build.last_entry_on = $rootScope.date;
@@ -191,13 +193,13 @@
                 $scope.Build.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 BuildService.addBuild($scope, $rootScope, $http, $scope.Build).then(function (res) {
                     if (res.data.code === 200) {
-                        alert("Added Successful");
+                        Notification.success("Added Successful");
                         $uibModalInstance.close();
                     } else {
-                        alert("Error while saving! Try Again.");
+                        Notification.error("Error while saving! Try Again.");
                     }
                 }, function (err) {
-                    alert("Error in processing sever error 500! Try Again.");
+                    Notification("Error in processing sever error 500! Try Again.");
                 });
             }
         };
@@ -223,7 +225,7 @@
                 $scope.loadGrid();
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                   });
         }
 

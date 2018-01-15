@@ -8,8 +8,8 @@
         .controller('SubTaskModelController', SubTaskModelController);
 
 
-    SubTaskController.$inject = ['$scope', '$rootScope', '$http', 'SubTaskService', '$uibModal', 'NgTableParams', 'AddTaskService'];
-    function SubTaskController($scope, $rootScope, $http, SubTaskService, $uibModal, NgTableParams , AddTaskService) {
+    SubTaskController.$inject = ['$scope', '$rootScope', '$http', 'SubTaskService', '$uibModal', 'NgTableParams', 'AddTaskService', 'Notification'];
+    function SubTaskController($scope, $rootScope, $http, SubTaskService, $uibModal, NgTableParams, AddTaskService, Notification) {
 
         $rootScope.title = "SubTask";
         $rootScope.isLoginPage = false;
@@ -80,17 +80,19 @@
                                    for (var team in $scope.TeamList) {
                                     if ($scope.TeamList[team].team_id == $scope.SubTask.team_id) {
                                        $scope.team.selected = $scope.TeamList[team];
+                                        $scope.loadGrid();
                                  }
                             }
                          }
                         }
                 else {
                     $scope.temp_team = $scope.TeamList[0].team_id;
+                    $scope.loadGrid();
                 }
-                $scope.loadGrid();
+               
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                   });
         }
 
@@ -116,24 +118,24 @@
             if (window.confirm("Do you really want to delte this SubTask")) {
                 SubTaskService.deleteSubTask($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code === 200) {
-                        alert("Deleted Successful");
+                        Notification.success("Deleted Successful");
                         $scope.loadGrid();
                     } else {
-                        alert("Error Occurred");
+                        Notification.error("Error Occurred");
                         // loadGrid();
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             }
             } else {
-                alert("Active Status Can't be Delete");
+                Notification({ message: "Active Status Can't be removed", title: "The selected Sub Task has status of active" }, 'warning');
             }
         }
     }
 
-    SubTaskModelController.$inject = ['$scope', '$rootScope', '$http','$filter' ,'items', '$uibModalInstance', 'SubTaskService' ,'AddTaskService','NgTableParams' ];
-    function SubTaskModelController($scope, $rootScope, $http,$filter ,items, $uibModalInstance, SubTaskService , AddTaskService, NgTableParams) {
+    SubTaskModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance', 'SubTaskService', 'AddTaskService', 'NgTableParams','Notification' ];
+    function SubTaskModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, SubTaskService, AddTaskService, NgTableParams, Notification) {
         $scope.items = items;
         if (items.isEditing)
             $scope.SubTask = angular.copy(items.SubTask);
@@ -183,13 +185,13 @@
                 $scope.SubTask.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 SubTaskService.updateSubTask($scope, $rootScope, $http, $scope.SubTask,id).then(function (res) {
                     if (res.data.code === 200) {
-                        alert("Update Successful");
+                        Notification.success("Update Successful");
                         $uibModalInstance.close();
                     } else {
-                        alert("Error while updating! Try Again.");
+                        Notification.error("Error while updating! Try Again.");
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             } else {
                 $scope.SubTask.task_id = $scope.task.selected;
@@ -231,13 +233,13 @@
                 $scope.SubTask.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 SubTaskService.addSubTask($scope, $rootScope, $http, $scope.SubTask).then(function (res) {
                     if (res.data.code === 200) {
-                        alert("Added Successful");
+                        Notification.success("Added Successful");
                         $uibModalInstance.close();
                     } else {
-                        alert("Error while saving! Try Again.");
+                        Notification.error("Error while saving! Try Again.");
                     }
                 }, function (err) {
-                    alert("Error in processing sever error 500! Try Again.");
+                    Notification("Error in processing sever error 500! Try Again.");
                 });
             }
         };
@@ -263,7 +265,7 @@
                 $scope.loadGrid();
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                   });
         }
 
@@ -288,7 +290,7 @@
              }
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                  });
          };
 

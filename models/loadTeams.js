@@ -1,7 +1,7 @@
 var db = require('../dbconnections'); //reference of dbconnection.js  
 var loadTeams = {  
     getLoadedTeams: function(id, callback) {  
-        return db.query('select amz_user_info.s_no, amz_user_info.team_id , amz_teams.team_name from amz_user_info inner join amz_teams on amz_user_info.team_id = amz_teams.team_id where amz_user_info.user_id = ? and amz_user_info.status = 1', [id], callback);  
+        return db.query('select amz_user_info.s_no, amz_user_info.team_id , amz_teams.team_name from amz_user_info inner join amz_teams on amz_user_info.team_id = amz_teams.team_id where amz_user_info.user_id = ? and amz_user_info.status = 1 and amz_teams.status = 1', [id], callback);  
     },
         
     getRegisteredUsers : function(id , callback) {
