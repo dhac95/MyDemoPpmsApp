@@ -92,6 +92,14 @@
                 AddTask.sub_task_id = $scope.subtask.selected;
                 AddTask.build = $scope.build.selected;
                 AddTask.date = $scope.date.selected;
+                var now = new Date();
+            var formatDate = $filter('date')(AddTask.date , 'yyyy-MM-dd' );
+            var today = $filter('date')(now, 'yyyy-MM-dd');
+
+            if (formatDate > today) {
+                Notification({ message: 'That can\'t be allowed! wait for that day ' }, 'warning');
+            }
+            else {
                 AddTaskService.addAddTask($scope, $rootScope, $http, $scope.AddTask).then(function (res) {
                     if (res.data.code == 200) {
                         Notification.success("Task Added");
@@ -106,6 +114,7 @@
                 }, function (err) {
                     Notification("Error in processing sever error 500! Try Again.");
                 });
+            }
             }
 
 
@@ -149,12 +158,21 @@
           //  getTaskbyDate();
            
         $scope.getTaskbyDate = function() {
-                var myDate = $scope.date.selected;
-            var formatDate = $filter('date')(myDate, "yyyy-MM-dd");
-                var obj = {
+                 var myDate = $scope.date.selected;
+                 var formatDate = $filter('date')(myDate, "yyyy-MM-dd");
+                 var obj = {
                         date : formatDate,
                         user_id : $rootScope.user_id
-                };
+                           };
+                
+                  var creDate = $filter('date')($rootScope.create_date, "yyyy-MM-dd");
+                  if(creDate > formatDate) {
+                      Notification({ message: "You are now redirected to Today\'s Date", title: "That action is restricted" }, 'Warning');
+                      getRemaingDate();
+                      
+                  }
+
+                    else {
                 var promiseGet = AddTaskService.getAddedTask($scope, $rootScope, $http ,obj );
                 promiseGet.then(function (pl) {
                      $scope.Addedtasklist = pl.data; 
@@ -169,7 +187,8 @@
                       function (errorPl) {
                           Notification({message :'Some Error in Getting Records.'}, 'error');
                     });
-            }
+                }
+            };
 
 
 
