@@ -152,10 +152,14 @@
           }
           var name = "Reports For " + uname + " From " + $filter('date')($scope.SdaReport.From, "dd-MM-yyyy") + " To " + $filter('date')($scope.SdaReport.To, "dd-MM-yyyy") ;
           var exportHref=Excel.tableToExcel(tableId,'User Data');
-          var a = document.createElement('a');
-            a.href = exportHref;
-            a.download = name + '.xls';
-            a.click();
+              $timeout(function () {
+                  var link = document.createElement('a');
+              document.body.appendChild(link);  // For Mozilla
+                  link.href = exportHref;
+            
+                  link.download = name + '.xls';
+                  link.click();
+              }, 100);
           //$timeout(function(){location.href=exportHref;},100); // trigger download
       };
 
@@ -191,7 +195,7 @@
 
             };
             if (formatDate1 > formatDate2 ) {
-                Notification({ message: "The From date cannot be greate than To date <b> Try chaning the date 🤦</b>"} , 'warning');
+                Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>"} , 'warning');
             }
             else {
             var promiseGet = SdaReportService.getSdaReports($scope, $rootScope, $http ,obj );

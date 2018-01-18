@@ -14,6 +14,7 @@ var app = angular.module('ERP', [
 	'ngSanitize',
 	'uiSwitch',
 	//'ngTouch',
+	'ceibo.components.table.export',
 	'toastr',
 	'720kb.datepicker',
 	'smart-table',
@@ -371,6 +372,14 @@ app.factory('Excel',function($window){
 		template='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="https://www.w3.org/TR/html401/"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
 		base64=function(s){return $window.btoa(unescape(encodeURIComponent(s)));},
 		format=function(s,c){return s.replace(/{(\w+)}/g,function(m,p){return c[p];});};
+	// return {
+	// 	tableToExcel: function (tableId, worksheetName) {
+	// 		var table = document.querySelector(tableId),
+	// 			ctx = { worksheet: worksheetName, table: table.innerHTML },
+	// 			href = uri + base64(format(template, ctx));
+	// 		return href;
+	// 	}
+	// };
 	return {
 		tableToExcel:function(tableId,worksheetName){
 			var table=$(tableId),
@@ -381,6 +390,53 @@ app.factory('Excel',function($window){
 	};
 });
 
+// Dynamic menu
+// $.AdminLTE.dinamicMenu();
+// /* DinamicMenu()
+//      * dinamic activate menu
+//      */
+// $.AdminLTE.dinamicMenu = function () {
+// 	var url = window.location;
+// 	// Will only work if string in href matches with location
+// 	$('.treeview-menu li a[href="' + url + '"]').parent().addClass('active');
+// 	// Will also work for relative and absolute hrefs
+// 	$('.treeview-menu li a').filter(function () {
+// 		return this.href == url;
+// 	}).parent().parent().parent().addClass('active');
+// };
+
+// $(function () {
+// 	function stripTrailingSlash(str) {
+// 		if (str.substr(-1) == '/') {
+// 			return str.substr(0, str.length - 1);
+// 		}
+// 		return str;
+// 	}
+
+// 	var url = window.location.pathname;
+// 	var activePage = stripTrailingSlash(url);
+
+// 	$('.nav li a').each(function () {
+// 		var currentPage = stripTrailingSlash($(this).attr('href'));
+
+// 		if (activePage == currentPage) {
+// 			$(this).parent().addClass('active');
+// 		}
+// 	});
+// });
+
+/** add active class and stay opened when selected */
+// var url = window.location;
+
+// // for sidebar menu entirely but not cover treeview
+// $('ul.sidebar-menu a').filter(function () {
+// 	return this.href == url;
+// }).parent().addClass('active');
+
+// // for treeview
+// $('ul.treeview-menu a').filter(function () {
+// 	return this.href == url;
+// }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
 
 //Main UI features don't change this just add the features top of it
 
@@ -478,8 +534,10 @@ app.directive('sparkline', function () {
 				$this.sparkline('html', $this.data());
 			});
 		}
-	}
+	};
 });
+
+
 
 /*
 Charts js

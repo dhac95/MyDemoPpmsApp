@@ -7,18 +7,21 @@
 			<!-- <div class="col-md-6 col-lg-6"> -->
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="from">Date From</label>
-					<input type="date" class="form-control" id="from" name="from" data-ng-model="UserReport.From" />
+                    <input type="date" class="form-control" id="from" name="from" data-ng-model="UserReport.From" required/>
+                    <span ng-show="myForm.from.$touched && myForm.from.$invalid" class="text-danger">*required From Date</span>
                 </div>
                 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="to">Date TO</label>
-					<input type="date" class="form-control" id="to" name="to" data-ng-model="UserReport.To" />
+                    <input type="date" class="form-control" id="to" name="to" data-ng-model="UserReport.To" required/>
+                    <span ng-show="myForm.to.$touched && myForm.to.$invalid" class="text-danger">*required To Date</span>
                 </div>
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
                     <label for="Team">Team Name</label>
                     <div class="dropdown">
-                      <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected">
+                      <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected" required>
+                            <span ng-show="myForm.Team.$touched && myForm.Team.$invalid" class="text-danger">*required To Date</span>
                             <option value="">Select the Team</option>
                         </select>
                     </div>
@@ -55,16 +58,44 @@
 <div class="modal-footer">
 	<button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showUserReports()">Show Results</button>
 </div>
-
-
 <div class="row">
+    <div ng-show='ReportList ==""'>
+        <h3 class="text-muted">No Data avaialble for the selected date From <strong>{{UserReport.From | date : 'MM/dd/yyyy' }}</strong> to <strong>{{UserReport.To | date : 'MM/dd/yyyy' }}</strong> for user <strong>{{$root.user_name}}</strong>
+            
+    </div> 
+    <div ng-if='ReportList !=""'>
         <button class="btn btn-link" ng-click="exportToExcel('#userData')">
                 <span class="glyphicon glyphicon-share"></span>
                             Export to Excel
               </button>
+
+            <!-- <div class="row pull-left center center-block center-content centre"> -->
+                <!-- <div class="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="true">
+                        <i class=""></i>Export table to...
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="table-export dropdown-menu" table-selector="'userData'" 
+                    export-options= "{type: 'pdf', escape: true, ignoreColumn : '[4]', tableName: ' Reports' }"
+                        aria-labelledby="dropdownMenu1">
+                        <li te-option te-value="'pdf'" te-param="'type'">
+                            <a href="#">PDF</a>
+                        </li>
+            
+                        <li te-option te-value="'excel'" te-param="'type'">
+                            <a href="#">Excel</a>
+                        </li>
+            
+                        <li te-option te-value="'csv'" te-param="'type'">
+                            <a href="#">CSV</a>
+                        </li>
+                    </ul>
+                </div> -->
+            <!-- </div> -->
     <div class="panel panel-default" id="userData">
         <div class="jumbotron modal-header model-title">
-            <strong>Reports  for {{$root.user_name}} on {{UserReport.From | date : 'dd/MM/yyyy' }}  to {{UserReport.To | date : 'dd/MM/yyyy' }} </strong>
+            <strong>Reports  for {{$root.user_name}} on {{UserReport.From | date : 'MM/dd/yyyy' }}  to {{UserReport.To | date : 'MM/dd/yyyy' }} </strong>
         </div>
         <div class="panel-body">
             <div style="overflow-x:auto;">
@@ -136,4 +167,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

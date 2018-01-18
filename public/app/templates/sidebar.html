@@ -1,14 +1,26 @@
 ﻿<!-- sidebar: style can be found in sidebar.less -->
 <section class="sidebar">
+    <!-- Sidebar user panel -->
+    <div class="user-panel">
+        <div class="pull-left image">
+            <img ng-if='$root.below_on == "null"' class="img-circle" src="../../AdminLTE/img/avatar04.png" alt="User profile picture">
+            <img ng-if="$root.below_on == 1" class="img-circle" src="../../AdminLTE/img/avatar3.png" alt="User profile picture">
+        </div>
+        <div class="pull-left info">
+            <p>{{$root.first_name}} {{$root.last_name}}</p>
+            <a href="">
+                <i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+    </div>
     
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu" data-widget="tree"> 
         <li class="header">Menu</li>
         <!-- Optionally, you can add icons to the links -->
-        <li data-ng-if="$root.user_type == 1" class="active"><a href="#/home"><i class="fa fa-home"></i><span>DA Home</span></a></li>
-        <li data-ng-if="$root.user_type == 2" class="active"> <a href="#/home"><i class="fa fa-home"></i><span>SDA Home</span></a></li>
-        <li data-ng-if="$root.user_type == 3" class="active"><a href="#/home"><i class="fa fa-home"></i><span>Manager Home</span></a></li>
-        <li data-ng-if="$root.user_type == 4" class="active"><a href="#/home"><i class="fa fa-home"></i><span>Admin Home</span></a></li>
+        <li data-ng-if="$root.user_type == 1"><a href="#/home"><i class="fa fa-home"></i><span>DA Home</span></a></li>
+        <li data-ng-if="$root.user_type == 2"> <a href="#/home"><i class="fa fa-home"></i><span>SDA Home</span></a></li>
+        <li data-ng-if="$root.user_type == 3"><a href="#/home"><i class="fa fa-home"></i><span>Manager Home</span></a></li>
+        <li data-ng-if="$root.user_type == 4"><a href="#/home"><i class="fa fa-home"></i><span>Admin Home</span></a></li>
         <li data-ng-if="$root.user_type != 1"><a href="#/Approve/master"><i class="fa fa-check-square"></i><span>Approve User</span></a></li>
         <li data-ng-if="$root.user_type != 1"><a href="#/Build/master"><i class="fa fa-cubes"></i><span>Build</span></a></li>
         <li data-ng-if="$root.user_type != 1" ><a href="#/Task/master"><i class="fa fa-tasks"></i><span>Task</span></a></li>
@@ -20,15 +32,15 @@
         <!-- <li class="active"><a href="#/Type/master"><i class="fa fa-intersex"></i><span>Type</span></a></li> -->
         <li data-ng-if="$root.user_type == 4 || $root.user_type == 3"><a href="#/Team/master"><i class="fa fa-suitcase"></i><span>Team</span></a></li>
         <li class="treeview" data-ng-if="$root.user_type == 1">
-            <a href="#">
+            <a href="#" >
                 <i class="fa fa-gg-circle"></i>
                 <span>User Tasks</span>
                 <span class="pull-right-container"></span>
                 <i class="fa fa-angle-left pull-right"></i>
             </a>
-            <ul class="treeview-menu">
-                <li data-ng-if="$root.user_type == 1" class="active"><a href="#/uTask/master"><i class="fa fa-empire"></i><span>Add Tasks</span></a></li>
-                <li data-ng-if="$root.user_type == 1" class="active"><a href="#/role/master"><i class="fa fa-trello"></i><span>Add OT</span></a></li>
+            <ul class="treeview-menu" data-ng-if="$root.user_type == 1">
+                <li class="active"><a href="#/uTask/master"><i class="fa fa-empire"></i><span>Add Tasks</span></a></li>
+                <li class="active"><a href="#/role/master"><i class="fa fa-trello"></i><span>Add OT</span></a></li>
             </ul>
         </li>
 

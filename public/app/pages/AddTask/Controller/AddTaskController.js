@@ -126,23 +126,17 @@
                 var promiseGet = AddTaskService.getRemaingDate($scope, $rootScope, $http, obj);
                 promiseGet.then(function (pl) {
                   
-                    if(pl.data.length > 0) {
+                    if(pl.data.length > 1) {
+                        var myFormat = $filter('date')(new Date(), "fullDate");
                         $rootScope.prop = true;
-                        Notification("You have pending dates! Complete the pending dates");
+                        Notification({ message: ' Complete the pending dates upto ' + myFormat , title :"You have pending dates!"});
                         $scope.DateList = $filter('orderBy')(pl.data); 
                     var formatmyDate = $scope.DateList[0];
                     $scope.date.selected = new Date(formatmyDate);
-                    // for (var i in $scope.DateList) {
-                    //     if ($scope.DateList[i] == $scope.AddTask.date) {
-                    //         $scope.date.selected = $scope.DateList[i];
-                    //     }
-                    //     else {
-                    //         $scope.date.selected = $scope.DateList[0];
-                    //     }
-                    // }
+                        
                     $scope.getTaskbyDate();
                         getTotalTime();
-                    }
+                    } 
                     else {
                         $rootScope.prop = false;
                         $scope.date.selected = new Date();
@@ -172,7 +166,7 @@
                       
                   }
 
-                    else {
+                else {
                 var promiseGet = AddTaskService.getAddedTask($scope, $rootScope, $http ,obj );
                 promiseGet.then(function (pl) {
                      $scope.Addedtasklist = pl.data; 
@@ -383,13 +377,7 @@
                 AddTask.tasks_id = $scope.task.selected;
                 AddTask.sub_task_id = $scope.subtask.selected;
                 AddTask.build = $scope.build.selected;
-                
-                // $scope.AddTask.team_id = 19;
-                // $scope.AddTask.last_entry_on = $rootScope.date;
-                // $scope.AddTask.create_date = $rootScope.date;
-                // $scope.AddTask.maintain_date = $rootScope.date;
-                //$scope.AddTask.CreatedBy = "1";
-               // $scope.AddTask.ModifiedBy = "1";
+            
                 AddTaskService.addAddTask($scope, $rootScope, $http, $scope.AddTask).then(function (res) {
                     if (res.data.code == 200) {
                         alert("Added Successful");

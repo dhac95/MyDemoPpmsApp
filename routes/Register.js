@@ -8,6 +8,7 @@ var nodestrtotime = require('nodestrtotime');
 var generator = require('generate-password');
 var nodemailer = require('nodemailer');
 var in_array = require('in_array');
+var moment = require('moment');
 //var inArray = require('in-array');
 
 var db = require('../dbconnections');
@@ -16,34 +17,24 @@ var os = require('os');
 
 router.post('/' , function(req , res , next){ 
 
-   var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+   var ip0 = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   var ip2 = req.headers.host;
     var ip3 = os.hostname();
     var ifaces = os.networkInterfaces();
-    function getIP(address) { 
-    Object.keys(ifaces).forEach(function (ifname) {
-        var alias = 0;
 
-        ifaces[ifname].forEach(function (iface) {
-            if ('IPv4' !== iface.family || iface.internal !== false) {
-                // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
-                return;
+    var interfaces = os.networkInterfaces();
+    var addresses = [];
+    for (var k in interfaces) {
+        for (var k2 in interfaces[k]) {
+            var address = interfaces[k][k2];
+            if (address.family === 'IPv4' && !address.internal) {
+                addresses.push(address.address);
             }
-            if (alias >= 1) {
-                // this single interface has multiple ipv4 addresses
-                return(ifname + ':' + alias, iface.address);
-               
-            } else {
-                // this interface has only one ipv4 adress
-                return(iface.address);
-            
-            }
-            ++alias;
-        });
-    });
-}
-    var ip5 = [];
-    ip5 = getIP();
+        }
+    }
+    var ip = addresses[0];
+
+
    // var ip4 = ifaces.WI-FI[1].address;
    // var ip7 = ip5;
 
@@ -86,15 +77,21 @@ router.post('/' , function(req , res , next){
                                                                 }
                                                                  else {
                                                                 //     teamCount = tempTeamCount ;
-                                                                //     db.query("UPDATE amz_login SET user_deletion=0 , user_status=1, user_activation=1 WHERE user_name=?" ,[name] , function(e4 , r4 , f4) {
+                                                                    db.query("INSERT INTO amz_ip_list(ip_address,create_date,maintain_date) VALUES(?,?,?)", [ip, actionDate, actionDate], function(e4 , r4 , f4) {
                                                                 //    // db.query("INSERT INTO amz_user_info(user_id,team_id,status,create_date, maintain_date) VALUES(?,?,?,?,?)" ,[userID , team , '1' , actionDate , actionDate ] , function(e4, r4, f4){
-                                                                //         if(e4) {
-                                                                //             res.send(e4);
-                                                                //         } else {
+                                                                       if(e4) {
+                                                                            res.send(e4);
+                                                                        } else {
                                                                             db.query("INSERT INTO amz_user_info(user_id,team_id,status,create_date, maintain_date) VALUES(?,?,?,?,?)" ,[userID , team , '0' , actionDate , actionDate ] , function(e5, r5, f5) {
                                                                                 if(e5) {
                                                                                     res.send(e5);
                                                                                 } else {
+                                                                                    var today = moment().format('LLLL');
+                                                                                    // db.query("INSERT INTO amz_ip_list(ip_address,create_date,maintain_date) VALUES(?,?,?)", [ip, actionDate, actionDate], function (e, r, f) {
+                                                                                    //     if (e) {
+                                                                                    //         res.send(e);
+                                                                                    //     }
+                                                                                    // });
                                                                                     // create reusable transporter object using the default SMTP transport
                                                             var transporter = nodemailer.createTransport({
                                                                 // host: 'smtp.ethereal.email',
@@ -113,7 +110,7 @@ router.post('/' , function(req , res , next){
                                                                 to: email, // list of receivers
                                                                 subject: 'New Team Registration ✔', // Subject line
                                                                 text: name, // plain text body
-                                                                html: '<b> Hi ' + name + ',</b><br /> Your registration is created.  <br /> Wait for your request to be approved .<b><br /> Thanks</b>' // html body
+                                                                html: '<b> Hi ' + name + ',</b><br /> Your registration is created at ' + today +  ' .<br /> Wait for your request to be approved .<b><br /> Thanks</b>' // html body
                                                             };
                                                         
                                                             // send mail with defined transport object
@@ -130,8 +127,8 @@ router.post('/' , function(req , res , next){
                                                                             });
                                                                         }
                                                                         
-                                                                //    });
-                                                         //       }
+                                                                    });
+                                                                }
                                                           //  }
                                                             });
                                                         }
@@ -161,6 +158,12 @@ router.post('/' , function(req , res , next){
                                         if(errors3) {
                                             res.send(errors3);
                                         } else {
+                                            db.query("INSERT INTO amz_ip_list(ip_address,create_date,maintain_date) VALUES(?,?,?)" , [ip , actionDate , actionDate], function(e,r,f){
+                                                    if(e) {
+                                                        res.send(e);
+                                                    }
+                                            });
+                                            var today = moment().format('LLLL');
                                                  // create reusable transporter object using the default SMTP transport
                                                             var transporter = nodemailer.createTransport({
                                                             // host: 'smtp.ethereal.email',
@@ -179,7 +182,7 @@ router.post('/' , function(req , res , next){
                                                             to: email, // list of receivers
                                                             subject: 'New User Registration ✔', // Subject line
                                                             text: name, // plain text body
-                                                            html: '<b> Hi ' + name + ',</b><br /> Your registration is created. Use this temp password to update your password  <strong> """ '+ password + ' """</strong> <br /> Wait for your request to be approved .<b><br /> Thanks</b>' // html body
+                                                            html: '<b> Hi ' + name + ',</b><br /> Your registration is created at '+ today +'. Use this temp password to update your password  <strong> """ '+ password + ' """</strong> <br /> Wait for your request to be approved .<b><br /> Thanks</b>' // html body
                                                         };
                                                     
                                                         // send mail with defined transport object

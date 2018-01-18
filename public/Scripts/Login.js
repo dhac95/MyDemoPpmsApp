@@ -239,7 +239,7 @@
             var obj = { name : $scope.Reset.user_name };
           $http.post(forgot, obj).then(function(response) { 
                   if(response.data.code === 200) {
-                      Notification.success('Success password updated! Check the mail <iframe src="https://giphy.com/embed/l0MYxef0mpdcnQnvi" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>' );
+                      Notification.success('Success password updated! Check the mail <iframe src="https://giphy.com/embed/6brH8dM3zeMyA" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>' );
                   }
                   else if(response.data.code === 300){
                       Notification({ message: 'User does not exist !!! Register first <iframe src="https://giphy.com/embed/3ohzdYt5HYinIx13ji" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'} , 'warning');

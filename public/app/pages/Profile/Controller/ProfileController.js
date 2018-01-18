@@ -9,7 +9,7 @@
 
 
     ProfileController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'ProfileService', 'AddTaskService', '$uibModal', 'Notification', 'NgTableParams'];
-    function ProfileController($scope, $rootScope, $http, $filter, ProfileService, AddTaskService, $uibModal, Notification, NgTableParams) {
+    function ProfileController($scope, $rootScope, $http, $filter, ProfileService, AddTaskService, $uibModal, Notification, NgTableParams) { 
 
         $rootScope.title = "Profile";
         $rootScope.isLoginPage = false;
@@ -88,8 +88,8 @@
 
        
 
-    ProfileModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance', 'Notification', 'ProfileService'];
-    function ProfileModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, Notification, ProfileService) {
+    ProfileModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', '$cookieStore', 'items', '$uibModalInstance', 'Notification', 'ProfileService'];
+    function ProfileModelController($scope, $rootScope, $http, $filter, $cookieStore ,items, $uibModalInstance, Notification, ProfileService) {
 
         $scope.items = items;
 
@@ -104,8 +104,10 @@
                 $rootScope.first_name = $scope.Profile.first_name;
                 $rootScope.last_name = $scope.Profile.last_name;
                 if ($scope.Profile.pic == undefined) {
-                $rootScope.below_on = "null";
+                    sessionStorage.setItem('below_on', "null");
+                      $rootScope.below_on = "null";
                 } else {
+                    sessionStorage.setItem('below_on', $scope.Profile.pic);
                     $rootScope.below_on = $scope.Profile.pic;
                 }
 

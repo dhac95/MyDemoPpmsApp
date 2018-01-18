@@ -8,8 +8,8 @@
         .controller('UserReportModelController', UserReportModelController);
 
 
-    UserReportController.$inject = ['$scope', '$rootScope', '$http', '$filter','Excel' ,'UserReportService','AddTaskService' ,'$uibModal','NgTableParams'];
-    function UserReportController($scope, $rootScope, $http, $filter, Excel , UserReportService,AddTaskService ,$uibModal, NgTableParams) {
+    UserReportController.$inject = ['$scope', '$rootScope', '$http', '$filter', '$timeout', 'Excel', 'UserReportService', 'AddTaskService', '$uibModal', 'NgTableParams', 'Notification'];
+    function UserReportController($scope, $rootScope, $http, $filter, $timeout, Excel, UserReportService, AddTaskService, $uibModal, NgTableParams, Notification) {
 
         $rootScope.title = "UserReport";
         $rootScope.isLoginPage = false;
@@ -78,7 +78,7 @@
                     $scope.selectTask();
                 },
                       function (errorPl) {
-                        alert('Some Error in Getting Records.', errorPl);
+                          Notification('Some Error in Getting Records.');
                       });
             }
     
@@ -100,7 +100,7 @@
                         $scope.selectsubTask();
                     },
                           function (errorPl) {
-                            alert('Some Error in Getting Records.', errorPl);
+                              Notification('Some Error in Getting Records.');
                          });
                  };
     
@@ -119,7 +119,7 @@
                  }
                   },
                         function (errorPl) {
-                            alert('Some Error in Getting Records.', errorPl);
+                            Notification('Some Error in Getting Records.');
                         });
           };
 
@@ -152,26 +152,41 @@
                 sub_task_id : subtask,
                 task_desc : taskDesc
             };
+            if (formatDate1 > formatDate2) {
+                    Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
+            } 
+            else {
             var promiseGet = UserReportService.getUserReports($scope, $rootScope, $http ,obj );
             promiseGet.then(function (pl) {
                  $scope.ReportList = pl.data;
                  $scope.getTotalTime(); 
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                 });
+            }
 
-        };
+        }
 
-        
+        // $scope.exportData = function () {
+        //     var name = $rootScope.user_name;
+        //     var blob = new Blob([document.getElementById('exportable').innerHTML], {
+        //         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        //     });
+        //     saveAs(blob, name + " Report.xls");
+        // };
+
         $scope.exportToExcel=function(tableId){ // ex: '#my-table'
         var name = $rootScope.user_name;
-        var exportHref=Excel.tableToExcel(tableId,'User Data');
-        var a = document.createElement('a');
-          a.href = exportHref;
-          a.download = name + ' report.xls';
-          a.click();
-        //$timeout(function(){location.href=exportHref;},100); // trigger download
+            var exportHref = Excel.tableToExcel(tableId,'sheet name');
+            $timeout(function () {
+            var link = document.createElement('a');
+            document.body.appendChild(link);  // For Mozilla
+            link.href = exportHref;
+            link.download = name + ' Reports';
+            link.click();
+            }, 100);
+       // $timeout(function(){location.href=exportHref;},100); // trigger download
     };
 
        // getTotalTime();
@@ -198,7 +213,7 @@
                  $scope.remTime = pl.data; 
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                 });
         };
 
@@ -213,15 +228,15 @@
             if (window.confirm("Do you really want to delte this UserReport")) {
                 AddTaskService.deleteAddTask($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Deleted Successful");
+                        Notification.success("Deleted Successful");
                         $scope.getTotalTime();
                         showUserReports();
                     } else {
-                        alert("Try Again");
+                        Notification.error("Try Again");
                         
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             }
             //} else {
@@ -229,9 +244,6 @@
             //}
         }
     }
-
-       
-
 
     UserReportModelController.$inject = ['$scope', '$rootScope', '$http', 'items', '$uibModalInstance', 'AddTaskService' , 'UserReportService'];
     function UserReportModelController($scope, $rootScope, $http, items, $uibModalInstance, AddTaskService ,UserReportService ) {
@@ -254,18 +266,18 @@
                // $scope.UserReport.create_date = $rootScope.date;
                AddTaskService.updateAddTask($scope, $rootScope, $http, $scope.UserReport,id).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Updated Successful");
+                        Notification.success("Updated Successful");
                         $uibModalInstance.close();
                         // $scope.getTotalTime();
                         // showUserReports();
                     } else if(res.data.results){
-                        alert("Error occoured !! Check the entered time");
+                        Notification({ message: "Time must be total of 8 hours", title: "Error! Check entered time" }, 'error');
                     }
                     else {
-                        alert("Error occoured !! Please try again");
+                        Notification.error("Error occoured !! Please try again");
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             } else {
                 $scope.UserReport.user_id = $rootScope.user_id;
@@ -276,16 +288,16 @@
                 
                 UserReport.addUserReport($scope, $rootScope, $http, $scope.UserReport).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Added Successful");
+                        Notification.success("Added Successful");
                         $uibModalInstance.close();
                     } else if(res.data.results){
-                        alert("Error occoured !! Check the entered time");
+                        Notification({ message: "Time must be total of 8 hours", title: "Error! Check entered time" }, 'error');
                     }
                     else {
-                        alert("Error occoured !! Please try again");
+                        Notification("Error occoured !! Please try again");
                     }
                 }, function (err) {
-                    alert("Error in processing sever error 500! Try Again.");
+                    Notification("Error in processing sever error 500! Try Again.");
                 });
             }
         };
@@ -308,7 +320,7 @@
                 $scope.selectBuild();
             },
                   function (errorPl) {
-                    alert('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                   });
         }
 
@@ -347,7 +359,7 @@
                     $scope.selectsubTask();
                 },
                       function (errorPl) {
-                        alert('Some Error in Getting Records.', errorPl);
+                          Notification('Some Error in Getting Records.');
                      });
              };
 
@@ -366,7 +378,7 @@
              }
               },
                     function (errorPl) {
-                        alert('Some Error in Getting Records.', errorPl);
+                        Notification('Some Error in Getting Records.');
                     });
       };
 

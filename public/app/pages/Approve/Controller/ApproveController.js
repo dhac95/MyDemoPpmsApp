@@ -106,10 +106,13 @@
         };
 
         function removeApprove(Approve) {
-        
-               var id = Approve.s_no;
+                var obj = {
+                        ID : Approve.s_no,
+                    Modify : $rootScope.user_id
+
+                };
             if (window.confirm("Do you really want to delete this Request !!! this action can't be undone")) {
-                ApproveService.deleteApprove($scope, $rootScope, $http, id).then(function (res) {
+                ApproveService.deleteApprove($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code == 200) {
                         Notification.success("User Request is Denied by you");
                         $scope.loadGrid();

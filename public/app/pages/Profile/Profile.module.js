@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('ERP.pages.Profile', []).config(routeConfig);
+    angular.module('ERP.pages.Profile', ['ngCookies']).config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider) {
