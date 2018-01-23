@@ -6,6 +6,7 @@ var Team = {
     getTeamById: function(id, callback) {  
         return db.query("select * from amz_teams where team_id=?", [id], callback);  
     },  
+      
     addTeam: function(Team, callback) {  
         return db.query("INSERT INTO amz_teams(team_name,added_by,status,team_deletion,last_modify,create_date,maintain_date) VALUES(?,?,?,?,?,?,?)", [Team.team_name,Team.added_by,Team.status,Team.team_deletion,Team.last_modify,Team.create_date,Team.maintain_date], callback);  
     },  

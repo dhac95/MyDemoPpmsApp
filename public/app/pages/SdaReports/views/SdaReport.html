@@ -5,6 +5,8 @@
 	<form name="myForm" role="form" class="well well-sm">
 		<div class="row">
 			<!-- <div class="col-md-6 col-lg-6"> -->
+
+
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="from">Date From</label>
                     <input type="date" class="form-control" id="from" name="from" data-ng-model="SdaReport.From" required/>
@@ -56,6 +58,11 @@
                         </select>
                         
                     </div>
+                </div>
+                <div class="form-group col-md-6 col-lg-6">
+                        <lable for="userOT"><strong> User OT tasks </strong></lable> <br>
+                            <input type="checkbox" class="icheckbox_flat-blue" id="checkbox" data-ng-model="SdaReport.Ot">
+                            <label for="checkbox"> If Checked shows OT tasks</label>
                 </div>
 		</div>
 	</form>

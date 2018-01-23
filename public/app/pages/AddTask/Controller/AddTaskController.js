@@ -58,7 +58,7 @@
             }, function () {
             });
         };
-
+ 
 
         $scope.editAddTaskModel = function (AddTask) {
             $scope.items.isEditing = true;
@@ -165,7 +165,7 @@
                       getRemaingDate();
                       
                   }
-
+ 
                 else {
                 var promiseGet = AddTaskService.getAddedTask($scope, $rootScope, $http ,obj );
                 promiseGet.then(function (pl) {
@@ -335,11 +335,11 @@
     AddTaskModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance','Notification' ,'AddTaskService'];
     function AddTaskModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, Notification ,AddTaskService) {
         var time = items.AddTask.time.substring(0,5); 
-       var formatDate =  $filter('date')(items.AddTask.date, "yyyy-MM-dd");
+        var formatDate =  $filter('date')(items.AddTask.date, "yyyy-MM-dd");
         // items.push({ "time" : time } );
         items.AddTask.time = time;
         items.AddTask.date = formatDate;
-
+ 
         $scope.items = items;
      
         if (items.isEditing)

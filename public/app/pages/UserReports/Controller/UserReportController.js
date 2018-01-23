@@ -245,8 +245,12 @@
         }
     }
 
-    UserReportModelController.$inject = ['$scope', '$rootScope', '$http', 'items', '$uibModalInstance', 'AddTaskService' , 'UserReportService'];
-    function UserReportModelController($scope, $rootScope, $http, items, $uibModalInstance, AddTaskService ,UserReportService ) {
+    UserReportModelController.$inject = ['$scope', '$rootScope', '$http','$filter' ,'items', '$uibModalInstance', 'AddTaskService', 'UserReportService', 'Notification'];
+    function UserReportModelController($scope, $rootScope, $http, $filter,items, $uibModalInstance, AddTaskService, UserReportService, Notification ) {
+        var time = items.UserReport.time.substring(0, 5);
+        var formatDate = $filter('date')(items.UserReport.date, "yyyy-MM-dd");
+        items.UserReport.time = time;
+        items.UserReport.date = formatDate;
         $scope.items = items; 
         if (items.isEditing)
             $scope.UserReport = angular.copy(items.UserReport);

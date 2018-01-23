@@ -13,6 +13,7 @@ var app = angular.module('ERP', [
 	'ui.select',
 	'ngSanitize',
 	'uiSwitch',
+	'angularMoment',
 	//'ngTouch',
 	'ceibo.components.table.export',
 	'toastr',

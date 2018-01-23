@@ -7,50 +7,55 @@
 			<!-- <div class="col-md-6 col-lg-6"> -->
                 <div class="form-group col-md-3 col-lg-3">
 					<label for="date">date</label>
-					<input type="text" class="form-control" id="date" name="date" data-ng-model="UserReport.date" {{"UserReport.date | date:'MM/dd/yyyy'"}} disabled/>
+                    <input type="text" class="form-control" id="date" name="date" data-ng-model="UserReport.date" {{"UserReport.date | date:'MM/dd/yyyy'"}} disabled required>
+                    <span ng-show="myForm.date.$touched && myForm.date.$invalid" class="text-danger">*required Date</span>
                 </div>
 
                 <div class="form-group col-md-3 col-lg-3">
-                    <label for="Team">Team Name</label>
+                    <label for="team">Team Name</label>
                     <div class="dropdown">
-                        <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList track by Team.id" data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected" data-ng-init="team.selected = UserReport.team_id">
+                        <select class="form-control" id="team" name="team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList track by Team.id" data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected" data-ng-init="team.selected = UserReport.team_id">
                             <option value="">Select the Team</option>
                         </select>               
                     </div>
+                    <span ng-show="myForm.team.$touched && myForm.team.$invalid" class="text-danger">*required Team</span>
                 </div>
        
                 <div class="form-group col-md-3 col-lg-3">
-                    <label for="Build">Build Name</label>
+                    <label for="build">Build Name</label>
                     <div class="dropdown">
 
-                        <select class="form-control" data-ng-options="Build.build_no as Build.build_name for Build in BuildList" data-ng-model="build.selected" data-ng-init="build.selected = UserReport.build">
+                        <select class="form-control" id="build" name="build" data-ng-options="Build.build_no as Build.build_name for Build in BuildList" data-ng-model="build.selected" data-ng-init="build.selected = UserReport.build">
                             <option value="">Select the Build</option>
                         </select>
                         
                     </div>
+                        <div ng-show="myForm.build.$touched && myForm.build.$invalid" class="text-danger">*required Build</div>
                 </div>
 
                 <div class="form-group col-md-3 col-lg-3">
-                    <label for="Task">Task Name</label>
+                    <label for="task">Task Name</label>
                     <div class="dropdown">
 
-                        <select class="form-control" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask()" data-ng-init="task.selected = UserReport.tasks_id">
+                        <select class="form-control" id="task" name="task" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask()" data-ng-init="task.selected = UserReport.tasks_id">
                             <option value="">Select the Task</option>
                
                         </select>
                         
                     </div>
+                    <div ng-show="myForm.task.$touched && myForm.task.$invalid" class="text-danger">*required Task</div>
                 </div>
                 <div class="form-group col-md-3 col-lg-3">
                     <label for="subTask">Sub Task Name</label>
                     <div class="dropdown">
 
-                            <select class="form-control" data-ng-options="subTask.sub_task_id as subTask.sub_task_name for subTask in subTaskList" data-ng-model="subtask.selected" data-ng-init="subtask.selected = UserReport.sub_task_id">
+                            <select class="form-control" id="subTask" name="subTask" data-ng-options="subTask.sub_task_id as subTask.sub_task_name for subTask in subTaskList" data-ng-model="subtask.selected" data-ng-init="subtask.selected = UserReport.sub_task_id" data-ng-disabled='subTaskList == ""' ng-required='subTaskList != ""' >
                             <option value="">Select the subTask</option>
                
                         </select>
                         
                     </div>
+                    <div ng-show="myForm.subTask.$touched && myForm.subTask.$invalid" class="text-danger">*required Sub Task</div>
                 </div>
 
                 <div class="form-group col-md-3 col-lg-3">
@@ -67,8 +72,9 @@
                 </div>
                 <div class="form-group col-md-3 col-lg-3">
 					<label for="time">time</label>
-					<input type="text" class="form-control" id="time" name="time" required pattern="[0-0][0-8]:[0-5][0-9]+" placeholder="for example 07:59" ng-maxlength="5" maxlength="5" data-ng-model="UserReport.time" ng-required="true" required/>
-                </div>
+                    <input type="text" class="form-control" id="time" name="time" required pattern="[0-0][0-8]:[0-5][0-9]+" placeholder="for example 07:59" ng-maxlength="5" maxlength="5" data-ng-model="UserReport.time" required/>
+                    <div ng-show="myForm.time.$touched && myForm.time.$invalid" class="text-danger">*required Time</div>
+                </div> 
             
                 <div class="form-group col-md-3 col-lg-3">
 					<label for="cmds">cmds</label>

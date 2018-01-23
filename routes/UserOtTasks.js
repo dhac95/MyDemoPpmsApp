@@ -64,6 +64,7 @@ router.post('/', function(req, res, next) {
                     res.send({
                         "code":400,
                         "failed":"error ocurred",
+                        "results": error
                       });
                 }
                 else {
@@ -96,6 +97,7 @@ router.put('/:id', function(req, res, next) {
     var Cmds = req.body.cmds;
     var ontime = "Y";
     var actionDate = datetime.create().format('Y-m-d');
+    var userType = req.body.user_type;
   //  var TasksID = req.body.tasks_id;
 
     var secs = 0;
@@ -120,11 +122,12 @@ router.put('/:id', function(req, res, next) {
                 });
             }
             else {
-            db.query("update user_tasks_ot set team_id = ?,build = ?,tasks_id = ?,sub_task_id = ?,task_desc = ?,count = ?,noofdevice = ?,time = ?,date = ?,on_time = ?,cmds = ?,maintain_date = ?)" ,[id,userID,team,Build,TasksID,subtask,taskDesc,Count,noOfDevice,Time,Date,ontime,Cmds,actionDate], function (error, results, fields) {
+            db.query("update user_tasks_ot set team_id = ?,build = ?,tasks_id = ?,sub_task_id = ?,task_desc = ?,count = ?,noofdevice = ?,time = ?,date = ?,cmds = ?,maintain_date = ? WHERE task_id = ?" ,[team,Build,TasksID,subtask,taskDesc,Count,noOfDevice,Time,Date,Cmds,actionDate, id], function (error, results, fields) {
                 if(error) {
                     res.send({
                         "code":400,
                         "failed":"error ocurred",
+                        "results" : error
                       });
                 }
                 else {
@@ -164,7 +167,7 @@ router.post('/reports', function(req, res, next) {
     var date = tem_date.format('Y-m-d');
     var userID = req.body.user_id;
 
-    db.query("SELECT user_tasks_ot.task_id , user_tasks_ot.user_id ,user_tasks_ot.team_id, amz_teams.team_name ,user_tasks_ot.build, amz_builds.build_name ,user_tasks_ot.tasks_id, amz_tasks.task_name , user_tasks_ot.sub_task_id,amz_sub_tasks.sub_task_name ,user_tasks_ot.task_desc ,amz_task_desc.task_info , user_tasks_ot.count , user_tasks_ot.noofdevice , user_tasks_ot.work_type , user_tasks_ot.cf , user_tasks_ot.wu , user_tasks_ot.wu_status , user_tasks_ot.time , user_tasks_ot.date , user_tasks_ot.cmds ,user_tasks_ot.ot_status ,user_tasks_ot.act_by,user_tasks_ot.admin_cmds,user_tasks_ot.user_type , user_tasks_ot.modified_by , user_tasks_ot.create_date , user_tasks_ot.maintain_date FROM user_tasks_ot INNER JOIN amz_teams ON user_tasks_ot.team_id = amz_teams.team_id LEFT JOIN amz_builds ON  user_tasks_ot.build = amz_builds.build_no INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id INNER JOIN amz_sub_tasks ON user_tasks_ot.sub_task_id = amz_sub_tasks.sub_task_id LEFT JOIN amz_task_desc ON user_tasks_ot.task_desc = amz_task_desc.task_id WHERE date=? AND user_id= ?", [date, userID] , function(error, results, fields){
+    db.query("SELECT user_tasks_ot.task_id , user_tasks_ot.user_id , amz_login.user_name ,user_tasks_ot.team_id, amz_teams.team_name ,user_tasks_ot.build, amz_builds.build_name ,user_tasks_ot.tasks_id, amz_tasks.task_name , user_tasks_ot.sub_task_id,amz_sub_tasks.sub_task_name ,user_tasks_ot.task_desc ,amz_task_desc.task_info , user_tasks_ot.count , user_tasks_ot.noofdevice , user_tasks_ot.work_type , user_tasks_ot.cf , user_tasks_ot.wu , user_tasks_ot.wu_status , user_tasks_ot.time , user_tasks_ot.date , user_tasks_ot.cmds ,user_tasks_ot.ot_status ,user_tasks_ot.act_by,user_tasks_ot.admin_cmds,user_tasks_ot.user_type , user_tasks_ot.modified_by , user_tasks_ot.create_date , user_tasks_ot.maintain_date FROM user_tasks_ot INNER JOIN amz_teams ON user_tasks_ot.team_id = amz_teams.team_id LEFT JOIN amz_builds ON  user_tasks_ot.build = amz_builds.build_no INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id Left JOIN amz_sub_tasks ON user_tasks_ot.sub_task_id = amz_sub_tasks.sub_task_id LEFT JOIN amz_task_desc ON user_tasks_ot.task_desc = amz_task_desc.task_id INNER JOIN amz_login on user_tasks_ot.user_id = amz_login.user_id WHERE date= ? AND user_tasks_ot.user_id= ?", [date, userID] , function(error, results, fields){
             if(error) {
                 res.send({
                     "code":400,
@@ -177,5 +180,44 @@ router.post('/reports', function(req, res, next) {
     });
 
 });  
+
+router.post('/getTime', function (req, res, next) {
+    var userID = req.body.user_id;
+    var temp_date = datetime.create(req.body.date);
+    var Date = temp_date.format('Y-m-d');
+    var secs = 0;
+    db.query("SELECT time FROM user_tasks_ot WHERE date=? AND user_id=?", [Date, userID], function (error, results, fields) {
+        if (error) {
+            res.send(error);
+        }
+        else {
+            if (results.length > 0) {
+                for (var i = 0; i < results.length; i++) {
+                    secs = secs + nodestrtotime(results[i].time) - nodestrtotime('00:00:00');
+                }
+                var remainSecs = 57600 - secs;
+                var remainHours = secondsToHms(remainSecs);
+                var TotalHours = secondsToHms(secs);
+                res.json({
+                    total: TotalHours,
+                    remain: remainHours
+                });
+            }
+            else {
+                for (var i = 0; i < results.length; i++) {
+                    secs = secs + nodestrtotime(results[i].time) - nodestrtotime('00:00:00');
+                }
+                var remainSecs = 57600 - secs;
+                var remainHours = secondsToHms(remainSecs);
+                var TotalHours = secondsToHms(secs);
+                res.json({
+                    total: '00:00:00',
+                    remain: remainHours
+
+                });
+            }
+        }
+    });
+});
 
 module.exports = router; 

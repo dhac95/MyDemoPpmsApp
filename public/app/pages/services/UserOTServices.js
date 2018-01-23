@@ -20,6 +20,7 @@
         this.getLoadedsubTasks = getLoadedsubTasks;
         this.getLoadedBuilds = getLoadedBuilds;
         this.getAddedTask = getAddedTask;
+        this.getRemaingTime = getRemaingTime;
 
         /////////////
 
@@ -34,6 +35,10 @@
         function addUserOT($scope, $rootScope, $http, UserOT) {
             return $http.post($rootScope.endPoint + 'userot/', UserOT);
         }
+        function getRemaingTime($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'userot/getTime/', obj); 
+        }
+
         function getAddedTask($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'userot/reports/', obj);
         }

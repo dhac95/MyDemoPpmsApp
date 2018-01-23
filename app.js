@@ -1,3 +1,5 @@
+
+
 // Core modules
 var express = require('express');  
 var path = require('path');  
@@ -40,6 +42,8 @@ var FP = require('./routes/fp');
 var reg = require('./routes/Register');
 var approve = require('./routes/approve');
 var CP = require('./routes/cp');
+var myTeam = require('./routes/loadTeamForReg');
+var chart = require('./routes/PrepareChart');
 
 // Express init
 var app = express();  
@@ -90,6 +94,9 @@ app.use('/fp' , FP);
 app.use('/reg' ,  reg);
 app.use('/approve' ,  approve);
 app.use('/cp', CP);
+app.use('/myTeam' , myTeam);
+app.use('/chart', chart);
+
 
 // catch 404 and forward to error handler  
 app.use(function(req, res, next) {  

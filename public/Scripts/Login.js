@@ -1,7 +1,7 @@
 ﻿
   (function () {
       angular.module('LoginApp', ['ngCookies', 'ui-notification']).controller('LoginController', function ($scope, $http, $cookieStore,Notification) {
-        angular.module('LoginApp', ['ui-notification'])
+        angular.module('LoginApp', ['ui-notification']) 
         .config(function(NotificationProvider) {
             NotificationProvider.setOptions({
                 delay: 10000,
@@ -16,7 +16,7 @@
           var endPoint = "login";
           var forgot = "fp";
           var register = "reg";
-          var team = "Teams";
+          var team = "myTeam";
         
           $scope.isPassword = false;
           $scope.isReg = false;
@@ -258,7 +258,6 @@
           };
 
         getTeamList();
-
         function getTeamList() {
             $http.get(team).then(function(response) { 
                     $scope.TeamList = response.data;

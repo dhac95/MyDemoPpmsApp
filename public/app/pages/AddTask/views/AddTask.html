@@ -11,12 +11,6 @@
                     <span ng-show="myForm.date.$touched && myForm.date.$invalid" class="text-danger">*required Date</span>
                 </div>
                 
-                <!-- <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                    <label for="product">Team Name</label>
-                    <input type="text" ng-model="team.selected" placeholder="Select Team" uib-typeahead="Team.team_id as Team.team_name for Team in TeamList | filter:{team_name:$viewValue}" data-ng-change="selectTask();selectBuild();"
-                           class="form-control ng-valid ng-touched ng-dirty ng-valid-parse ng-empty" typeahead-show-hint="true" typeahead-min-length="0" />
-                    <div ng-show="myForm.product.$touched  && myForm.product.$invalid" class="text-danger">*required Team</div>
-                </div> -->
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
                     <label for="team">Team Name</label>
@@ -161,7 +155,7 @@
                 <tfoot>
                     <tr>
                             <th colspan="3" class="text-right" style="padding-right: 10px" > Total Time : </th>
-                            <th>{{ remTime.total }}</th>
+                            <th>{{ remTime.total }}</th> 
                             <th colspan="3" class="text-right" style="padding-right: 10px"> Total Count : </th>
                             <th>{{ getTotalCount() }}</th>
                         <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>

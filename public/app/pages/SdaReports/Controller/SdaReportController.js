@@ -184,6 +184,8 @@
             var task = $scope.task.selected;
             var user = $scope.user.selected;
             var subtask = $scope.subtask.selected;
+            var userOtTasks = $scope.SdaReport.Ot;
+
             var obj = {
                 From : formatDate1,
                 To : formatDate2,
@@ -192,6 +194,7 @@
                 tasks_id : task,
                 sub_task_id : subtask,
                 task_desc : taskDesc,
+                user_ot: userOtTasks
 
             };
             if (formatDate1 > formatDate2 ) {
@@ -219,6 +222,7 @@
             var task = $scope.task.selected;
             var user = $scope.user.selected;
             var subtask = $scope.subtask.selected;
+             var userOtTasks = $scope.SdaReport.Ot;
             var obj = {
                 From : formatDate1,
                 To : formatDate2,
@@ -226,7 +230,9 @@
                 team_id : teamID,
                 tasks_id : task,
                 sub_task_id : subtask,
-                task_desc : taskDesc
+                task_desc : taskDesc,
+                user_ot: userOtTasks
+
             };
             var promiseGet = SdaReportService.getRemaingReportsTime($scope, $rootScope, $http ,obj );
             promiseGet.then(function (pl) {

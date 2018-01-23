@@ -160,14 +160,13 @@
                     $scope.Task.status = 0;
                 }
 
-                if($scope.Task.deletion == true)
-                {
-                    $scope.Task.deletion = 0;
-                }
-                else {
+                if ($scope.Task.deletion == undefined || $scope.Task.deletion == 1) {
                     $scope.Task.deletion = 1;
                 }
-
+                else {
+                    $scope.Task.deletion = 0;
+                }
+                
                 if($scope.Task.about_cf == true)
                 {
                     $scope.Task.about_cf = 1;
@@ -208,12 +207,12 @@
                 }
                 
 
-                if($scope.Task.deletion == true)
+                if ($scope.Task.deletion == undefined || $scope.Task.deletion == 1)
                 {
-                    $scope.Task.deletion = 0;
+                    $scope.Task.deletion = 1;
                 }
                 else {
-                    $scope.Task.deletion = 1;
+                    $scope.Task.deletion = 0;
                 }
 
                 if($scope.Task.about_cf == true)

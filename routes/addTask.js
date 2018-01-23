@@ -4,14 +4,10 @@ var router = express.Router();
 var uEntry = require('../models/uEntry');  
 
 
-
-
 db.query("SELECT date FROM amz_holidays where status='1' AND deleted='0'" , function(error , results , fields) {
     var holiday = [];
     holiday = results.date;
 });
-
-
 
 router.get('/:id?', function(req, res, next) {  
     if (req.params.id) {  

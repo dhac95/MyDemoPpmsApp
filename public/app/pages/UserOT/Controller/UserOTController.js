@@ -8,8 +8,8 @@
         .controller('UserOTModelController', UserOTModelController);
 
 
-    UserOTController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'UserOTService','$uibModal','NgTableParams'];
-    function UserOTController($scope, $rootScope, $http, $filter, UserOTService, $uibModal, NgTableParams) {
+    UserOTController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'UserOTService', '$uibModal', 'NgTableParams','Notification'];
+    function UserOTController($scope, $rootScope, $http, $filter, UserOTService, $uibModal, NgTableParams, Notification) {
 
         $rootScope.title = "UserOT";
         $rootScope.isLoginPage = false;
@@ -62,6 +62,7 @@
         $scope.editUserOTModel = function (UserOT) {
             $scope.items.isEditing = true;
             $scope.items.UserOT = UserOT;
+            
             var modalInstance = $uibModal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
@@ -78,6 +79,7 @@
 
             modalInstance.result.then(function () {
                 getTaskbyDate();
+                getTotalTime();
             }, function () {
             });
         };
@@ -101,16 +103,17 @@
                 UserOT.date = $scope.date.selected;
                 UserOTService.addUserOT($scope, $rootScope, $http, $scope.UserOT).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Added Successful");
+                        Notification.success("Added Successful");
                         getTaskbyDate();
+                        getTotalTime();
                     } else if(res.data.results){
-                        alert("Error occoured !! Check the entered time");
+                        Notification({ message: "Time must be total of 16 hours", title: "Error! Check entered time" }, 'error');
                     }
                     else {
-                        alert("Error occoured !! Please try again");
+                        Notification.error("Error occoured !! Please try again");
                     }
                 }, function (err) {
-                    alert("Error in processing sever error 500! Try Again.");
+                    Notification("Error in processing sever error 500! Try Again.");
                 });
             }
 
@@ -118,7 +121,9 @@
             getTaskbyDate();
            
             function getTaskbyDate() {
+               
                 var Date = $scope.date.selected;
+                
                 var formatDate =  $filter('date')(Date, "yyyy-MM-dd");
                 var obj = {
                         date : formatDate,
@@ -126,7 +131,7 @@
                 };
                 var promiseGet = UserOTService.getAddedTask($scope, $rootScope, $http ,obj );
                 promiseGet.then(function (pl) {
-                     $scope.Addedtasklist = pl.data; 
+                     $scope.Addedtasklist = pl.data;  
                        if ($scope.isEditing) {
                         for (var i in $scope.Addedtasklist) {
                         if ($scope.Addedtasklist[i].date == $scope.UserOT.date) {
@@ -134,9 +139,10 @@
                         }
                     }
                  }
+                    getTotalTime();
                 },
                       function (errorPl) {
-                        alert('Some Error in Getting Records.', errorPl);
+                          Notification('Some Error in Getting Records.', errorPl);
                     });
             }
 
@@ -159,7 +165,7 @@
                     $scope.selectBuild();
                 },
                       function (errorPl) {
-                        alert('Some Error in Getting Records.', errorPl);
+                          Notification('Some Error in Getting Records.', errorPl);
                       });
             }
     
@@ -178,7 +184,7 @@
                      }
                   },
                         function (errorPl) {
-                            alert('Some Error in Getting Records.', errorPl);
+                            Notification('Some Error in Getting Records.', errorPl);
                         });
           };
     
@@ -200,7 +206,7 @@
                         $scope.selectsubTask();
                     },
                           function (errorPl) {
-                            alert('Some Error in Getting Records.', errorPl);
+                              Notification('Some Error in Getting Records.', errorPl);
                          });
                  };
     
@@ -219,7 +225,7 @@
                  }
                   },
                         function (errorPl) {
-                            alert('Some Error in Getting Records.', errorPl);
+                            Notification('Some Error in Getting Records.', errorPl);
                         });
           };
 
@@ -231,18 +237,38 @@
 
             // $scope.UserOT.TotalTime = grandTot;
             return totCount;
+        }     
+
+        getTotalTime();
+        function getTotalTime() {
+            var Date = $scope.date.selected;
+            var formatDate = $filter('date')(Date, "yyyy-MM-dd");
+            var obj = {
+                date: formatDate, 
+                user_id: $rootScope.user_id
+            };
+            var promiseGet = UserOTService.getRemaingTime($scope, $rootScope, $http, obj);
+            promiseGet.then(function (pl) {
+                $scope.remTime = pl.data;
+                //var grandTot = $scope.remTime.time;
+                // $scope.AddTask.TotalTime = grandTot;
+                // return grandTot;
+            },
+                function (errorPl) {
+                    Notification({ message: 'Some Error in Getting Records.' }, 'error');
+                });
         }
 
-          function getTotalTime() {
-            var grandTot =  $filter('date')('00:00:00','HH:mm:ss');
-            for (var i in $scope.Addedtasklist) {
-                var filterTime = $scope.Addedtasklist[i].time;
-                grandTot = $filter('date')(grandTot,'HH:mm:ss') + $filter('date')(filterTime,'HH:mm:ss');
-            }
+        //   function getTotalTime() {
+        //     var grandTot =  new Date('00:00:00');
+        //     for (var i in $scope.Addedtasklist) {
+        //         var filterTime = $scope.Addedtasklist[i].time;
+        //         grandTot = new Date(grandTot) + new Date(filterTime);
+        //     }
 
-            // $scope.UserOT.TotalTime = grandTot;
-            return grandTot;
-        }
+        //     // $scope.UserOT.TotalTime = grandTot;
+        //     return grandTot;
+        // }
 
         function removeUserOT(UserOT) {
             //if (UserOT.Active === 0) {
@@ -254,14 +280,15 @@
             if (window.confirm("Do you really want to delte this UserOT")) {
                 UserOTService.deleteUserOT($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Deleted Successful");
+                        Notification.success("Deleted Successful");
                         getTaskbyDate();
+                        getTotalTime();
                     } else {
-                        alert("Try Again");
+                        Notification.error("Try Again");
                         
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification.error("Error while processing! Try Again.");
                 });
             }
             //} else {
@@ -273,8 +300,15 @@
        
 
 
-    UserOTModelController.$inject = ['$scope', '$rootScope', '$http', 'items', '$uibModalInstance', 'UserOTService'];
-    function UserOTModelController($scope, $rootScope, $http, items, $uibModalInstance, UserOTService) {
+    UserOTModelController.$inject = ['$scope', '$rootScope', '$http','$filter' ,'items', '$uibModalInstance', 'UserOTService', 'Notification'];
+    function UserOTModelController($scope, $rootScope, $http, $filter,items, $uibModalInstance, UserOTService, Notification) {
+
+        var time = items.UserOT.time.substring(0, 5);
+        var formatDate = $filter('date')(items.UserOT.date, "yyyy-MM-dd");
+        // items.push({ "time" : time } );
+        items.UserOT.time = time;
+        items.UserOT.date = formatDate;
+
         $scope.items = items;
         if (items.isEditing)
             $scope.UserOT = angular.copy(items.UserOT);
@@ -293,14 +327,14 @@
                 UserOT.date = $scope.date.selected;
                // $scope.UserOT.create_date = $rootScope.date;
                 UserOTService.updateUserOT($scope, $rootScope, $http, $scope.UserOT,id).then(function (res) {
-                    if (res.data == 200) {
-                        alert("Update Successful");
+                    if (res.data.code == 200) {
+                        Notification.success("Update Successful");
                         $uibModalInstance.close();
                     } else {
-                        alert("Error while updating! Try Again.");
+                        Notification.error("Error while updating! Try Again.");
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             } else {
                 $scope.UserOT.user_id = $rootScope.user_id;
@@ -311,16 +345,16 @@
 
                 UserOTService.addUserOT($scope, $rootScope, $http, $scope.UserOT).then(function (res) {
                     if (res.data.code == 200) {
-                        alert("Added Successful");
+                        Notification.success("Added Successful");
                         $uibModalInstance.close();
                     } else if(res.data.results){
-                        alert("Error occoured !! Check the entered time");
+                        Notification({ message: "Time must be total of 16 hours", title: "Error! Check entered time" }, 'error');
                     }
                     else {
-                        alert("Error occoured !! Please try again");
+                        Notification.error("Error occoured !! Please try again");
                     }
                 }, function (err) {
-                    alert("Error in processing sever error 500! Try Again.");
+                    Notification("Error in processing sever error 500! Try Again.");
                 });
             }
         };
@@ -342,7 +376,7 @@
                 $scope.selectBuild();
             },
                   function (errorPl) {
-                      $log.error('Some Error in Getting Records.', errorPl);
+                      Notification('Some Error in Getting Records.');
                   });
         }
 
@@ -361,7 +395,7 @@
                  }
               },
                     function (errorPl) {
-                        $log.error('Some Error in Getting Records.', errorPl);
+                        Notification('Some Error in Getting Records.');
                     });
       };
 
@@ -383,7 +417,7 @@
                     $scope.selectsubTask();
                 },
                       function (errorPl) {
-                          $log.error('Some Error in Getting Records.', errorPl);
+                          Notification('Some Error in Getting Records.', errorPl);
                       });
         };
 
@@ -402,9 +436,30 @@
              }
               },
                     function (errorPl) {
-                        $log.error('Some Error in Getting Records.', errorPl);
+                        Notification('Some Error in Getting Records.', errorPl);
                     });
       };
+
+
+        getTotalTime();
+        function getTotalTime() {
+            var Date = $scope.UserOT.date;
+            var formatDate = $filter('date')(Date, "yyyy-MM-dd");
+            var obj = {
+                date: formatDate,
+                user_id: $rootScope.user_id
+            };
+            var promiseGet = UserOTService.getRemaingTime($scope, $rootScope, $http, obj);
+            promiseGet.then(function (pl) {
+                $scope.remTime = pl.data;
+                //var grandTot = $scope.remTime.time;
+                // $scope.AddTask.TotalTime = grandTot;
+                // return grandTot;
+            },
+                function (errorPl) {
+                    Notification({ message: 'Some Error in Getting Records.' }, 'error');
+                });
+        }
 
 
 

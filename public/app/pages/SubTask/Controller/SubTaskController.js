@@ -166,12 +166,12 @@
                     $scope.SubTask.status = 0;
                 }
 
-                if($scope.SubTask.deletion == true)
+                if ($scope.SubTask.deletion == undefined || $scope.SubTask.deletion == 1 )
                 {
-                    $scope.SubTask.deletion = 0;
+                    $scope.SubTask.deletion = 1;
                 }
                 else {
-                    $scope.SubTask.deletion = 1;
+                    $scope.SubTask.deletion = 0;
                 }
 
                 if($scope.SubTask.about_cf == true)
@@ -215,12 +215,11 @@
                 }
                 
 
-                if($scope.SubTask.deletion == true)
-                {
-                    $scope.SubTask.deletion = 0;
+                if ($scope.SubTask.deletion == undefined || $scope.SubTask.deletion == 1) {
+                    $scope.SubTask.deletion = 1;
                 }
                 else {
-                    $scope.SubTask.deletion = 1;
+                    $scope.SubTask.deletion = 0;
                 }
 
                 if($scope.SubTask.about_cf == true)
