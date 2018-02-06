@@ -34,37 +34,43 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="about_cf">About CF</label>
-                    <switch id="about_cf" class="col-md-push-3" name="about_cf" ng-model="Task.about_cf" class="switch small green" data-ng-init="Task.about_cf"></switch>
-                </div>
-
-                <div class="form-group>
-                        <label for="device_count">Device Count</label>
-                        <input type="number" class="form-control" id="device_count" name="device_count" data-ng-model="Task.device_count" max="6" ng-max="6" placeholder="Only 0-6"/>
-                    </div>
-
-                <div class="form-group">
-                    <label for="have_st">Have ST</label>
+                    <label for="about_cf">Daily Target Type</label>
                     <div class="dropdown">
-                    <select class="form-control" data-ng-model="Task.have_st" data-ng-init = " Task.have_st = Task.have_st">
-                        <option value="">---SELECT---</option>
-                        <option value="1">YES</option>
-                        <option value="0">NO</option>
-                    </select>
-                </div>
-             </div>
-
-                <div class="form-group">
-                        <label for="op_type">OP Type</label>
-                        <div class="dropdown">
-                        <select class="form-control" data-ng-model="Task.op_type" data-ng-init = "Task.op_type = Task.op_type">
-                            <option value="">---SELECT---</option>
-                            <option value="1">True</option>
-                            <option value="0">False</option>
+                        <select id="about_cf" name="about_cf" class="form-control" data-ng-model="Task.about_cf" data-ng-init=" Task.about_cf = Task.about_cf" aria-placeholder="Select Daily Target">
+                            <option value="">No Target</option>
+                            <option value="0">Auto Calculate Target</option>
+                            <option value="1">Manual Target</option>
                         </select>
                     </div>
-                 </div
-        </div>
+                </div>
+                <div class="form-group">
+                    <label for="about_chart">Trend Chart</label>
+                    <div class="dropdown">
+                        <select id="about_chart" name="about_chart" class="form-control" data-ng-model="Task.about_chart"
+                            placeholder="Select Chart Type" required>
+                             <option value="0">No Chart</option>
+                            <option value="1">Task Wise</option>
+                            <option value="2">SubTask wise</option>
+                            
+                        </select>
+                    </div>
+                    <span ng-show="myForm.about_chart.$touched && myForm.about_chart.$invalid" class="text-danger">*required Chart Type</span>
+                </div>
+                <div class="form-group">
+                    <label for="have_st">Have SubTask</label>
+                    <switch id="have_st" class="col-md-push-3" name="have_st" ng-model="Task.have_st" class="switch small green" data-ng-init="Task.have_st"></switch>
+                </div>
+
+                <div class="form-group">
+                        <label for="device_count">Have Device Count</label>
+                        <input type="checkbox" class="col-md-push-3" id="device_count" name="device_count" data-ng-model="Task.device_count" />
+                    </div>
+
+                <div class="form-group">
+                        <label for="op_type">Operational Task </label>
+                        <input type="checkbox" class="col-md-push-3" data-ng-model="Task.op_type" data-ng-init="Task.op_type = Task.op_type" name="op_type" id="op_type">
+                </div>
+          </div>
         </div>
     </div>
     </form>

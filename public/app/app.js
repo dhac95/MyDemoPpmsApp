@@ -62,8 +62,9 @@ app.config(function (IdleProvider, KeepaliveProvider) {
 });
 
 
-app.run(['$rootScope', 'toastr', '$http', 'Idle', 'Notification', function ($rootScope, toastr, $http, Idle, Notification) {
-	$rootScope.endPoint = "http://localhost:3000/"; //Main Url
+app.run(['$rootScope', 'toastr', '$http', '$location', 'Idle', 'Notification', function ($rootScope, toastr, $http, $location , Idle, Notification) {
+	
+	$rootScope.endPoint =  'http://' + location.host +'/'  || "http://localhost:3000/"; //Main Url
 
 	Idle.watch();
 	$rootScope.$on('IdleStart', function () { Notification({ message: 'Do something to keep it alive <iframe src="https://giphy.com/embed/d3yxg15kJppJilnW" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>', title: 'Sessions is about to expire'} , 'warning' ); });
@@ -391,6 +392,9 @@ app.factory('Excel',function($window){
 	};
 });
 
+
+
+
 // Dynamic menu
 // $.AdminLTE.dinamicMenu();
 // /* DinamicMenu()
@@ -447,11 +451,46 @@ app.directive('sidebar', function () {
 		compile: function (tElement, tAttrs, transclude) {
 			//Enable sidebar tree view controls
 			$.AdminLTE.tree(tElement);
+			// var url = window.location;
+			// // for sidebar menu entirely but not cover treeview
+			// $('ul.sidebar-menu a').filter(function () {
+			// 	return this.href != url;
+			// }).parent().removeClass('active');
+
+			// // for sidebar menu entirely but not cover treeview
+			// $('ul.sidebar-menu a').filter(function () {
+			// 	return this.href == url;
+			// }).parent().addClass('active');
+
+			// // for treeview
+			// $('ul.treeview-menu a').filter(function () {
+			// 	return this.href == url;
+			// }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+			
 		}
 	};
 });
 
 
+
+// app. directive('activeLink', ['$location', function (location) {
+//     return {
+//       restrict: 'A',
+//       link: function(scope, element, attrs, controller) {
+//         var clazz = attrs.activeLink;
+//         var path = attrs.href;
+//         path = path.substring(1); //hack because path does not return including hashbang
+//         scope.location = location;
+//         scope.$watch('location.path()', function (newPath) {
+//           if (path === newPath) {
+//             element.addClass(clazz);
+//           } else {
+//             element.removeClass(clazz);
+//           }
+//         });
+//       }
+//     };
+//   }]);
 
 app.directive('header', function () {
 	return {

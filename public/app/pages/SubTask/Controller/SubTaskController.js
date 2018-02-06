@@ -158,13 +158,21 @@
                 $scope.SubTask.last_modified_by = $rootScope.user_id;
                
                 $scope.SubTask.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
-                if($scope.SubTask.status == true)
+                if ($scope.SubTask.task_status == true)
                 {
-                    $scope.SubTask.status = 1;
+                    $scope.SubTask.task_status = 1;
                 }
                 else {
-                    $scope.SubTask.status = 0;
+                    $scope.SubTask.task_status = 0;
                 }
+
+                if ($scope.SubTask.op_type == true) {
+                    $scope.SubTask.op_type = 1;
+                }
+                else {
+                    $scope.SubTask.op_type = 0;
+                }
+
 
                 if ($scope.SubTask.deletion == undefined || $scope.SubTask.deletion == 1 )
                 {
@@ -174,15 +182,22 @@
                     $scope.SubTask.deletion = 0;
                 }
 
-                if($scope.SubTask.about_cf == true)
-                {
-                    $scope.SubTask.about_cf = 1;
+                if ($scope.SubTask.about_cf == '') {
+                    $scope.SubTask.about_cf = null;
                 }
                 else {
-                    $scope.SubTask.about_cf = 0;
+                    $scope.SubTask.about_cf = $scope.SubTask.about_cf;
                 }
 
-                $scope.SubTask.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+                // if($scope.SubTask.about_cf == true)
+                // {
+                //     $scope.SubTask.about_cf = 1;
+                // }
+                // else {
+                //     $scope.SubTask.about_cf = 0;
+                // }
+
+                // $scope.SubTask.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 SubTaskService.updateSubTask($scope, $rootScope, $http, $scope.SubTask,id).then(function (res) {
                     if (res.data.code === 200) {
                         Notification.success("Update Successful");
@@ -206,12 +221,12 @@
               //  $scope.SubTask.added_by = $rootScope.user_id;
                
                 $scope.SubTask.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
-                if($scope.SubTask.status == true)
+                if ($scope.SubTask.task_status == true)
                 {
-                    $scope.SubTask.status = 1;
+                    $scope.SubTask.task_status = 1;
                 }
                 else {
-                    $scope.SubTask.status = 0;
+                    $scope.SubTask.task_status = 0;
                 }
                 
 
@@ -222,14 +237,15 @@
                     $scope.SubTask.deletion = 0;
                 }
 
-                if($scope.SubTask.about_cf == true)
-                {
-                    $scope.SubTask.about_cf = 1;
-                }
-                else {
-                    $scope.SubTask.about_cf = 0;
-                }
+                // if($scope.SubTask.about_cf == true)
+                // {
+                //     $scope.SubTask.about_cf = 1;
+                // }
+                // else {
+                //     $scope.SubTask.about_cf = 0;
+                // }
                 $scope.SubTask.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+                $scope.SubTask.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 SubTaskService.addSubTask($scope, $rootScope, $http, $scope.SubTask).then(function (res) {
                     if (res.data.code === 200) {
                         Notification.success("Added Successful");

@@ -7,12 +7,28 @@ var strtotime = require('strtotime');
 var nodestrtotime = require('nodestrtotime');
 var sizeof = require('object-sizeof');
 var in_array = require('in_array');
-var mktime = require('locutus/php/datetime/mktime');
 var db = require('../dbconnections'); //reference of dbconnection.js \\
 //var conn = require('../singleConnection');
 var moment = require('moment');
 var async = require("async");
 var pending = require('../models/testAddTask');
+
+function getHolidays(){
+    var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    var firstDay = new Date(2014, 1, 1);
+    var lastDay = new Date(y, m + 1, 0);
+    var day = firstDay;
+    var weekends = [];
+    while (day < lastDay) {
+        var d = day.getDay(); 
+        if (d === 0 || d === 6) { 
+            var currentDate = moment(new Date(day)).format('YYYY-MM-DD');
+            weekends.push(currentDate);
+        }
+        day.setDate(day.getDate() + 1);
+    }
+    return weekends;
+}
 
 function java_mktime(hour,minute,seconds,month,day,year) {
     return new Date(year, month, day, hour, minute, 0, 0).getTime() / 1000;
@@ -45,13 +61,15 @@ var pendingDates = [];
 var userID = req.body.user_id;
 var totHours = 0;
 var holidays = [];
-        db.query("SELECT date FROM amz_holidays where status='1' AND deleted='0'" , function(error, results, fields) {
-                   if(results.length > 0 ) {
-                       for(var i= 0 ; i< results.length ; i++) {
-                           var tempData = moment(results[i].date).format('YYYY-MM-DD');
-                           holidays.push(tempData);
-                        //    holidays = new Array(results);
-                             }
+    holidays = getHolidays();
+        // db.query("SELECT date FROM amz_holidays where status='1' AND deleted='0'" , function(error, results, fields) {
+        //            if(results.length > 0 ) {
+        //                for(var i= 0 ; i< results.length ; i++) {
+        //                    var tempData = moment(results[i].date).format('YYYY-MM-DD');
+                          
+        //                    holidays.push(tempData);
+        //                 //    holidays = new Array(results);
+        //      }
                                db.query("SELECT user_id,user_mail,last_entry_on,create_date FROM amz_login where user_id=?" ,[userID], function (e1,r1,f1) {
                                    if(r1.length) {
                                        var lastEntered = null;
@@ -83,9 +101,9 @@ var holidays = [];
                             
 
                                                        async.each(newArr, function (single , callback) {
-                                                          // var timeDiff = getTimes(single, todayDate);
-                                                         //  if (timeDiff >= 24) {
-                                                 //        db.query("SELECT time FROM user_tasks WHERE date= ? AND user_id= ?", [single, userID ] , function(e2, r2, f2) {
+                                                              // var timeDiff = getTimes(single, todayDate);
+                                                            //  if (timeDiff >= 24) {
+                                                          //db.query("SELECT time FROM user_tasks WHERE date= ? AND user_id= ?", [single, userID ] , function(e2, r2, f2) {
                                                                     var obj = {
                                                                         date : single,
                                                                         user_id : userID
@@ -102,31 +120,24 @@ var holidays = [];
                                                                 for (var j = 0; j < r2.length ; j++) {
                                                                     totHours += nodestrtotime(r2[j].time) - nodestrtotime('00:00:00'); 
                                                                    
-                                                                } 
-                                                            
+                                                                }                                                            
                                                            }
                                                             if(totHours < 28800) {
                                                                 pendingDates.push(single);
-                                                               // res.send(pendingDates); 
-                                                                //setValue(pendingDates); 
-                                                              
                                                             }
-
                                                         }     
                                                                callback();                  
                                                 });     
                                                          
                                             } , function(response){
-                                                res.send(pendingDates
-                                                );
-                                            });
+                                                res.send(pendingDates);
+                                        });
                                 }
                             
-                            });
+                        });
                             
-                        }    
-           
-        });
+              //  }    
+        // });
   
         
 });

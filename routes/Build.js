@@ -1,7 +1,7 @@
 var express = require('express');  
 var router = express.Router();  
 var Build = require('../models/Build');  
-router.get('/:id', function(req, res, next) {  
+router.get('/:id?', function(req, res, next) {  
     if (req.params.id) {  
         Build.getBuildById(req.params.id, function(err, rows) {  
             if (err) {  

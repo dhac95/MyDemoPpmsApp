@@ -38,19 +38,21 @@
                                 <span data-ng-if="row.task_status === 1" class="label label-success">Active</span>
                                 <span data-ng-if="row.task_status === 0" class="label label-danger">In Active</span>
                             </td>
-                            <td class="text-center" title="'About CF'" filter="{about_cf : 'text'}" sortable="'about_cf'">
-                                <span data-ng-if="row.about_cf === 1" class="label label-success">ON</span>
-                                <span data-ng-if="row.about_cf === 0" class="label label-danger">OFF</span>
-                                <span data-ng-if="row.about_cf === null" class="label label-primary">NULL</span>
+                            <td class="text-center" title="'Daily Report Calculations'" filter="{about_cf : 'text'}" sortable="'about_cf'">
+                                <span data-ng-if="row.about_cf === 1" class="label label-primary">Manual Calc</span>
+                                <span data-ng-if="row.about_cf === 0" class="label label-info">Auto Calc</span>
+                                <span data-ng-if="row.about_cf === null" class="label label-warning">No Calc</span>
                             </td>
-                            <td class="text-center" title="'CF Change'" filter="{cf_change : 'text'}" sortable="'cf_change'">
-                                <span data-ng-if="row.cf_change === 1" class="label label-success">YES</span>
-                                <span data-ng-if="row.cf_change === 0" class="label label-danger">NO</span>
+                            <td class="text-center" title="'Chart Type'" filter="{about_chart : 'text'}" sortable="'about_chart'">
+                                <span data-ng-if="row.about_chart === 1" class="label label-info">Task Wise</span>
+                                <span data-ng-if="row.about_chart === 2" class="label label-primary">SubTask wise</span>
+                                <span data-ng-if="row.about_chart === 3" class="label label-warning">SubTask Project wise</span>
+                                <span data-ng-if="row.about_chart === 0" class="label label-danger">No Chart</span>
                             </td>
                             
-                            <td class="text-center" title="'OP Type'" filter="{op_type : 'text'}" sortable="'op_type'">
-                                <span data-ng-if="row.op_type === 1" class="label label-success">True</span>
-                                <span data-ng-if="row.op_type === 0" class="label label-danger">False</span>
+                            <td class="text-center" title="'Operational'" filter="{op_type : 'text'}" sortable="'op_type'">
+                                <span data-ng-if="row.op_type === 1" class="label label-success">Yes</span>
+                                <span data-ng-if="row.op_type === 0" class="label label-danger">No</span>
                             </td>
     
                             <td class="text-center" title="'Deletion Status'" filter="{deletion : 'text'}" sortable="'deletion'">

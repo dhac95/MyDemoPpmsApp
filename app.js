@@ -1,6 +1,5 @@
-
-
 // Core modules
+
 var express = require('express');  
 var path = require('path');  
 var dotenv = require('dotenv').config();
@@ -15,7 +14,7 @@ var datetime = require('node-datetime');
 var strtotime = require('strtotime');
 var nodestrtotime = require('nodestrtotime');
 var in_array = require('in_array');
-var moment = require('moment');
+var moment = require('moment'); 
 
 
 //Custom modules
@@ -26,8 +25,8 @@ var Teams = require('./routes/Teams');
 var uInfo = require('./routes/uInfo');
 var Builds = require('./routes/Build');
 var Tasks = require('./routes/Tasks');
-var subTasks = require('./routes/subTasks');
-var uLogin = require('./routes/uLogin');
+var subTasks = require('./routes/subTasks'); 
+var uLogin = require('./routes/uLogin'); 
 var AllUserInfo = require('./routes/AllUserInfo');
 var testAddTask = require('./routes/testAddtask');
 var getAddedTask = require('./routes/getAddedTask');
@@ -39,11 +38,15 @@ var UserOT = require('./routes/UserOtTasks');
 var UserReports = require('./routes/UserReports');
 var SdaReports = require('./routes/SdaReports');
 var FP = require('./routes/fp');
-var reg = require('./routes/Register');
+var reg = require('./routes/Register'); 
 var approve = require('./routes/approve');
 var CP = require('./routes/cp');
 var myTeam = require('./routes/loadTeamForReg');
 var chart = require('./routes/PrepareChart');
+var Release = require('./routes/Release');
+var wu = require('./routes/WorkUnitCalc');
+var mwu = require('./routes/ManualWuCalc');
+var loadcftasks  = require('./routes/loadTsAndSsWithCf');
 
 // Express init
 var app = express();  
@@ -91,12 +94,15 @@ app.use('/userot', UserOT);
 app.use('/userReports' , UserReports );
 app.use('/SdaReports' , SdaReports); 
 app.use('/fp' , FP);
-app.use('/reg' ,  reg);
-app.use('/approve' ,  approve);
+app.use('/reg' , reg);
+app.use('/approve', approve);
 app.use('/cp', CP);
 app.use('/myTeam' , myTeam);
 app.use('/chart', chart);
-
+app.use('/Release', Release);
+app.use('/wu' , wu);
+app.use('/mwu', mwu);
+app.use('/loadcftasks', loadcftasks);
 
 // catch 404 and forward to error handler  
 app.use(function(req, res, next) {  
@@ -130,21 +136,9 @@ app.get('/*', function(req, res, next) {
     res.sendFile('public/main.html', { root: __dirname });
 });
 
-// var datetime = require('node-datetime');
-// var dt = datetime.create();
-// var formatted = dt.format('Y-m-d');
-// console.log(formatted);
-// var date = new time('08:00:00');
-// console.log("date");
-// console.log(date.getTime() / 1000);
-// var time = nodestrtotime('08:00:00') ;
-// console.log(time);
-//console.log(!in_array(1, ['1', '2', '3']));
 
-// var startDate = moment('2017-05-11', 'YYYY-MM-DD');
-// var endDate = moment('2017-05-12', 'YYYY-MM-DD');
-// var secondsDiff = endDate.diff(startDate, 'hours');
-// console.log(secondsDiff);
+// var x = moment('January 2015').format('YYYY-MM');
+// console.log(x);
 
 console.log('Node is now listening at port 3000' + ' host : http://localhost:3000/');
 module.exports = app; 

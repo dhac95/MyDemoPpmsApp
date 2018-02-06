@@ -102,7 +102,7 @@ desired effect
 |---------------------------------------------------------|
 
 -->
-<body class="skin-yellow fixed" data-ng-app="ERP">
+<body  class="skin-yellow fixed" data-ng-app="ERP">
     <div class="wrapper">
         <header class="main-header"></header>
         <!-- Left side column. contains the logo and sidebar -->
@@ -130,7 +130,7 @@ desired effect
              Powerd by<strong> M*EAN 🔁 </strong> 
             </div>
             <!-- Default to the left -->
-            <strong>Version<a href="http://www.amazon.com/"> Alpha 0.6 Build(p2r19118)</a>.</strong>.
+            <strong>Version<a href="http://www.amazon.com/"> Beta 0.8 Build(p2r060218)</a>.</strong>.
         </footer>
     </div><!-- ./wrapper -->
 
@@ -208,7 +208,19 @@ desired effect
 
     
 
-
+    <!-- Month Picker -->
+        <!-- <link href="Content\MonthPicker\stylesheets\stylesheet.css" rel="stylesheet" type="text/css" /> -->
+        <!-- <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" /> -->
+        
+        <!-- <link href="Content\MonthPicker\MonthPicker.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="examples.css" /> -->
+        
+        <!-- <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script> -->
+        <!-- <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <script src="https://cdn.rawgit.com/digitalBush/jquery.maskedinput/1.4.1/dist/jquery.maskedinput.min.js"></script>
+        
+        <script src="Content\MonthPicker\MonthPicker.min.js"></script>
+        <script src="Content\MonthPicker\examples.js"></script> -->
                 
     <!-- TS App -->
     <!-- Modules -->
@@ -229,6 +241,9 @@ desired effect
     <script src="app/pages/SdaReports/SdaReports.module.js"></script>
     <script src="app/pages/Approve/Approve.module.js"></script>
     <script src="app/pages/Profile/Profile.module.js"></script>
+    <script src="app/pages/Release/Release.module.js"></script>
+    <script src="app/pages/DailyTarget/DailyTarget.module.js"></script>
+
 
     <!-- Controllers -->
     <script src="app/pages/home/Controller/homeController.js" type="text/javascript"></script>
@@ -244,6 +259,8 @@ desired effect
     <script src="app/pages/SdaReports/Controller/SdaReportController.js" type="text/javascript"></script>
     <script src="app/pages/Approve/Controller/ApproveController.js" type="text/javascript"></script>
     <script src="app/pages/Profile/Controller/ProfileController.js" type="text/javascript"></script>
+    <script src="app/pages/Release/Controller/ReleaseController.js" type="text/javascript"></script>
+    <script src="app/pages/DailyTarget/Controller/DailyTargetController.js" type="text/javascript"></script>
 
     <!-- Services -->
     <script src="app/pages/services/TeamService.js" type="text/javascript"></script>
@@ -258,10 +275,30 @@ desired effect
     <script src="app/pages/services/ApproveService.js" type="text/javascript"></script>
     <script src="app/pages/services/ProfileService.js" type="text/javascript"></script>
     <script src="app/pages/services/homeService.js" type="text/javascript"></script>
+    <script src="app/pages/services/ReleaseService.js" type="text/javascript"></script>
+    <script src="app/pages/services/DailyTargetService.js" type="text/javascript"></script>
     <!-- ANGUALR DATEPICKER -->
     
     <script src="Content/angularjs-datepicker/dist/angular-datepicker.js"></script>   
+    <!-- <script>
+        $(document).ready(function () {
+                  var url = window.location;
+            // for sidebar menu entirely but not cover treeview
+            $('ul.sidebar-menu a').filter(function () {
+                return this.href != url;
+            }).parent().removeClass('active');
 
+            // for sidebar menu entirely but not cover treeview
+            $('ul.sidebar-menu a').filter(function () {
+                return this.href == url;
+            }).parent().addClass('active');
+
+            // for treeview
+            $('ul.treeview-menu a').filter(function () {
+                return this.href == url;
+            }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+            });
+    </script> -->
 
 </body>
 </html>

@@ -160,19 +160,32 @@
                     $scope.Task.status = 0;
                 }
 
+                if ($scope.Task.op_type == true) {
+                    $scope.Task.op_type = 1;
+                }
+                else {
+                    $scope.Task.op_type = 0;
+                }
+
                 if ($scope.Task.deletion == undefined || $scope.Task.deletion == 1) {
                     $scope.Task.deletion = 1;
                 }
                 else {
                     $scope.Task.deletion = 0;
                 }
-                
-                if($scope.Task.about_cf == true)
-                {
-                    $scope.Task.about_cf = 1;
+                if ($scope.Task.have_st == "true") {
+                    $scope.Task.have_st = 1;
                 }
                 else {
-                    $scope.Task.about_cf = 0;
+                    $scope.Task.have_st = 0;
+                }
+                
+                if($scope.Task.about_cf == '')
+                {
+                    $scope.Task.about_cf = null;
+                }
+                else {
+                    $scope.Task.about_cf = $scope.Task.about_cf;
                 }
 
                 $scope.Task.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
@@ -206,6 +219,12 @@
                     $scope.Task.status = 0;
                 }
                 
+                if ($scope.Task.op_type == true) {
+                    $scope.Task.op_type = 1;
+                }
+                else {
+                    $scope.Task.op_type = 0;
+                }
 
                 if ($scope.Task.deletion == undefined || $scope.Task.deletion == 1)
                 {
@@ -215,12 +234,12 @@
                     $scope.Task.deletion = 0;
                 }
 
-                if($scope.Task.about_cf == true)
+                if ($scope.Task.have_st == "true")
                 {
-                    $scope.Task.about_cf = 1;
+                    $scope.Task.have_st = 1;
                 }
                 else {
-                    $scope.Task.about_cf = 0;
+                    $scope.Task.have_st = 0;
                 }
                 $scope.Task.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 TaskService.addTask($scope, $rootScope, $http, $scope.Task).then(function (res) {

@@ -5,8 +5,8 @@
         .module('ERP.pages.home')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', '$rootScope', '$http', '$filter','AddTaskService' , 'homeService'];
-    function HomeController($scope, $rootScope, $http, $filter, AddTaskService, homeService) {
+    HomeController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'AddTaskService', 'homeService', 'Notification'];
+    function HomeController($scope, $rootScope, $http, $filter, AddTaskService, homeService, Notification) {
         $scope.hello = "Welcome";
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
         var firstDay = new Date(y, m, 1);

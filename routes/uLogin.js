@@ -11,9 +11,10 @@ var IsAuth;
 router.post('/', function(req, res, next) {
 // exports.uLogin = function(req,res){
   var username= req.body.user_name;
+  var email = req.body.user_mail;
   var password = md5(req.body.password);
   var IsAuth ;
-  db.query('SELECT * FROM amz_login WHERE user_name = ? AND user_deletion=0 AND user_activation=1',[username], function (error, results, fields) {
+  db.query('SELECT * FROM amz_login WHERE (user_name = ? OR user_mail = ?) AND user_deletion=0 AND user_activation=1', [username, email], function (error, results, fields) {
   if (error) {
     // console.log("error ocurred",error);
     IsAuth = false;
@@ -45,8 +46,7 @@ router.post('/', function(req, res, next) {
             IsAuth : true, 
             data : results
             }
-          );
-          
+          );          
       }
       else{
        IsAuth = false;
@@ -70,11 +70,3 @@ router.post('/', function(req, res, next) {
 });
 
 module.exports = router; 
-// var existing_hashed_password = uLogin.password;
-// var password = req.body.password;
-// var login_attempt_hashed = crypto.createHash('md5').update(password).digest('hex');
-// if ( login_attempt_hashed === existing_hashed_password ) {
-//   // Successful login
-// } else {
-//   // Unsuccessful login
-// }

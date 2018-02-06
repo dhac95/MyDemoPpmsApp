@@ -102,7 +102,9 @@
             if (items.isEditing) {
                 var id = $rootScope.user_id;
                 $rootScope.first_name = $scope.Profile.first_name;
+                sessionStorage.setItem('first_name', $scope.Profile.first_name);
                 $rootScope.last_name = $scope.Profile.last_name;
+                sessionStorage.setItem('last_name', $scope.Profile.last_name);
                 if ($scope.Profile.pic == undefined) {
                     sessionStorage.setItem('below_on', "null");
                       $rootScope.below_on = "null";

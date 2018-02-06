@@ -19,11 +19,8 @@
         $scope.team = {};
         $scope.isEditing = false;
         $scope.items.isEditing = $scope.isEditing;
-
         $scope.removeBuild = removeBuild;
         $scope.getTeamList = getTeamList;
-    
-        //loadGrid();
 
         $scope.addBuildModel = function () {
             $scope.items.isEditing = false;
@@ -80,17 +77,15 @@
                                    for (var team in $scope.TeamList) {
                                     if ($scope.TeamList[team].team_id == $scope.Build.team_id) {
                                        $scope.team.selected = $scope.TeamList[team];
-                                        $scope.loadGrid();
-                                 }
+                                       $scope.loadGrid();
+                                }
                             }
                          }
                         }
                 else {
                     $scope.temp_team = $scope.TeamList[0].team_id;
                     $scope.loadGrid();
-                }
-                    
-                
+                }  
             },
                   function (errorPl) {
                       Notification('Some Error in Getting Records.');
@@ -102,7 +97,7 @@
                 var id = $scope.team.selected;
             }
             else {
-                  var id =  $scope.temp_team;
+                var id =  $scope.temp_team;
             }
             var self = this;
             BuildService.getAllBuildbyID($scope, $rootScope, $http , id).then(function (responce) {
@@ -122,7 +117,7 @@
                         $scope.loadGrid();
                     } else {
                         Notification({message :"Error Occurred"} , 'error');
-                        // loadGrid();
+                    
                     }
                 }, function (err) {
                     Notification("Error while processing! Try Again.");
@@ -144,16 +139,20 @@
 
         $scope.saveBuild = function (Build) {
             if (items.isEditing) {
+
                 var id = Build.build_no;
+
                 if($rootScope.team_count > 1) {
                     $scope.Build.team_id = $scope.team.selected;
                 }
                 else {
                     $scope.Build.team_id =  $scope.temp_team;
                 } 
+
                 $scope.Build.modified_by = $rootScope.user_id;
                
                 $scope.Build.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+
                 if($scope.Build.build_status == true)
                 {
                     $scope.Build.build_status = 1;
@@ -161,15 +160,18 @@
                 else {
                     $scope.Build.build_status = 0;
                 }
+
                 $scope.Build.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+
                 BuildService.updateBuild($scope, $rootScope, $http, $scope.Build,id).then(function (res) {
+
                     if (res.data.code === 200) {
                         Notification.success("Updated Successful");
                         $uibModalInstance.close();
                     } else {
                         Notification.error("Error while updating! Try Again.");
                     }
-                }, function (err) {
+                }, function(err) {
                     Notification("Error while processing! Try Again.");
                 });
             } else {
@@ -183,6 +185,7 @@
                 $scope.Build.added_by = $rootScope.user_id;
                
                 $scope.Build.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+
                 if($scope.Build.build_status == true)
                 {
                     $scope.Build.build_status = 1;
@@ -190,7 +193,9 @@
                 else {
                     $scope.Build.build_status = 0;
                 }
+
                 $scope.Build.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+
                 BuildService.addBuild($scope, $rootScope, $http, $scope.Build).then(function (res) {
                     if (res.data.code === 200) {
                         Notification.success("Added Successful");

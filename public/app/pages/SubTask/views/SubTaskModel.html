@@ -44,30 +44,39 @@
                         <span ng-show="myForm.subtaskname.$touched && myForm.subtaskname.$invalid" class="text-danger">*required Sub Task</span>
                     </div>
     
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="about_cf">About CF</label>
                         <switch id="about_cf" name="about_cf" class="col-md-push-3" ng-model="SubTask.about_cf" class="switch small green" data-ng-init="SubTask.about_cf"></switch>
-                    </div>
+                    </div> -->
     
                     <div class="form-group">
-                        <label for="have_st">CF Change</label>
+                        <label for="about_cf">Daily Target Type</label>
                         <div class="dropdown">
-                        <select class="form-control" data-ng-model="SubTask.cf_change" data-ng-init = " SubTask.cf_change = SubTask.cf_change">
-                            <option value="1">YES</option>
-                            <option value="0">NO</option>
+                        <select class="form-control" data-ng-model="SubTask.about_cf" data-ng-init = "SubTask.about_cf = SubTask.about_cf" id="about_cf" name="about_cf">
+                            <option value="">No Targets</option>
+                            <option value="0">Auto Target</option>
+                            <option value="1">Manual Target</option>
                         </select>
                     </div>
                  </div>
+                <div class="form-group">
+                    <label for="about_chart">Trend Chart Type</label>
+                    <div class="dropdown">
+                        <select class="form-control" name="about_chart" id="about_chart" data-ng-model="SubTask.about_chart" data-ng-init="SubTask.about_chart = SubTask.about_chart" required>
+                            <option value="0">No Chart</option>
+                            <option value="1">Task Wise</option>
+                            <option value="2">SubTask Wise</option>
+                        </select>
+                    </div>
+                    <span ng-show="myForm.about_chart.$touched && myForm.about_chart.$invalid" class="text-danger">*required Chart Type</span>
+                    </div
+
+                  <div class="form-group">
+                        <label for="op_type">Operational Task </label>
+                        <input type="checkbox" class="col-md-push-3" data-ng-model="SubTask.op_type" data-ng-init="SubTask.op_type = SubTask.op_type" name="op_type" id="op_type">
+                </div>
     
-                    <div class="form-group">
-                            <label for="op_type">OP Type</label>
-                            <div class="dropdown">
-                            <select class="form-control" data-ng-model="SubTask.op_type" data-ng-init = "SubTask.op_type = SubTask.op_type">
-                                <option value="1">True</option>
-                                <option value="0">False</option>
-                            </select>
-                        </div>
-                     </div
+                  
             </div>
         </div>
         </div>

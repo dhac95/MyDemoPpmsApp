@@ -1,7 +1,7 @@
 var express = require('express');  
 var router = express.Router();  
 var subTask = require('../models/subTask');  
-router.get('/:id', function(req, res, next) {  
+router.get('/:id?', function(req, res, next) {  
     if (req.params.id) {  
         subTask.getsubTaskById(req.params.id, function(err, rows) {  
             if (err) {  
