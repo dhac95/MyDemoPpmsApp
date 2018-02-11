@@ -1,77 +1,105 @@
-<div ng-show="$root.team_count > 1">
+
     <div class="modal-body" id="modal-body">
         <form name="myForm" role="form" class="well well-sm">
             <div class="row">
+            <div ng-show="$root.team_count > 1">
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                    <label for="Team">Change Team</label>
+                    <label for="Team">Select Team</label>
                     <div class="dropdown">
-                        <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="loadGrid()"
+                        <select class="form-control" id="Team" name="Team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="loadGrid(); selectTask();"
                             data-ng-model="team.selected" data-ng-value="team.selected">
                             <option value="">Select the Team</option>
                         </select>
                     </div>
+                    <div ng-show="myForm.Team.$touched && myForm.Team.$invalid" class="text-danger">*required Team</div>
                 </div>
+            </div>
+
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                    <label for="Team">Change Month</label>
+                    <label for="month">Change Month</label>
                     <div class="dropdown">
-                        <select class="form-control" data-ng-options="month.name for month in months" data-ng-value="myMonth" data-ng-change="loadGrid()"
+                        <select class="form-control" id="month" name="month" data-ng-options="month.name for month in months" data-ng-value="myMonth" data-ng-change="loadGrid()"
                             data-ng-model="myMonth">
                             <option selected="myMonth">Select the Month</option>
                         </select>
                     </div>
+                    <div ng-show="myForm.month.$touched && myForm.month.$invalid" class="text-danger">*required Month</div>
                 </div>
+
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                    <label for="Team">Change Year</label>
+                    <label for="year">Change Year</label>
                     <div class="dropdown">
-                        <select class="form-control" data-ng-options="year for year in years" data-ng-init="myYear = myYear" data-ng-change="loadGrid()"
+                        <select class="form-control" id="year" name="year" data-ng-options="year for year in years" data-ng-init="myYear = myYear" data-ng-change="loadGrid()"
                             data-ng-model="myYear">
                             <option value=""> Select the year</option>
                         </select>
                     </div>
+                    <div ng-show="myForm.year.$touched && myForm.year.$invalid" class="text-danger">*required Year</div>
+                    </div>
+                
+
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                    <label for="task">Task Name</label>
+                    <div class="dropdown">
+                        <select class="form-control" id="task" name="task" data-ng-options="Task.task_id as Task.task_name for Task in TaskList"
+                            data-ng-change="selectsubTask()" data-ng-model="task.selected" data-ng-init="task.selected = DailyTarget.task"
+                            required>
+                            <option value="">Select the Task</option>
+                        </select>
+                    </div>
+                    <div ng-show="myForm.task.$touched && myForm.task.$invalid" class="text-danger">*required Task</div>
+                </div>
+
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                    <label for="subtask">SubTask Name</label>
+                    <div class="dropdown">
+                        <select class="form-control" id="subtask" name="subtask" data-ng-options="SubTask.sub_task_id as SubTask.sub_task_name for SubTask in subTaskList"
+                             data-ng-model="subtask.selected" data-ng-init="subtask.selected = DailyTarget.sub_task"  data-ng-disabled='subTaskList == ""' ng-required='subTaskList != ""'>
+                            <option value="">Select the SubTask</option>
+                        </select>
+                    </div>
+                    <div ng-show="myForm.subtask.$touched && myForm.subtask.$invalid" class="text-danger">*required SubTask</div>
+                </div>
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="DailyTarget">DailyTarget</label>
+                <input type="number" class="form-control" id="DailyTarget" name="DailyTarget" data-ng-model="DailyTarget.con_fac" required/>
+                <div ng-show="myForm.DailyTarget.$touched && myForm.DailyTarget.$invalid" class="text-danger">*required DailyTarget</div>
+            </div>  
+
                 </div>
                 </div>
             </div>
         </form>
     </div>
+
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveDailyTarget(DailyTarget)">Save</button>
 </div>
 
-<!-- <div class="modal-body" id="modal-body">
-    <form name="myForm" role="form" class="well well-sm">
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6 col-lg-6">
-                <div class="col-sm-6 col-md-6 col-lg-6">
-                       <label for="Team">Change Month</label>
-                         <div class="dropdown">
-                            <select class="form-control" data-ng-options="month.name for month in months" data-ng-value="myMonth" data-ng-change="loadGrid()"
-                            data-ng-model="myMonth">
-                            <option selected="myMonth">Select the Month</option>
-                        </select>
-                    </div>
-                     <label for="Team">Change Year</label>
-                     <div class="dropdown">
-                        <select class="form-control" data-ng-options="year for year in years" data-ng-init="myYear = myYear" data-ng-change="loadGrid()"
-                            data-ng-model="myYear">
-                            <option value="" > Select the year</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div> -->
+
 
 <div class="box box-solid box-primary">
 
     <div class="box-header">
-        DailyTarget
+        DailyTarget for Month of  {{myMonth.name}} {{ myYear }} </span>
     </div>
     <div class="box-body">
-        <button DailyTarget="button" ng-click="addDailyTargetModel()" class="btn btn-sm btn-success">
-            <i class="glyphicon glyphicon-plus">
-            </i> Add New
+        <button Build="button" ng-click="setAutoTarget()" class="btn btn-sm btn-success">
+            <i class="glyphicon glyphicon-wrench">
+            </i>  Set Auto Target
         </button>
+        <button Build="button" ng-click="setNonTarget()" class="btn btn-sm btn-success">
+            <i class="glyphicon glyphicon-certificate">
+            </i>  Set Non Target
+        </button>
+        <button Build="button" ng-click="setManualTarget()" class="btn btn-sm btn-success">
+            <i class="glyphicon glyphicon-eject">
+            </i>  <small>Load Manual Target Tasks </small>
+        </button>
+        
         <div ng-if='resultList == ""'>
-              <h3 class="text-muted">No Manual Daily target is set for the <span ng-show="$root.team_count > 1">selected</span> team</small>
+              <h3 class="text-muted">No Daily target is available for "{{myMonth.name}} {{ myYear }}" for the <span ng-show="$root.team_count > 1">selected</span> team</small>
         </div>
         <div ng-if='resultList != ""'>
         <div style="overflow-x:auto;">
@@ -88,11 +116,12 @@
                     <td class="text-center" title="'Daily Target Type'" filter="{about_cf : 'text'}" sortable="'about_cf'">
                         <span data-ng-if="row.about_cf == 1" class="label label-success">Manual</span>
                         <span data-ng-if="row.about_cf == 0" class="label label-danger">Auto</span>
-                        <span data-ng-if="row.about_cf == null" class="label label-danger">None</span>
+                        <span data-ng-if="row.about_cf == null" class="label label-warning">None</span>
                     </td>
-                    <td class="text-center" title="'Daily target'" filter="{AddedBy : 'text'}" sortable="'AddedBy'">{{ row.AddedBy }}</td>
+                    <td class="text-center" title="'Added By'" filter="{AddedBy : 'text'}" sortable="'AddedBy'">{{ row.AddedBy }}</td>
+                    <td class="text-center" title="'Modified By'" filter="{ModifiedBy : 'text'}" sortable="'ModifiedBy'">{{ row.ModifiedBy }}</td>
                     <td class="text-center" title="'Action'">
-                        <div class="col-md-offset-4">
+                        <div class="col-md-offset-4" data-ng-if="row.about_cf == 1">
                             <button type="button" ng-click="editDailyTargetModel(row)" class="btn btn-sm btn-primary">
                                 <i class="glyphicon glyphicon-pencil">
                                 </i>
@@ -104,14 +133,6 @@
                         </div>
                     </td>
                 </tr>
-
-
-
-                <!--<tfoot>
-                    <tr>
-                        <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
-                    </tr>
-                </tfoot>-->
             </table>
         </div>
         </div>

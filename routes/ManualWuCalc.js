@@ -13,6 +13,7 @@ router.post('/', function (req, res, next) {
     var actionBy = req.body.user_id;
     var formattedDate = moment(tempDate).format('YYYY-MM');
     var formatDate2 = moment(tempDate).format('YYYY-MM-DD');
+    var endDate = moment(tempDate).add(1, 'M').format('YYYY-MM-DD');
     var today = moment().format('YYYY-MM-DD');
     
     db.query('SELECT * from amz_daily_target where status = 1 and deletion = 0 and team = ? and month_from = ? ' , [team , tempDate], function(e , r , f){
@@ -26,7 +27,7 @@ router.post('/', function (req, res, next) {
                 var subTask = single.sub_task;
                 
                 if(subTask != undefined){
-                    db.query('UPDATE user_tasks set cf = ? ,  wu_status = 1 , wu = (count *' + (100 / conversionFactor) + ') WHERE team_id = ? AND tasks_id = ? AND sub_task_id = ? AND date >= ?', [conversionFactor, team, task, subTask, formatDate2], function (e4, r4, f4) {
+                    db.query('UPDATE user_tasks set cf = ? ,  wu_status = 1 , wu = (count *' + (100 / conversionFactor) + ') WHERE team_id = ? AND tasks_id = ? AND sub_task_id = ? AND date between ? and ?', [conversionFactor, team, task, subTask, formatDate2, endDate], function (e4, r4, f4) {
                         if (e4) {
                             res.send({
                                 "code": 400,
@@ -34,7 +35,7 @@ router.post('/', function (req, res, next) {
                                 "error": e4
                             });
                         } else {
-                            db.query('UPDATE user_tasks_ot set cf = ? , wu_status = 1 ,  wu = (count *' + (100 / conversionFactor) + ')  WHERE team_id = ? AND tasks_id = ? AND sub_task_id = ? AND date >= ? ', [conversionFactor, team, task, subTask, formatDate2] , function(err1 , result1 , field1){
+                            db.query('UPDATE user_tasks_ot set cf = ? , wu_status = 1 ,  wu = (count *' + (100 / conversionFactor) + ')  WHERE team_id = ? AND tasks_id = ? AND sub_task_id = ? AND date between ? and ? ', [conversionFactor, team, task, subTask, formatDate2, endDate] , function(err1 , result1 , field1){
                                 if (err1) {
                                     res.send({
                                         "code": 400,
@@ -47,7 +48,7 @@ router.post('/', function (req, res, next) {
                      
                     });
                 } else {
-                    db.query('UPDATE user_tasks set cf = ? ,  wu_status = 1 , wu = (count *' + (100 / conversionFactor) + ') WHERE team_id = ? AND tasks_id = ?  AND date >= ?', [conversionFactor, team, task, formatDate2], function (e2, r2, f2) {
+                    db.query('UPDATE user_tasks set cf = ? ,  wu_status = 1 , wu = (count *' + (100 / conversionFactor) + ') WHERE team_id = ? AND tasks_id = ?  AND date between ? and ?', [conversionFactor, team, task, formatDate2, endDate], function (e2, r2, f2) {
                         if (e2) {
                             res.send({
                                 "code": 400,
@@ -55,7 +56,7 @@ router.post('/', function (req, res, next) {
                                 "error": e2
                             });
                         } else {
-                            db.query('UPDATE user_tasks_ot set cf = ? , wu_status = 1 ,  wu = (count *' + (100 / conversionFactor) + ')  WHERE team_id = ? AND tasks_id = ?  AND date >= ? ', [conversionFactor, team, task , formatDate2], function (err2, result2, field2) {
+                            db.query('UPDATE user_tasks_ot set cf = ? , wu_status = 1 ,  wu = (count *' + (100 / conversionFactor) + ')  WHERE team_id = ? AND tasks_id = ?  AND date between ? and ? ', [conversionFactor, team, task, formatDate2, endDate], function (err2, result2, field2) {
                                 if (err2) {
                                     res.send({
                                         "code": 400,

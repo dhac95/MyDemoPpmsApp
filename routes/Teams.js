@@ -1,6 +1,7 @@
 var express = require('express');  
 var router = express.Router();  
 var Team = require('../models/Team');  
+var db = require('../dbconnections');
 router.get('/:id?', function(req, res, next) {  
     if (req.params.id) {  
         Team.getTeamById(req.params.id, function(err, rows) {  

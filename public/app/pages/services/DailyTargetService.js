@@ -17,6 +17,9 @@
         this.getAllDailyTargetbyID = getAllDailyTargetbyID;
         this.getTaskswithManualCF = getTaskswithManualCF;
         this.getSubTaskswithManualCF = getSubTaskswithManualCF;
+        this.setAutoTarget = setAutoTarget;
+        this.setNonTarget = setNonTarget;
+        this.setManualTarget = setManualTarget;
 
         //////////////////
 
@@ -40,12 +43,22 @@
             return $http.post($rootScope.endPoint + 'wu/delete/' , obj);
         }
 
-        function getTaskswithManualCF($scope, $rootScope, $http , obj) {
-            return $http.post($rootScope.endPoint + 'loadcftasks/tasks/manual' , obj);
+        function getTaskswithManualCF($scope, $rootScope, $http , team_id) {
+            return $http.get($rootScope.endPoint + 'loadcftasks/tasks/manual/' + team_id);
         }
 
-        function getSubTaskswithManualCF($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'loadcftasks/subtasks/manual', obj);
+        function getSubTaskswithManualCF($scope, $rootScope, $http, task_id) {
+            return $http.get($rootScope.endPoint + 'loadcftasks/subtasks/manual/' + task_id);
+        }
+
+        function setAutoTarget($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'atu/', obj);
+        }
+        function setNonTarget($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'ncf/', obj);
+        }
+        function setManualTarget($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'mcf/', obj);
         }
     }
 

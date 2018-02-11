@@ -52,20 +52,16 @@
                     <div class="form-group">
                         <label for="about_cf">Daily Target Type</label>
                         <div class="dropdown">
-                        <select class="form-control" data-ng-model="SubTask.about_cf" data-ng-init = "SubTask.about_cf = SubTask.about_cf" id="about_cf" name="about_cf">
+                        <select class="form-control" data-ng-model="SubTask.about_cf" data-ng-options="about_cf.id as about_cf.name for about_cf in cfList" data-ng-value = "SubTask.about_cf" id="about_cf" name="about_cf">
                             <option value="">No Targets</option>
-                            <option value="0">Auto Target</option>
-                            <option value="1">Manual Target</option>
                         </select>
                     </div>
                  </div>
                 <div class="form-group">
                     <label for="about_chart">Trend Chart Type</label>
                     <div class="dropdown">
-                        <select class="form-control" name="about_chart" id="about_chart" data-ng-model="SubTask.about_chart" data-ng-init="SubTask.about_chart = SubTask.about_chart" required>
-                            <option value="0">No Chart</option>
-                            <option value="1">Task Wise</option>
-                            <option value="2">SubTask Wise</option>
+                        <select class="form-control" name="about_chart" id="about_chart" data-ng-options="about_chart.id as about_chart.name for about_chart in ChartList" data-ng-model="SubTask.about_chart" data-ng-value="SubTask.about_chart" required>
+                            <option value="">---Select---</option>
                         </select>
                     </div>
                     <span ng-show="myForm.about_chart.$touched && myForm.about_chart.$invalid" class="text-danger">*required Chart Type</span>

@@ -44,9 +44,13 @@ var CP = require('./routes/cp');
 var myTeam = require('./routes/loadTeamForReg');
 var chart = require('./routes/PrepareChart');
 var Release = require('./routes/Release');
-var wu = require('./routes/WorkUnitCalc');
+var wu = require('./routes/ManualDailyCount');
 var mwu = require('./routes/ManualWuCalc');
 var loadcftasks  = require('./routes/loadTsAndSsWithCf');
+var autoCF = require('./routes/AutoCFCalc');
+var atu = require('./routes/AutoCFLoad');
+var ncf = require('./routes/NonCFLoad');
+var mcf = require('./routes/ManualCFLoad');
 
 // Express init
 var app = express();  
@@ -103,6 +107,10 @@ app.use('/Release', Release);
 app.use('/wu' , wu);
 app.use('/mwu', mwu);
 app.use('/loadcftasks', loadcftasks);
+app.use('/autoCF', autoCF);
+app.use('/atu', atu);
+app.use('/ncf', ncf);
+app.use('/mcf' , mcf);
 
 // catch 404 and forward to error handler  
 app.use(function(req, res, next) {  

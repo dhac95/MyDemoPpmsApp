@@ -15,6 +15,7 @@
         this.deleteSubTask = deleteSubTask;
         this.getAllSubTask = getAllSubTask;
         this.getAllSubTaskbyID = getAllSubTaskbyID;
+        this.getTaskByHaveST = getTaskByHaveST;
 
         /////////////
 
@@ -37,6 +38,10 @@
         function deleteSubTask($scope, $rootScope, $http, id) {
             return $http.delete($rootScope.endPoint + 'SubTasks/' + id);
         }
+        function getTaskByHaveST($scope, $rootScope, $http, id) {
+            return $http.get($rootScope.endPoint + 'loadcftasks/Tasks/HaveSt/' + id);
+        }
+
     }
 
 })();

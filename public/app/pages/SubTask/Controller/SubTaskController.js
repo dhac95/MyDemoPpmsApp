@@ -98,11 +98,12 @@
 
 
         $scope.loadGrid = function() {
+            var id = 0;
             if($rootScope.team_count > 1) {
-                var id = $scope.team.selected;
+                id = $scope.team.selected;
             }
             else {
-                  var id =  $scope.temp_team;
+                id =  $scope.temp_team;
             }
             var self = this;
             SubTaskService.getAllSubTaskbyID($scope, $rootScope, $http , id).then(function (responce) {
@@ -189,15 +190,17 @@
                     $scope.SubTask.about_cf = $scope.SubTask.about_cf;
                 }
 
-                // if($scope.SubTask.about_cf == true)
-                // {
-                //     $scope.SubTask.about_cf = 1;
-                // }
-                // else {
-                //     $scope.SubTask.about_cf = 0;
-                // }
+                for (var i in $scope.ChartList) {
+                    if ($scope.ChartList[i].id == $scope.SubTask.about_chart) {
+                        $scope.SubTask.about_chart = $scope.ChartList[i].id;
+                    }
+                }
+                for (var j in $scope.cfList) {
+                    if ($scope.cfList[j].id == $scope.SubTask.about_cf) {
+                        $scope.SubTask.about_cf = $scope.cfList[j].id;
+                    }
+                }
 
-                // $scope.SubTask.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 SubTaskService.updateSubTask($scope, $rootScope, $http, $scope.SubTask,id).then(function (res) {
                     if (res.data.code === 200) {
                         Notification.success("Update Successful");
@@ -237,13 +240,6 @@
                     $scope.SubTask.deletion = 0;
                 }
 
-                // if($scope.SubTask.about_cf == true)
-                // {
-                //     $scope.SubTask.about_cf = 1;
-                // }
-                // else {
-                //     $scope.SubTask.about_cf = 0;
-                // }
                 $scope.SubTask.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 $scope.SubTask.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 SubTaskService.addSubTask($scope, $rootScope, $http, $scope.SubTask).then(function (res) {
@@ -258,6 +254,9 @@
                 });
             }
         };
+
+        $scope.ChartList = [{ "id": 0, "name": "No Chart" }, { "id": 1, "name": "Task Wise" }, { "id":2, "name": "SubTask Wise" }];
+        $scope.cfList = [{ "id": 0, "name": "Auto Calculation" }, { "id": 1, "name": "Manual Calculations" }];
 
         getTeamList();
         function getTeamList() {
@@ -285,20 +284,20 @@
         }
 
         $scope.selectTask = function() {
-            //var team_id = $scope.team.selected;
+            var id = 0;
             if($rootScope.team_count > 1) {
-              var id = $scope.team.selected;
+               id = $scope.team.selected;
           }
           else {
-                var id =  $scope.temp_team;
+                 id =  $scope.temp_team;
           }
 
-            var promiseGet = AddTaskService.getLoadedTasks($scope, $rootScope, $http ,id );
+            var promiseGet = SubTaskService.getTaskByHaveST($scope, $rootScope, $http , id );
             promiseGet.then(function (pl) {
-                 $scope.TaskList = pl.data; 
-         if ($scope.isEditing) {
+            $scope.TaskList = pl.data; 
+             if ($scope.isEditing) {
                  for (var task in $scope.TaskList) {
-                    if ($scope.TaskList[task].task_id == $scope.AddTask.tasks_id) {
+                     if ($scope.TaskList[task].task_id == $scope.SubTask.task_id) {
                         $scope.task.selected = $scope.TaskList[task];
                     }
                 }
@@ -311,11 +310,12 @@
 
 
         $scope.loadGrid = function() {
+            var id = 0;
             if($rootScope.team_count > 1) {
-                var id = $scope.team.selected;
+                 id = $scope.team.selected;
             }
             else {
-                var id =  $scope.temp_team;
+                 id =  $scope.temp_team;
             }
             var self = this;
             SubTaskService.getAllSubTaskbyID($scope, $rootScope, $http , id).then(function (responce) {
