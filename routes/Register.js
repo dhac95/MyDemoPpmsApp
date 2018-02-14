@@ -110,7 +110,7 @@ router.post('/' , function(req , res , next){
                                                                 to: email, // list of receivers
                                                                 subject: 'New Team Registration ✔', // Subject line
                                                                 text: name, // plain text body
-                                                                html: '<b> Hi ' + name + ',</b><br /> Your registration is created at ' + today +  ' .<br /> Wait for your request to be approved .<b><br /> Thanks</b>' // html body
+                                                                html: '<b> Hi ' + name + ',</b><br /> Your registration is created at ' + today +  ' .<br /> Wait for your request to be approved.<b><br /> Thanks</b>' // html body
                                                             };
                                                         
                                                             // send mail with defined transport object

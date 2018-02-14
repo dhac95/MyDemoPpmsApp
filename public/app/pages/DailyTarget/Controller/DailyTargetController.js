@@ -31,6 +31,7 @@
         $scope.setAutoTarget = setAutoTarget;
         $scope.setNonTarget = setNonTarget;
         $scope.setManualTarget = setManualTarget;
+        $scope.setManualTargetByPrev = setManualTargetByPrev;
         // $scope.selectTask = selectTask;
 
         $scope.months = [{"name" : "January" }, { "name" : "February" }, { "name" : "March" }, { "name" : "April" }, { "name" : "May" }, { "name" : "June" }, { "name" : "July" }, { "name" : "August" }, { "name" : "September" }, { "name" : "October" }, { "name" : "November" }, { "name" : "December" }];
@@ -257,6 +258,46 @@
                 });
             }
         }
+
+        function setManualTargetByPrev() {
+            var obj = {};
+            if ($rootScope.team_count > 1) {
+                obj = {
+                    team_id: $scope.team.selected,
+                    month: $scope.myMonth.name + " " + $scope.myYear,
+                    user_id: $rootScope.user_id,
+                };
+            }
+            else {
+                $scope.temp_team = $scope.TeamList[0].team_id;
+
+                obj = {
+                    team_id: $scope.temp_team,
+                    month: $scope.myMonth.name + " " + $scope.myYear,
+                    user_id: $rootScope.user_id,
+                };
+            }
+            if (window.confirm("***Note*** : This will set daily target same as previous month's target \nUse this feature only if maximum number of counts are same \nClick OK to contiune ")) {
+                DailyTargetService.setManualTargetByPrev($scope, $rootScope, $http, obj).then(function (res) {
+                    if (res.data.code === 200) {
+                        Notification.success("Loaded Successful");
+                        $timeout(function () {
+                            $scope.loadGrid();
+                        }, 250);
+
+                    }
+                    else if (res.data.code === 304) {
+                        Notification.warning("No Count set for previous month! Set that first");
+                    }
+                    else {
+                        Notification.error("Error while saving! Try Again.");
+                    }
+                }, function (err) {
+                    Notification("Error in processing sever error 500! Try Again.");
+                });
+            }
+        }
+
 
         function setNonTarget() {
             var obj = {};

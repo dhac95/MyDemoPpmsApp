@@ -12,7 +12,7 @@ router.post('/', function (req, res, next) {
     var tempDate = req.body.month;
     var actionBy = req.body.user_id;
     var formattedDate = moment(tempDate).format('YYYY-MM');
-    var formatDate2 = moment(tempDate).format('YYYY-MM-DD');
+    var formatDate2 = moment(tempDate).subtract(1 , 'M').format('YYYY MMMM');
     var endDate = moment(tempDate).add(1, 'M').format('YYYY-MM-DD');
     var today = moment().format('YYYY-MM-DD');
 
@@ -82,5 +82,50 @@ router.post('/', function (req, res, next) {
     });
 
 });
+
+router.post('/prev', function (req, res, next) {
+    var team = req.body.team_id;
+    var tempDate = req.body.month;
+    var actionBy = req.body.user_id;
+    var formattedDate = moment(tempDate).format('YYYY-MM');
+    var formatDate2 = moment(tempDate).subtract(1, 'M').format('MMMM YYYY');
+    var endDate = moment(tempDate).add(1, 'M').format('YYYY-MM-DD');
+    var today = moment().format('YYYY-MM-DD');
+
+    db.query('select * from amz_daily_target where month_from = ? and team = ? and status = 1 and deletion = 0 and about_cf = 1', [formatDate2, team], function (e, r, f) {
+        if(e) { 
+            res.send(e);
+         } else if(r.length == 0){
+            res.send({
+                "code": 304,
+                "message": "No Target for previous month"
+            });
+        }
+        else {
+            async.each(r, function (single, callback) {
+                db.query('INSERT INTO amz_daily_target (month_from , team , task , sub_task , cf_updated , con_fac , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)', [tempDate, single.team, single.task, single.sub_task, single.cf_updated, single.con_fac, single.wu_status, single.status, single.deletion , actionBy, actionBy, today, today, '1'], function (e2, r2, f2) {
+                        if(e2) {
+                            res.send({
+                                "code": 400,
+                                "message": "Error occoured",
+                                "error": e3
+                            });
+                        }
+                });
+
+                callback();
+            }, function (response) {
+                res.send({
+                    "code": 200,
+                    "message": "success"
+                });
+            });
+            
+        } 
+
+    });
+});
+
+
 
 module.exports = router;

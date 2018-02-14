@@ -20,6 +20,7 @@
         this.setAutoTarget = setAutoTarget;
         this.setNonTarget = setNonTarget;
         this.setManualTarget = setManualTarget;
+        this.setManualTargetByPrev = setManualTargetByPrev;
 
         //////////////////
 
@@ -59,6 +60,9 @@
         }
         function setManualTarget($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'mcf/', obj);
+        }
+        function setManualTargetByPrev($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'mcf/prev/', obj);
         }
     }
 
