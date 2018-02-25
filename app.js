@@ -45,12 +45,13 @@ var myTeam = require('./routes/loadTeamForReg');
 var chart = require('./routes/PrepareChart');
 var Release = require('./routes/Release');
 var wu = require('./routes/ManualDailyCount');
-var mwu = require('./routes/ManualWuCalc');
+var mwu = require('./routes/WorkUnitCalc');
 var loadcftasks  = require('./routes/loadTsAndSsWithCf');
 var autoCF = require('./routes/AutoCFCalc');
 var atu = require('./routes/AutoCFLoad');
 var ncf = require('./routes/NonCFLoad');
 var mcf = require('./routes/ManualCFLoad');
+var WorkUnit = require('./routes/LoadWorkUnit');
 
 // Express init
 var app = express();  
@@ -73,6 +74,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({  
     extended: false  
 }));  
+
 app.use(cookieParser());  
 app.use(express.static(path.join(__dirname, 'public')));  
 
@@ -111,6 +113,9 @@ app.use('/autoCF', autoCF);
 app.use('/atu', atu);
 app.use('/ncf', ncf);
 app.use('/mcf' , mcf);
+app.use('/WorkUnit', WorkUnit);
+
+process.env.NODE_ENV = 'production';
 
 // catch 404 and forward to error handler  
 app.use(function(req, res, next) {  

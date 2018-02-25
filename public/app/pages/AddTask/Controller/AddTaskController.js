@@ -92,6 +92,7 @@
                 AddTask.sub_task_id = $scope.subtask.selected;
                 AddTask.build = $scope.build.selected;
                 AddTask.date = $scope.date.selected;
+            AddTask.user_type = $rootScope.user_type;
                 var now = new Date();
             var formatDate = $filter('date')(AddTask.date , 'yyyy-MM-dd' );
             var today = $filter('date')(now, 'yyyy-MM-dd');
@@ -356,6 +357,7 @@
                 AddTask.tasks_id = $scope.task.selected;
                 AddTask.sub_task_id = $scope.subtask.selected;
                 AddTask.build = $scope.build.selected;
+                AddTask.user_type = $rootScope.user_type;
                 //AddTask.date = $scope.date.selected;
                // $scope.AddTask.create_date = $rootScope.date;
                 AddTaskService.updateAddTask($scope, $rootScope, $http, $scope.AddTask,id).then(function (res) {
@@ -377,6 +379,7 @@
                 AddTask.tasks_id = $scope.task.selected;
                 AddTask.sub_task_id = $scope.subtask.selected;
                 AddTask.build = $scope.build.selected;
+                AddTask.user_type = $rootScope.user_type;
             
                 AddTaskService.addAddTask($scope, $rootScope, $http, $scope.AddTask).then(function (res) {
                     if (res.data.code == 200) {

@@ -34,6 +34,7 @@ router.post('/', function(req, res, next) {
     var noOfDevice = req.body.noofdevice;
     var Cmds = req.body.cmds;
     var ontime = "Y";
+    var userType = req.body.user_type;
     var actionDate = datetime.create().format('Y-m-d');
   //  var TasksID = req.body.tasks_id;
 
@@ -59,7 +60,7 @@ router.post('/', function(req, res, next) {
                 });
             }
             else {
-            db.query("insert into user_tasks (user_id,team_id,build,tasks_id,sub_task_id,task_desc,count,noofdevice,time,date,on_time,cmds,create_date,maintain_date) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)" ,[userID,team,Build,TasksID,subtask,taskDesc,Count,noOfDevice,Time,Date,ontime,Cmds,actionDate,actionDate], function (error, results, fields) {
+        db.query("insert into user_tasks (user_id,team_id,build,tasks_id,sub_task_id,task_desc,count,noofdevice,time,date,on_time,cmds,create_date,maintain_date,user_type) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [userID, team, Build, TasksID, subtask, taskDesc, Count, noOfDevice, Time, Date, ontime, Cmds, actionDate, actionDate, userType], function (error, results, fields) {
                 if(error) {
                     res.send({
                         "code":400,

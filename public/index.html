@@ -80,7 +80,7 @@
                     <span class="text-danger"><strong>{{loginSts}}</strong></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="text" name="user" class="form-control" placeholder="Enter Your Username" data-ng-model="Reset.user_name" required="">
+                    <input type="text" name="user" class="form-control" placeholder="Enter Your Username" data-ng-model="Reset.user_name" data-ng-change="Reset.user_mail = Reset.user_name" required="">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     <span class="text-danger" ng-show="myForm.user.$dirty && myForm.user.$invalid">
                         <span ng-show="myForm.user.$error.required">Username is required....</span>
@@ -130,7 +130,7 @@
             Powerd by<strong> M*EAN 🔁 </strong>
         </div>
         <!-- Default to the left -->
-        <strong>Version<a href="http://www.amazon.com/"> Beta 0.8 Build(p2r060218)</a>.</strong>.
+        <strong>Version<a href="http://www.amazon.com/"> Beta 0.8.2 Build(p2r022418)</a>.</strong>.
     </footer>
 </div><!-- ./wrapper -->
 

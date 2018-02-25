@@ -37,6 +37,8 @@
     <link href="AdminLTE/ng-table.css" rel="stylesheet" />
     <link href="Content/Site.css" rel="stylesheet" />
     <link href="Content/select.css" rel="stylesheet" />
+    <link href="Scripts/nvd3/nv.d3.css" rel="stylesheet" />
+    <link href="Scripts/Angular-Screenshot-build/angular-screenshot.min.css" />
 
     <!-- UI - Notifications -->
 
@@ -102,7 +104,7 @@ desired effect
 |---------------------------------------------------------|
 
 -->
-<body  class="skin-yellow fixed" data-ng-app="ERP">
+<body class="skin-yellow fixed" data-ng-app="ERP">
     <div class="wrapper">
         <header class="main-header"></header>
         <!-- Left side column. contains the logo and sidebar -->
@@ -130,7 +132,7 @@ desired effect
              Powerd by<strong> M*EAN 🔁 </strong> 
             </div>
             <!-- Default to the left -->
-            <strong>Version<a href="http://www.amazon.com/"> Beta 0.8 Build(p2r060218)</a>.</strong>.
+            <strong>Version<a href="http://www.amazon.com/"> Beta 0.8.2 Build(p2r022418)</a>.</strong>.
         </footer>
     </div><!-- ./wrapper -->
 
@@ -169,26 +171,26 @@ desired effect
     <!--<script src="https://rawgit.com/rzadjac/angularjs-slider/master/dist/rzslider.js"></script>-->
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>-->
-    <script src="AdminLTE/plugins/datepicker/bootstrap-datepicker.js"></script>
-    <script src="AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js"></script>
-    <script src="AdminLTE/plugins/bootstrap-slider/bootstrap-slider.js"></script>
-    <script src="AdminLTE/plugins/timepicker/bootstrap-timepicker.js"></script>
-    <script src="AdminLTE/plugins/fullcalendar/fullcalendar.min.js"></script>
-    <script src="Scripts/PercentageSlider.js"></script>
-  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.min.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+    <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>-->
+        <script src="AdminLTE/plugins/datepicker/bootstrap-datepicker.js"></script>
+        <script src="AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js"></script>
+        <script src="AdminLTE/plugins/bootstrap-slider/bootstrap-slider.js"></script>
+        <script src="AdminLTE/plugins/timepicker/bootstrap-timepicker.js"></script>
+        <script src="AdminLTE/plugins/fullcalendar/fullcalendar.min.js"></script>
+        <script src="Scripts/PercentageSlider.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.min.js"></script>-->
 
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
-  <!-- <script src="../bower_components/angular-smart-table/dist/smart-table.min.js"></script> -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+    <!-- <script src="../bower_components/angular-smart-table/dist/smart-table.min.js"></script> -->
 
-  <!-- angualr switch -->
-  <script src="Scripts/vendors/angular-ui-switch.js"></script>
+    <!-- angualr switch -->
+    <script src="Scripts/vendors/angular-ui-switch.js"></script>
 
-  <!-- ui - notifications -->
-  <script src="Scripts\Ui-Notifications\angular-ui-notification.min.js"></script>
+    <!-- ui - notifications -->
+    <script src="Scripts\Ui-Notifications\angular-ui-notification.min.js"></script>
 
-  <!-- Idle timeout -->
+    <!-- Idle timeout -->
     <script src="Scripts\ng-idle\angular-idle.min.js"></script>
 
     <!-- export to excel -->
@@ -202,32 +204,15 @@ desired effect
     <script src="Content\angular-export-table\kayalshri-table-export.jquery.plugin-a891806\jspdf\libs\base64.js"></script>
     <script src="Content\angular-export-table\kayalshri-table-export.jquery.plugin-a891806\jspdf\libs\sprintf.js"></script>
 
-
     <!-- Moment.js -->
     <script src="https://cdn.jsdelivr.net/npm/angular-moment@1.2.0/angular-moment.min.js"></script>
 
-    
+    <!-- Charts -->
+    <script src="Scripts/nvd3/d3.js"></script>
+    <script src="Scripts/nvd3/nv.d3.js"></script>
+    <script src="Scripts/nvd3/angular-nvd3.js"></script>
+    <script src="Scripts/Angular-Screenshot-build/angular-screenshot.min.js"></script>
 
-    <!-- Month Picker -->
-        <!-- <link href="Content\MonthPicker\stylesheets\stylesheet.css" rel="stylesheet" type="text/css" /> -->
-        <!-- <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" /> -->
-        
-        <!-- <link href="Content\MonthPicker\MonthPicker.min.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" type="text/css" href="examples.css" /> -->
-        
-        <!-- <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script> -->
-        <!-- 
-        <script src="https://cdn.rawgit.com/digitalBush/jquery.maskedinput/1.4.1/dist/jquery.maskedinput.min.js"></script>
-        
-        <script src="Content\MonthPicker\MonthPicker.min.js"></script>
-        <script src="Content\MonthPicker\examples.js"></script> -->
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-        <script>
-            $(function () {
-                $("#dialog").dialog();
-            });
-        </script> -->
-                
     <!-- TS App -->
     <!-- Modules -->
     <script src="app/pages/service.module.js" type="text/javascript"></script>    
@@ -240,7 +225,6 @@ desired effect
     <script src="app/pages/Build/Build.module.js"></script>
     <script src="app/pages/Task/Task.module.js"></script>
     <script src="app/pages/AddTask/AddTask.module.js"></script>
-    <!-- <script src="app/pages/testAdd/test.module.js"></script> -->
     <script src="app/pages/UserOT/UserOT.module.js"></script>
     <script src="app/pages/UserReports/UserReport.module.js"></script>
     <script src="app/pages/SubTask/SubTask.module.js"></script>
@@ -249,6 +233,7 @@ desired effect
     <script src="app/pages/Profile/Profile.module.js"></script>
     <script src="app/pages/Release/Release.module.js"></script>
     <script src="app/pages/DailyTarget/DailyTarget.module.js"></script>
+    <script src="app/pages/Charts/Charts.module.js"></script>
 
 
     <!-- Controllers -->
@@ -258,7 +243,6 @@ desired effect
     <script src="app/pages/Build/Controller/BuildController.js" type="text/javascript"></script>
     <script src="app/pages/Task/Controller/TaskController.js" type="text/javascript"></script>
     <script src="app/pages/AddTask/Controller/AddTaskController.js" type="text/javascript"></script>
-    <!-- <script src="app/pages/testAdd/Controller/testController.js" type="text/javascript"></script> -->
     <script src="app/pages/UserOT/Controller/UserOTController.js" type="text/javascript"></script>
     <script src="app/pages/UserReports/Controller/UserReportController.js" type="text/javascript"></script>
     <script src="app/pages/SubTask/Controller/SubTaskController.js" type="text/javascript"></script>
@@ -267,6 +251,7 @@ desired effect
     <script src="app/pages/Profile/Controller/ProfileController.js" type="text/javascript"></script>
     <script src="app/pages/Release/Controller/ReleaseController.js" type="text/javascript"></script>
     <script src="app/pages/DailyTarget/Controller/DailyTargetController.js" type="text/javascript"></script>
+    <script src="app/pages/Charts/Controller/ChartController.js" type="text/javascript"></script>
 
     <!-- Services -->
     <script src="app/pages/services/TeamService.js" type="text/javascript"></script>
@@ -283,8 +268,8 @@ desired effect
     <script src="app/pages/services/homeService.js" type="text/javascript"></script>
     <script src="app/pages/services/ReleaseService.js" type="text/javascript"></script>
     <script src="app/pages/services/DailyTargetService.js" type="text/javascript"></script>
+
     <!-- ANGUALR DATEPICKER -->
-    
     <script src="Content/angularjs-datepicker/dist/angular-datepicker.js"></script>   
     <!-- <script>
         $(document).ready(function () {

@@ -24,6 +24,10 @@
 
         $scope.removeSdaReport = removeSdaReport;
         $scope.showSdaReports = showSdaReports;
+        $scope.showProductivity = showProductivity;
+        $scope.showProductivityByUser = showProductivityByUser;
+        $scope.showProductivityByTask = showProductivityByTask;
+        $scope.showProductivityBySubTask = showProductivityBySubTask;
        
 
         $scope.team = {};
@@ -31,13 +35,15 @@
         $scope.task = {};
         $scope.subtask = {};
         $scope.date = {};
-        $scope.users = {};
+        $scope.user = {};
         $scope.getTeamList = getTeamList;
+        $scope.isProd = false;
+        $scope.hideProd = false;
+        $scope.isTask = false;
+        $scope.isSubTask = false;
+        $scope.isUser = false;
       
       //  loadGrid();
-
-    
-
 
         $scope.editSdaReportModel = function (SdaReport) {
             $scope.items.isEditing = true;
@@ -150,7 +156,15 @@
                     var uname =  $scope.UserList[i].user_name;
               }
           }
-          var name = "Reports For " + uname + " From " + $filter('date')($scope.SdaReport.From, "dd-MM-yyyy") + " To " + $filter('date')($scope.SdaReport.To, "dd-MM-yyyy") ;
+          for(var j in $scope.TeamList) {
+              if ($scope.TeamList[j].team_id == $scope.team.selected) {
+                  var tname = $scope.TeamList[j].team_name;
+              }
+          }
+          if(uname == undefined) {
+              uname="All Team Members";
+          }
+              var name = "Reports For " + uname + " in Team " + tname +" From " + $filter('date')($scope.SdaReport.From, "dd-MM-yyyy") + " To " + $filter('date')($scope.SdaReport.To, "dd-MM-yyyy") ;
           var exportHref=Excel.tableToExcel(tableId,'User Data');
               $timeout(function () {
                   var link = document.createElement('a');
@@ -173,6 +187,174 @@
             return totCount;
         }
 
+        function showProductivity() {
+            var Date1 = $scope.SdaReport.From;
+            var formatDate1 = $filter('date')(Date1, "yyyy-MM-dd");
+            var Date2 = $scope.SdaReport.To;
+            var formatDate2 = $filter('date')(Date2, "yyyy-MM-dd");
+            var teamID = $scope.team.selected;
+            var taskDesc = $scope.SdaReport.task_desc;
+            var task = $scope.task.selected;
+            var user = $scope.user.selected;
+            var subtask = $scope.subtask.selected;
+            var userOtTasks = $scope.SdaReport.Ot;
+            $scope.isProd = true;
+            $scope.hideProd = true;
+
+            var obj = {
+                From: formatDate1,
+                To: formatDate2,
+                user_id: user,
+                team_id: teamID,
+                tasks_id: task,
+                sub_task_id: subtask,
+                task_desc: taskDesc,
+                user_ot: userOtTasks
+
+            };
+            if (formatDate1 > formatDate2) {
+                Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
+            }
+            else {
+                var promiseGet = SdaReportService.getProductiviy($scope, $rootScope, $http, obj);
+                promiseGet.then(function (pl) {
+                    $scope.ProdList = pl.data;
+                },
+                    function (errorPl) {
+                        Notification('Some Error in Getting Records.');
+                    });
+            }
+        }
+
+        function showProductivityByUser() {
+            var Date1 = $scope.SdaReport.From;
+            var formatDate1 = $filter('date')(Date1, "yyyy-MM-dd");
+            var Date2 = $scope.SdaReport.To;
+            var formatDate2 = $filter('date')(Date2, "yyyy-MM-dd");
+            var teamID = $scope.team.selected;
+            var taskDesc = $scope.SdaReport.task_desc;
+            var task = $scope.task.selected;
+            var user = $scope.user.selected;
+            var subtask = $scope.subtask.selected;
+            var userOtTasks = $scope.SdaReport.Ot;
+            $scope.isProd = true;
+            $scope.isUser = true;
+            $scope.isTask = false;
+            $scope.isSubTask = false;
+            $scope.hideProd = false;
+
+            var obj = {
+                From: formatDate1,
+                To: formatDate2,
+                user_id: user,
+                team_id: teamID,
+                tasks_id: task,
+                sub_task_id: subtask,
+                task_desc: taskDesc,
+                user_ot: userOtTasks
+
+            };
+            if (formatDate1 > formatDate2) {
+                Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
+            }
+            else {
+                var promiseGet = SdaReportService.getProductiviyByUser($scope, $rootScope, $http, obj);
+                promiseGet.then(function (pl) {
+                    $scope.ProdList = "";
+                    $scope.ProdList = pl.data;
+                },
+                    function (errorPl) {
+                        Notification('Some Error in Getting Records.');
+                    });
+            }
+        }
+
+        function showProductivityByTask() {
+            var Date1 = $scope.SdaReport.From;
+            var formatDate1 = $filter('date')(Date1, "yyyy-MM-dd");
+            var Date2 = $scope.SdaReport.To;
+            var formatDate2 = $filter('date')(Date2, "yyyy-MM-dd");
+            var teamID = $scope.team.selected;
+            var taskDesc = $scope.SdaReport.task_desc;
+            var task = $scope.task.selected;
+            var user = $scope.user.selected;
+            var subtask = $scope.subtask.selected;
+            var userOtTasks = $scope.SdaReport.Ot;
+            $scope.isProd = true;
+            $scope.isUser = false;
+            $scope.isTask = true;
+            $scope.isSubTask = false;
+            $scope.hideProd = false;
+
+            var obj = {
+                From: formatDate1,
+                To: formatDate2,
+                user_id: user,
+                team_id: teamID,
+                tasks_id: task,
+                sub_task_id: subtask,
+                task_desc: taskDesc,
+                user_ot: userOtTasks
+
+            };
+            if (formatDate1 > formatDate2) {
+                Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
+            }
+            else {
+                var promiseGet = SdaReportService.getProductiviyByTask($scope, $rootScope, $http, obj);
+                promiseGet.then(function (pl) {
+                    $scope.ProdList = "";
+                    $scope.ProdList = pl.data;
+                },
+                    function (errorPl) {
+                        Notification('Some Error in Getting Records.');
+                    });
+            }
+        }
+
+        function showProductivityBySubTask() {
+            var Date1 = $scope.SdaReport.From;
+            var formatDate1 = $filter('date')(Date1, "yyyy-MM-dd");
+            var Date2 = $scope.SdaReport.To;
+            var formatDate2 = $filter('date')(Date2, "yyyy-MM-dd");
+            var teamID = $scope.team.selected;
+            var taskDesc = $scope.SdaReport.task_desc;
+            var task = $scope.task.selected;
+            var user = $scope.user.selected;
+            var subtask = $scope.subtask.selected;
+            var userOtTasks = $scope.SdaReport.Ot;
+            $scope.isProd = true;
+            $scope.isUser = false;
+            $scope.isTask = false;
+            $scope.isSubTask = true;
+            $scope.hideProd = false;
+
+            var obj = {
+                From: formatDate1,
+                To: formatDate2,
+                user_id: user,
+                team_id: teamID,
+                tasks_id: task,
+                sub_task_id: subtask,
+                task_desc: taskDesc,
+                user_ot: userOtTasks
+
+            };
+            if (formatDate1 > formatDate2) {
+                Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
+            }
+            else {
+                var promiseGet = SdaReportService.getProductiviyBySubTask($scope, $rootScope, $http, obj);
+                promiseGet.then(function (pl) {
+                    $scope.ProdList = "";
+                    $scope.ProdList = pl.data;
+                },
+                    function (errorPl) {
+                        Notification('Some Error in Getting Records.');
+                    });
+            }
+        }
+
       
         function showSdaReports() {
             var Date1 = $scope.SdaReport.From;
@@ -185,6 +367,7 @@
             var user = $scope.user.selected;
             var subtask = $scope.subtask.selected;
             var userOtTasks = $scope.SdaReport.Ot;
+            $scope.isProd = false;
 
             var obj = {
                 From : formatDate1,

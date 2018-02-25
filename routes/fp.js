@@ -51,7 +51,7 @@ router.post('/' , function(req , res , next){
                                 to: email, // list of receivers
                                 subject: 'Password change request ✔', // Subject line
                                 text: password, // plain text body
-                                html: '<b> Hi ' + user + ',</b><br /> Your mail id is used to request a new password at ' + today + '. Use this temp password to update your password  <strong> """ '+ password + ' """</strong> <br /> If you are not requested for password change please contact your manager for further actions.<b><br /> Thanks</b>' // html body
+                                html: '<b> Hi ' + user + ',</b><br /> Your mail id is used to request a new password at ' + today + '. Use this temp password to update your password  <strong> ***'+ password +'***</strong> <br /> If you are not requested for password change please contact your manager for further actions.<b><br /> Thanks</b>' // html body
                             };
                         
                             // send mail with defined transport object

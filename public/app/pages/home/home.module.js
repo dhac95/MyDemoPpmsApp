@@ -12,6 +12,6 @@
                 controller: 'HomeController',
                 templateUrl: 'app/pages/home/views/home.html',
                 title: 'Home',
-            })
+            });
     }
 })();

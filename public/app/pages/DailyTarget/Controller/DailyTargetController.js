@@ -8,8 +8,8 @@
         .controller('DailyTargetModelController', DailyTargetModelController);
 
 
-    DailyTargetController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'DailyTargetService', '$uibModal', 'NgTableParams', 'AddTaskService', 'Notification', '$timeout'];
-    function DailyTargetController($scope, $rootScope, $http, $filter, DailyTargetService, $uibModal, NgTableParams, AddTaskService, Notification, $timeout) {
+    DailyTargetController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'DailyTargetService', '$uibModal', 'NgTableParams', 'AddTaskService', 'Notification', '$timeout', '$state'];
+    function DailyTargetController($scope, $rootScope, $http, $filter, DailyTargetService, $uibModal, NgTableParams, AddTaskService, Notification, $timeout, $state) {
 
         $rootScope.title = "DailyTarget";
         $rootScope.isLoginPage = false;
@@ -32,6 +32,7 @@
         $scope.setNonTarget = setNonTarget;
         $scope.setManualTarget = setManualTarget;
         $scope.setManualTargetByPrev = setManualTargetByPrev;
+        $scope.setTargets = setTargets;
         // $scope.selectTask = selectTask;
 
         $scope.months = [{"name" : "January" }, { "name" : "February" }, { "name" : "March" }, { "name" : "April" }, { "name" : "May" }, { "name" : "June" }, { "name" : "July" }, { "name" : "August" }, { "name" : "September" }, { "name" : "October" }, { "name" : "November" }, { "name" : "December" }];
@@ -180,7 +181,43 @@
                 function (errorPl) {
                     Notification({ message: 'Some Error in Getting Records.' }, 'error');
                 });
-        };
+        }; 
+
+        function setTargets() {
+            var obj = {};
+            if ($rootScope.team_count > 1) {
+                obj = {
+                    team_id: $scope.team.selected,
+                    month: $scope.myMonth.name + " " + $scope.myYear,
+                    user_id: $rootScope.user_id,
+                };
+            }
+            else {
+                $scope.temp_team = $scope.TeamList[0].team_id;
+
+                obj = {
+                    team_id: $scope.temp_team,
+                    month: $scope.myMonth.name + " " + $scope.myYear,
+                    user_id: $rootScope.user_id,
+                };
+            }
+            if (window.confirm("***Note*** : You are about to calcute monthly targets \n Click Ok to continue")) {
+                DailyTargetService.setTargets($scope, $rootScope, $http, obj).then(function (res) {
+                    if (res.data.code === 200) {
+                        Notification.success("Loaded Successful");
+                        $timeout(function () {
+                            window.location.replace("/main.html#/SdaReport/master");
+                        }, 250);
+
+                    }
+                    else {
+                        Notification.error("Error while saving! Try Again.");
+                    }
+                }, function (err) {
+                    Notification("Error in processing sever error 500! Try Again.");
+                });
+            }
+        }
 
         function setAutoTarget(){
             var obj = {};
@@ -289,7 +326,9 @@
                     else if (res.data.code === 304) {
                         Notification.warning("No Count set for previous month! Set that first");
                     }
-                    else {
+                    else if(res.data.code === 300){
+                        Notification.warning("Can't Load targets again if you are already started to add manual targets by yourself!! Even if one target added this feature cannot be used!");
+                    } else {
                         Notification.error("Error while saving! Try Again.");
                     }
                 }, function (err) {

@@ -15,7 +15,8 @@
         'ERP.pages.Approve',
         'ERP.pages.Profile',
         'ERP.pages.Release',
-        'ERP.pages.DailyTarget'
+        'ERP.pages.DailyTarget',
+        'ERP.pages.Charts'
         
     ]).config(['$urlRouterProvider', '$stateProvider', routeConfig])
         .run(function ($rootScope, $state) {

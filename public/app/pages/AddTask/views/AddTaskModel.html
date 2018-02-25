@@ -57,14 +57,18 @@
                     <div ng-show="myForm.subTask.$touched && myForm.subTask.$invalid" class="text-danger">*required subTask</div>
                 </div>
 
-                <div class="form-group col-md-3 col-lg-3">
-					<label for="task_desc">task_desc</label>
-					<input type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="AddTask.task_desc"  disabled/>
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                    <label for="task_desc">Leave Type</label>
+                    <select type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="AddTask.task_desc">
+                        <option value="1">Manger approved</option>
+                        <option value="2">Manager Not Approved</option>
+                        <option value="0">Unexpected</option>
+                    </select>
                 </div>
+
                 <div class="form-group col-md-3 col-lg-3">
 					<label for="count">count</label>
-                    <input type="number" class="form-control" id="count" name="count" data-ng-model="AddTask.count"  required/>
-                    <div ng-show="myForm.count.$touched && myForm.count.$invalid" class="text-danger">*required count</div>
+                    <input type="number" class="form-control" id="count" name="count" data-ng-model="AddTask.count" />
                     
                 </div>
                 <div class="form-group col-md-3 col-lg-3">

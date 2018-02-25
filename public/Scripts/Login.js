@@ -1,6 +1,6 @@
 ﻿
   (function () {
-      angular.module('LoginApp', ['ngCookies', 'ui-notification']).controller('LoginController', function ($scope, $http, $cookieStore,Notification) {
+      angular.module('LoginApp', ['ngCookies', 'ui-notification']).controller('LoginController', function ($scope, $http, $cookieStore, Notification, $timeout) {
         angular.module('LoginApp', ['ui-notification']) 
         .config(function(NotificationProvider) {
             NotificationProvider.setOptions({
@@ -156,9 +156,9 @@
                       sessionStorage.removeItem('user_type');
                       sessionStorage.removeItem('user_mail');
                       sessionStorage.removeItem('host_name_1');
-                       sessionStorage.removeItem('host_name_2');
+                      sessionStorage.removeItem('host_name_2');
                       sessionStorage.removeItem('below_on');
-                       sessionStorage.removeItem('manager');
+                      sessionStorage.removeItem('manager');
                       sessionStorage.removeItem('user_status');
                       sessionStorage.removeItem('user_activation');
                       sessionStorage.removeItem('user_deletion');
@@ -240,9 +240,13 @@
           $http.post(forgot, obj).then(function(response) { 
                   if(response.data.code === 200) {
                       Notification.success('Success password updated! Check the mail <iframe src="https://giphy.com/embed/6brH8dM3zeMyA" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>' );
+                      $timeout(function () {
+                          window.location.replace("/index.html");
+                      }, 1000);
                   }
                   else if(response.data.code === 300){
                       Notification({ message: 'User does not exist !!! Register first <iframe src="https://giphy.com/embed/3ohzdYt5HYinIx13ji" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'} , 'warning');
+
                   }
                   else {
                       Notification({ message: 'Password not updated!!! Error occoured <iframe src="https://giphy.com/embed/r7zNTsMZ1XV6g" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'}, 'error' );
@@ -272,9 +276,15 @@
               $http.post(register, obj).then(function(response) { 
                 if(response.data.code === 200) {
                     Notification.success('success ' + 'Check the mail '  );
+                    $timeout(function () {
+                    window.location.replace("/index.html");
+                    } , 1000);
                 }
                 else if(response.data.code === 300){
                     Notification({message: 'error ' +  'user already registered in team'}, 'warning' );
+                    $timeout(function () {
+                        window.location.replace("/index.html");
+                    }, 1000);
                 }
                 else if(response.data.code === 204) {
                     Notification('User already registerd Wait for approval' );

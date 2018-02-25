@@ -6,7 +6,6 @@
 		<div class="row">
 			<!-- <div class="col-md-6 col-lg-6"> -->
 
-
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="from">Date From</label>
                     <input type="date" class="form-control" id="from" name="from" data-ng-model="SdaReport.From" required/>
@@ -32,11 +31,11 @@
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
                     <label for="user">User Name</label>
                     <div class="dropdown">
-                      <select class="form-control" id="user" name="user" data-ng-options="User.user_id as User.user_name for User in UserList " data-ng-model="user.selected" required>
+                      <select class="form-control" id="user" name="user" data-ng-options="User.user_id as User.user_name for User in UserList " data-ng-model="user.selected">
                             <option value="">Select the User</option>
                         </select>
                     </div>
-                    <span ng-show="myForm.user.$touched && myForm.user.$invalid" class="text-danger">*required user</span>
+                    <!-- <span ng-show="myForm.user.$touched && myForm.user.$invalid" class="text-danger">*required user</span> -->
                 </div>
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
@@ -68,25 +67,50 @@
 	</form>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showSdaReports()">Show Results</button>
+    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showSdaReports()">Show Raw Data</button>
+    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showProductivity()">Show Producive Data</button>
 </div>
-<div class="row">
-    <div ng-show='ReportList ==""'>
-        <h3 class="text-muted">No Data avaialble for the selected date From <strong>{{SdaReport.From | date : 'MM/dd/yyyy' }}</strong> to <strong>{{SdaReport.To | date : 'MM/dd/yyyy' }}</strong> for user <span ng-repeat="u in UserList" ng-if="u.user_id == user.selected"><strong>{{u.user_name}}</strong> </span>
-            
+
+<div class="row">  
+
+<div class="nav-tabs-custom" ng-if="isProd">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a  ng-click="showProductivity()" data-toggle="tab">Overall Produvity</a>
+        </li>
+        <li>
+            <a  ng-click="showProductivityByUser()" data-toggle="tab">UserWise</a>
+        </li>
+        <li>
+            <a  ng-click="showProductivityByTask()" data-toggle="tab">Taskwise</a>
+        </li>
+          <li>
+            <a  ng-click="showProductivityBySubTask()" data-toggle="tab">Subtask Wise</a>
+        </li>
+        <!-- <li class="pull-right">
+            <a href="#" class="text-muted">
+                <i class="fa fa-gear"></i>
+            </a>
+        </li> -->
+    </ul>
+</div>
+    <div ng-if='!isProd && ReportList ==""'>
+        <h3 class="text-muted">No Data avaialble for the selected date From <strong>{{SdaReport.From | date : 'MM/dd/yyyy' }}</strong> to <strong>{{SdaReport.To | date : 'MM/dd/yyyy' }}</strong> for <span ng-if="user.selected == null "> the team</span> <span ng-repeat="u in UserList" ng-if="u.user_id == user.selected"><strong>{{u.user_name}}</strong> </span>       
     </div> 
-    <div ng-if='ReportList !=""'>
-<div class="row">
-    <div class="model-header">
-        <button class="btn btn-link" ng-click="exportToExcel('#userData')">
-                <span class="glyphicon glyphicon-share"></span>
-                            Export to Excel
-              </button>
-            </div>
+    <div ng-if='!isProd && ReportList !=null && ReportList !=""'>
+    <div class="row">
+       
+        <div class="model-header">
+            <button class="btn btn-success btn-default-focus" ng-click="exportToExcel('#userData')">
+                    <span class="fa fa-file-excel-o"></span>
+                                Export to Excel
+            </button>
+        </div>
     <div class="panel panel-default" id="userData">
         <div class="jumbotron modal-header model-title" >
-            <strong>Reports  for <span ng-repeat="u in UserList" ng-if="u.user_id == user.selected"><strong>{{u.user_name}}</strong> </span> from {{SdaReport.From | date : 'MM/dd/yyyy' }}  to {{SdaReport.To | date : 'MM/dd/yyyy' }} </strong>
+         <strong>Reports  for <span ng-if="user.selected == null "> the team</span> <span ng-repeat="u in UserList" ng-if="u.user_id == user.selected"><strong>{{u.user_name}}</strong> </span> from {{SdaReport.From | date : 'MM/dd/yyyy' }}  to {{SdaReport.To | date : 'MM/dd/yyyy' }} </strong> 
         </div>
+
         <div class="panel-body">
             <div style="overflow-x:auto;">
             <table st-table="displayedCollection" st-safe-src="ReportList" class="table table-striped">
@@ -106,11 +130,14 @@
                     </tr>
                     <tr>
                         <th st-sort="team_name">Team Name</th>
+                        <th st-sort="user_name">User Name</th>
                         <th st-sort="build_name">Build Name</th>
                         <th st-sort="task_name">Task Name</th>
                         <th st-sort="sub_task_name">Subtask Name</th>
-                        <th st-sort="task_info">Task Description</th>
+                        <!-- <th st-sort="task_info">Leave Type</th> -->
                         <th st-sort="count">count</th>
+                        <th st-sort="cf">Target</th>
+                        <th st-sort="wu">Work Unit</th>
                         <th st-sort="time">time</th>
                         <th st-sort="date">date</th>
                         <th st-sort="cmds">Comments</th>
@@ -119,12 +146,20 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="row in displayedCollection">
+                    <!-- <div class="loading-spiner-holder" data-loading>
+                        <div class="loading-spiner">
+                            <img src="../../../../images/spin.gif" />
+                        </div>
+                    </div> -->
                         <td>{{ row.team_name }}</td>
+                        <td>{{ row.user_name }}</td>
                         <td>{{ row.build_name }}</td> 
                         <td>{{ row.task_name }}</td>
                         <td>{{ row.sub_task_name }}</td>
-                        <td>{{ row.task_info }}</td>
+                        <!-- <td>{{ row.task_desc }}</td> -->
                         <td>{{ row.count}}</td>
+                        <td>{{ row.cf }}</td>
+                        <td>{{ row.wu }}</td>
                         <td>{{ row.time}}</td>
                         <td>{{ row.date | date : 'dd/MM/yyyy' }}</td>
                         <td>{{ row.cmds}}</td>
@@ -146,15 +181,89 @@
                             <th>{{ remTime.total }}</th>
                             <th colspan="3" class="text-right" style="padding-right: 10px"> Total Count : </th>
                             <th>{{ getTotalCount() }}</th>
-                        <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
-                        <!-- <td colspan="10" class="text-center">
-                                <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="noOfRows"></div>
-                            </td> -->
+                            <span style="white-space: pre-line">
+                            <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
+                            </span>
                     </tr>
                 </tfoot>
             </table>
             </div>
         </div>
     </div>
+    </div>
+    </div>
+<!-- Producive data -->
+<div ng-if='isProd'>
+    <div class="row">
+        <div class="model-header">
+            <button class="btn btn-success btn-default-focus" ng-click="exportToExcel('#ProductivityData')">
+                <span class="fa fa-file-excel-o"></span>
+                Export to Excel
+            </button>
+        </div>
+        <div class="panel panel-default" id="ProductivityData">
+            <div class="jumbotron modal-header model-title">
+                <strong>Reports for
+                    <span ng-if="user.selected == null "> the team</span>
+                    <span ng-repeat="u in UserList" ng-if="u.user_id == user.selected">
+                        <strong>{{u.user_name}}</strong>
+                    </span> from {{SdaReport.From | date : 'MM/dd/yyyy' }} to {{SdaReport.To | date : 'MM/dd/yyyy' }} </strong>
+            </div>
+            <div class="panel-body">
+                <div style="overflow-x:auto;">
+                    <table st-table="displayedCollection" st-safe-src="ProdList" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <td>
+                                    <select data-ng-model="noOfRows" convert-to-number>
+                                        <option value="20">20</option>
+                                        <option value="100">100</option>
+                                        <option value="500">500</option>
+                                        <option value="1000">1000</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="3">
+                                    <input st-search="" class="input-sm form-control" placeholder="Search anthing - This will return exact result"
+                                        type="text" />
+                                </th>
+                            </tr>
+                            <tr>
+                                <th st-sort="team_name">Team Name</th>
+                                <th st-sort="UserName" ng-if="isUser &&  !hideProd">User Name</th>
+                                <th st-sort="TaskName" ng-if="isTask && !hideProd">Task Name</th>
+                                <th st-sort="SubTaskName" ng-if="isSubTask && !hideProd">SubTask Name</th>
+                                <th st-sort="total">Total Time</th>
+                                <th st-sort="Count">Count</th>
+                                <th st-sort="workunit">Total Per Day Productivity</th>
+                                <th st-sort="AverageWorkUnit">Average Productivity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in displayedCollection">
+                                <td>
+                                    <span ng-repeat="t in TeamList" ng-if="t.team_id == team.selected">
+                                         <strong>{{t.team_name}}</strong>
+                                    </span>
+                                </td>
+                                <td ng-if="isUser && !hideProd"> {{row.UserName}} </td>
+                                <td ng-if="isTask && !hideProd"> {{row.TaskName}} </td>
+                                <td ng-if="isSubTask && !hideProd"> {{row.SubTaskName}} </td>
+                                <td>{{ row.total }}</td>
+                                <td>{{ row.Count }}</td>
+                                <td>{{ row.workunit }}</td>
+                                <td>{{ row.AverageWorkUnit }}</td>
+                            </tr>
+                        </tbody>
+                         <tfoot>
+                    <tr>
+                        <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
+                    </tr>
+                </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
 </div>
 </div>

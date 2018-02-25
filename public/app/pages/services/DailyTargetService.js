@@ -21,8 +21,12 @@
         this.setNonTarget = setNonTarget;
         this.setManualTarget = setManualTarget;
         this.setManualTargetByPrev = setManualTargetByPrev;
+        this.setTargets = setTargets;
 
         //////////////////
+        function setTargets($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'mwu/', obj);
+        }
 
         function getAllDailyTarget($scope, $rootScope, $http) {
             return $http.get($rootScope.endPoint + 'wu/');

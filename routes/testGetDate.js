@@ -61,6 +61,7 @@ var pendingDates = [];
 var userID = req.body.user_id;
 var totHours = 0;
 var holidays = [];
+var queryError = [];
     holidays = getHolidays();
         // db.query("SELECT date FROM amz_holidays where status='1' AND deleted='0'" , function(error, results, fields) {
         //            if(results.length > 0 ) {
@@ -111,8 +112,7 @@ var holidays = [];
                                                            pending.getPendingDates(obj , function(e2, r2){
                                                                     
                                                         if(e2) {
-                                                            res.send(e2);
-                                                            
+                                                            queryError.push(e2); 
                                                          }
                                                         else {
                                                             totHours = 0;
@@ -130,7 +130,11 @@ var holidays = [];
                                                 });     
                                                          
                                             } , function(response){
+                                                if (queryError.length > 0 ) {
+                                                    res.send(queryError);
+                                                } else {
                                                 res.send(pendingDates);
+                                                }
                                         });
                                 }
                             

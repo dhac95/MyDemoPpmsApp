@@ -23,6 +23,8 @@ var app = angular.module('ERP', [
 	'ngIdle',
 	'ui-notification',
 	'ngMessages',
+	'nvd3',
+	'angular-screenshot',
 	'ERP.pages',
 	'ERP.service'
 ]);
@@ -309,6 +311,28 @@ app.config(function(NotificationProvider) {
 	});
 });
 
+
+// isLoading
+app.directive('loading', ['$http', function ($http) {
+	return {
+		restrict: 'A',
+		link: function (scope, elm, attrs) {
+			scope.isLoading = function () {
+				return $http.pendingRequests.length > 0;
+			};
+
+			scope.$watch(scope.isLoading, function (v) {
+				if (v) {
+					elm.show();
+				} else {
+					elm.hide();
+				}
+			});
+		}
+	};
+
+}]);
+
 // Timeout count
 // app.directive('idleCountdown', ['Idle', function (Idle) {
 // 	return {
@@ -497,12 +521,12 @@ app.directive('sidebar', function () {
 app.directive('loading', ['$http', function ($http) {
 	return {
 		restrict: 'A',
-		link: function (scope, elm, attrs) {
-			scope.isLoading = function () {
+		link: function ($scope, elm, attrs) {
+			$scope.isLoading = function () {
 				return $http.pendingRequests.length > 0;
 			};
 
-			scope.$watch(scope.isLoading, function (v) {
+			$scope.$watch($scope.isLoading, function (v) {
 				if (v) {
 					elm.show();
 				} else {

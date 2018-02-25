@@ -13,6 +13,10 @@
         this.getSdaReports = getSdaReports;
         this.getRemaingReportsTime = getRemaingReportsTime;
         this.getLoadedUsers = getLoadedUsers;
+        this.getProductiviy = getProductiviy;
+        this.getProductiviyByUser = getProductiviyByUser;
+        this.getProductiviyByTask = getProductiviyByTask;
+        this.getProductiviyBySubTask = getProductiviyBySubTask;
 
         /////////////
 
@@ -26,6 +30,21 @@
         }
         function getLoadedUsers($scope, $rootScope, $http, id) {
             return $http.get($rootScope.endPoint + 'loadTeam/users/' + id);
+        }
+
+        function getProductiviy($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'WorkUnit/', obj);
+        }
+
+        function getProductiviyByUser($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'WorkUnit/user/', obj);
+        }
+
+        function getProductiviyByTask($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'WorkUnit/task/', obj);
+        }
+        function getProductiviyBySubTask($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'WorkUnit/subtask/', obj);
         }
 
     }

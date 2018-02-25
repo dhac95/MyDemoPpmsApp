@@ -1,4 +1,6 @@
-
+<div class="jumbotron modal-header">
+    <h3 class="modal-title" id="modal-title">Daily Targets</h3>
+</div>
     <div class="modal-body" id="modal-body">
         <form name="myForm" role="form" class="well well-sm">
             <div class="row">
@@ -75,6 +77,7 @@
 
 <div class="modal-footer">
     <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveDailyTarget(DailyTarget)">Save</button>
+    <button class="btn btn-success" ng-click="setTargets(DailyTarget)">Calculate Now!</button>
 </div>
 
 

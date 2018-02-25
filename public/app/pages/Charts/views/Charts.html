@@ -1,0 +1,137 @@
+<div class="jumbotron modal-header">
+    <h3 class="modal-title" id="modal-title">Trend Charts</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <form name="myForm" role="form" class="well well-sm">
+        <div class="row">
+            <!-- <div class="col-md-6 col-lg-6"> -->
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="from">Date From</label>
+                <input type="date" class="form-control" id="from" name="from" data-ng-model="Charts.From" required/>
+                <span ng-show="myForm.from.$touched && myForm.from.$invalid" class="text-danger">*required From Date</span>
+            </div>
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="to">Date To</label>
+                <input type="date" class="form-control" id="to" name="to" data-ng-model="Charts.To" required/>
+                <span ng-show="myForm.to.$touched && myForm.to.$invalid" class="text-danger">*required To Date</span>
+            </div>
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="Team">Team Name</label>
+                <div class="dropdown">
+                    <select class="form-control" id="Team" name="Team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList "
+                        data-ng-change="selectTask();selectBuild();selectUsers();" data-ng-model="team.selected" required>
+                        <option value="">Select the Team</option>
+                    </select>
+                </div>
+                <span ng-show="myForm.Team.$touched && myForm.Team.$invalid" class="text-danger">*required Team</span>
+            </div>
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="user">User Name</label>
+                <div class="dropdown">
+                    <select class="form-control" id="user" name="user" data-ng-options="User.user_id as User.user_name for User in UserList "
+                        data-ng-model="user.selected">
+                        <option value="">Select the User</option>
+                    </select>
+                </div>
+                <!-- <span ng-show="myForm.user.$touched && myForm.user.$invalid" class="text-danger">*required user</span> -->
+            </div>
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="Task">Task Name</label>
+                <div class="dropdown">
+                    <select class="form-control" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected"
+                        data-ng-change="selectsubTask()">
+                        <option value="">Select the Task</option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="subTask">Sub Task Name</label>
+                <div class="dropdown">
+
+                    <select class="form-control" data-ng-options="subTask.sub_task_id as subTask.sub_task_name for subTask in subTaskList" data-ng-model="subtask.selected">
+                        <option value="">Select the subTask</option>
+
+                    </select>
+
+                </div>
+            </div>
+            <div class="form-group col-md-6 col-lg-6">
+                <lable for="userOT">
+                    <strong> User OT tasks </strong>
+                </lable>
+                <br>
+                <input type="checkbox" class="icheckbox_flat-blue" id="checkbox" data-ng-model="Charts.Ot">
+                <label for="checkbox"> If Checked shows OT tasks</label>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showProductivity()">Prepare Charts</button>
+</div>
+
+<div class="row">
+
+    <div class="nav-tabs-custom" ng-if="isProd">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a ng-click="showProductivity()" data-toggle="tab">Overall Produvity</a>
+            </li>
+            <li>
+                <a ng-click="showProductivityByUser()" data-toggle="tab">UserWise</a>
+            </li>
+            <li>
+                <a ng-click="showProductivityByTask()" data-toggle="tab">Taskwise</a>
+            </li>
+            <li>
+                <a ng-click="showProductivityBySubTask()" data-toggle="tab">Subtask Wise</a>
+            </li>
+            <!-- <li class="pull-right">
+            <a href="#" class="text-muted">
+                <i class="fa fa-gear"></i>
+            </a>
+        </li> -->
+        </ul>
+    </div>
+    
+  
+    <!-- Producive data -->
+    <div ng-if='isProd'>
+  
+                <div class="jumbotron modal-header model-title">
+                    <strong>Reports for
+                        <span ng-if="user.selected == null "> the team</span>
+                        <span ng-repeat="u in UserList" ng-if="u.user_id == user.selected">
+                            <strong>{{u.user_name}}</strong>
+                        </span> from {{Charts.From | date : 'MM/dd/yyyy' }} to {{Charts.To | date : 'MM/dd/yyyy' }} </strong>
+                </div>
+  
+                        <div class="col-lg-12 col-md-12 col-xs-12"  style="height: 350px;"> 
+                            <!-- CHART -->
+                            <div class="box box-success">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Bar Chart</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <svg id="basicChart"></svg>
+                                    <!--<canvas id="pieChart" style="height:250px"></canvas>-->
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        
+            </div>
+        </div>
