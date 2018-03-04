@@ -72,7 +72,7 @@ var queryError = [];
         //                 //    holidays = new Array(results);
         //      }
                                db.query("SELECT user_id,user_mail,last_entry_on,create_date FROM amz_login where user_id=?" ,[userID], function (e1,r1,f1) {
-                                   if(r1.length) {
+                                   if(r1.length > 0 ) {
                                        var lastEntered = null;
                                          var createDate = datetime.create(r1[0].create_date).format('Y-m-d');
                                          if(r1[0].last_entry_on != null) {

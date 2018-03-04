@@ -73,7 +73,7 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showProductivity()">Prepare Charts</button>
+    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showProductivity()"> Prepare Charts</button>
 </div>
 
 <div class="row">
@@ -103,7 +103,6 @@
   
     <!-- Producive data -->
     <div ng-if='isProd'>
-  
                 <div class="jumbotron modal-header model-title">
                     <strong>Reports for
                         <span ng-if="user.selected == null "> the team</span>
@@ -112,7 +111,7 @@
                         </span> from {{Charts.From | date : 'MM/dd/yyyy' }} to {{Charts.To | date : 'MM/dd/yyyy' }} </strong>
                 </div>
   
-                        <div class="col-lg-12 col-md-12 col-xs-12"  style="height: 350px;"> 
+                        <div class="col-md-12" > 
                             <!-- CHART -->
                             <div class="box box-success">
                                 <div class="box-header with-border">
@@ -124,7 +123,7 @@
                                         <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
                                     </div>
                                 </div>
-                                <div class="box-body">
+                                <div class="box-body" style="height: 350px;">
                                     <svg id="basicChart"></svg>
                                     <!--<canvas id="pieChart" style="height:250px"></canvas>-->
                                 </div>

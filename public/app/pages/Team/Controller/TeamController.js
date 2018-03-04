@@ -8,8 +8,8 @@
         .controller('TeamModelController', TeamModelController);
 
 
-    TeamController.$inject = ['$scope', '$rootScope', '$http', 'TeamService', '$uibModal', 'NgTableParams'];
-    function TeamController($scope, $rootScope, $http, TeamService, $uibModal, NgTableParams) {
+    TeamController.$inject = ['$scope', '$rootScope', '$http', '$filter' , 'TeamService', '$uibModal', 'NgTableParams', 'Notification'];
+    function TeamController($scope, $rootScope, $http, $filter , TeamService, $uibModal, NgTableParams, Notification) {
 
         $rootScope.title = "Team";
         $rootScope.isLoginPage = false;
@@ -88,28 +88,27 @@
         //}
 
         function removeTeam(Team) {
-            //if (Team.Active === 0) {
-               var id = Team.team_id;
+            if (Team.status == 0) {
+                var obj = { team_id: Team.team_id, last_modify : $filter('date')(new Date(), "yyyy-MM-dd") };
             //    id :  Team.team_id
             // //     //Active: Team.Active,
             // //     //ActionBy: $rootScope.loggedUserId
            //   };
             if (window.confirm("Do you really want to delte this Team")) {
-                TeamService.deleteTeam($scope, $rootScope, $http, id).then(function (res) {
-                    if (res.data.result) {
-                        alert("Deleted Successful");
+                TeamService.deleteTeam($scope, $rootScope, $http, obj).then(function (res) {
+                    if (res.data.code == 200) {
+                        Notification.success("Deleted Successful");
                         loadGrid();
                     } else {
-                        alert("Team is gone");
-                        loadGrid();
+                        Notification.error('Error !! Try again');
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification("Error while processing! Try Again.");
                 });
             }
-            //} else {
-            //    alert("Active Status Can't be Delete")
-            //}
+            } else {
+                Notification("Active Status Can't be Delete");
+            }
         }
     }
 
@@ -129,7 +128,7 @@
                 $scope.Team.last_modify = $rootScope.date;
                 $scope.Team.maintain_date = $rootScope.date;
                 TeamService.updateTeam($scope, $rootScope, $http, $scope.Team,id).then(function (res) {
-                    if (res.data.result) {
+                    if (res.data.code == 200) {
                         alert("Update Successful");
                         $uibModalInstance.close();
                     } else {

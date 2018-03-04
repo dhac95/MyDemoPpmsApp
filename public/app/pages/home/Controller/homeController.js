@@ -81,8 +81,15 @@
 
             //  chart.yAxis
             //      .tickFormat(d3.format(',.1f'));
+            //  var height = 25,
+            //      width = 300,
+            //      barWidth = 40,
+            //      barOffset = 20;
 
-             d3.select('#basicChart').datum([
+             d3.select('#basicChart')
+                 
+                //  .attr('height', height)
+             .datum([
                  {
                      key: pMonth,
                      color: "#51A351",

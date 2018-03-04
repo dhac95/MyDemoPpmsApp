@@ -61,12 +61,15 @@ router.post('/', function(req, res, next) {
     });  
 });  
 
-router.delete('/:id', function(req, res, next) {  
-    Team.deleteTeam(req.params.id, function(err, count) {  
+router.post('/remove', function(req, res, next) {  
+    Team.deleteTeam(req.body, function(err, count) {  
         if (err) {  
             res.json(err);  
         } else {  
-            res.json(count);  
+            res.json({
+                "code" : 200 ,
+                "message" : "success"
+            });  
         }  
     });  
 });  

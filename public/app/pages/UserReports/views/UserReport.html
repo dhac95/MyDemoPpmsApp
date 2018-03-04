@@ -48,22 +48,26 @@
                     </div>
                 </div>
 
-                <div class="form-group col-sm-3 col-md-3 col-lg-3">
-					<label for="task_desc">Task Description</label>
-					<input type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="UserReport.task_desc"  />
-                </div>
-		</div>
+                    <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                        <label for="task_desc">Leave Type</label>
+                        <select type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="UserReport.task_desc" data-ng-options="Leave.id as Leave.Name for Leave in LeaveTypes">
+                            <option value="">---Select leave type---</option>
+                        </select>
+                    </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showUserReports()">Show Results</button>
+        </div>
 	</form>
 </div>
-<div class="modal-footer">
-	<button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showUserReports()">Show Results</button>
-</div>
+
 <div class="row">
     <div ng-show='ReportList ==""'>
         <h3 class="text-muted">No Data avaialble for the selected date From <strong>{{UserReport.From | date : 'MM/dd/yyyy' }}</strong> to <strong>{{UserReport.To | date : 'MM/dd/yyyy' }}</strong> for user <strong>{{$root.user_name}}</strong>
-            
+
     </div> 
-    <div ng-if='ReportList !=""'>
+    <div ng-if='ReportList !="" && ReportList != null'>
         <button class="btn btn-link" ng-click="exportToExcel('#userData')">
                 <span class="glyphicon glyphicon-share"></span>
                             Export to Excel
@@ -119,7 +123,7 @@
                         <th st-sort="build_name">Build Name</th>
                         <th st-sort="task_name">Task Name</th>
                         <th st-sort="sub_task_name">Subtask Name</th>
-                        <th st-sort="task_info">Task Description</th>
+                        <th st-sort="task_info">Leave Type</th>
                         <th st-sort="count">count</th>
                         <th st-sort="time">time</th>
                         <th st-sort="date">date</th>
@@ -134,7 +138,12 @@
                         <td>{{ row.build_name }}</td> 
                         <td>{{ row.task_name }}</td>
                         <td>{{ row.sub_task_name }}</td>
-                        <td>{{ row.task_info }}</td>
+                        <td>
+                            <span ng-if="row.task_desc == 1" class="label label-success">Manager Approved</span>
+                            <span ng-if="row.task_desc == 2" class="label label-warning">Manager Not Approved</span>
+                            <span ng-if="row.task_desc == 3" class="label label-info">Unexpected</span>
+                            <span ng-if="row.task_desc == 0" class="label label-primary">Not a leave</span>
+                        </td>
                         <td>{{ row.count}}</td>
                         <td>{{ row.time}}</td>
                         <td>{{ row.date | date : 'dd/MM/yyyy' }}</td>

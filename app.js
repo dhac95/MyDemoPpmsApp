@@ -28,12 +28,12 @@ var Tasks = require('./routes/Tasks');
 var subTasks = require('./routes/subTasks'); 
 var uLogin = require('./routes/uLogin'); 
 var AllUserInfo = require('./routes/AllUserInfo');
-var testAddTask = require('./routes/testAddtask');
+var UserDailyTasks = require('./routes/UserDailyTasks');
 var getAddedTask = require('./routes/getAddedTask');
 var loadTeam = require('./routes/loadTeam');
 var loadTasks = require('./routes/loadTasks');
 var loadBuilds = require('./routes/loadBuilds');
-var testGetDate = require('./routes/testGetDate');
+var UserGetDate = require('./routes/UserGetDate');
 var UserOT = require('./routes/UserOtTasks');
 var UserReports = require('./routes/UserReports');
 var SdaReports = require('./routes/SdaReports');
@@ -52,6 +52,7 @@ var atu = require('./routes/AutoCFLoad');
 var ncf = require('./routes/NonCFLoad');
 var mcf = require('./routes/ManualCFLoad');
 var WorkUnit = require('./routes/LoadWorkUnit');
+var TeamMates = require('./routes/TeamMates');
 
 // Express init
 var app = express();  
@@ -90,12 +91,12 @@ app.use('/Tasks', Tasks);
 app.use('/subTasks', subTasks);
 app.use('/login', uLogin);
 app.use('/AllUserInfo', AllUserInfo);
-app.use('/test' , testAddTask);
+app.use('/UserDailyTasks', UserDailyTasks);
 app.use('/getAddedTask', getAddedTask);
 app.use('/loadTeam', loadTeam);
 app.use('/loadTasks', loadTasks);
 app.use('/loadBuilds', loadBuilds);
-app.use('/testGetDate', testGetDate);
+app.use('/UserGetDate', UserGetDate);
 app.use('/userot', UserOT);
 app.use('/userReports' , UserReports );
 app.use('/SdaReports' , SdaReports); 
@@ -114,8 +115,9 @@ app.use('/atu', atu);
 app.use('/ncf', ncf);
 app.use('/mcf' , mcf);
 app.use('/WorkUnit', WorkUnit);
+app.use('/TeamMates', TeamMates);
 
-process.env.NODE_ENV = 'production';
+//process.env.NODE_ENV = 'production';
 
 // catch 404 and forward to error handler  
 app.use(function(req, res, next) {  

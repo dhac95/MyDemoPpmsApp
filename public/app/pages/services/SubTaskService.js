@@ -35,8 +35,8 @@
             return $http.put($rootScope.endPoint + 'SubTasks/' + id , SubTask);
         }
 
-        function deleteSubTask($scope, $rootScope, $http, id) {
-            return $http.delete($rootScope.endPoint + 'SubTasks/' + id);
+        function deleteSubTask($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'SubTasks/remove/', obj);
         }
         function getTaskByHaveST($scope, $rootScope, $http, id) {
             return $http.get($rootScope.endPoint + 'loadcftasks/Tasks/HaveSt/' + id);

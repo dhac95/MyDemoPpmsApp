@@ -34,8 +34,8 @@
             return $http.put($rootScope.endPoint + 'Tasks/' + id , Task);
         }
 
-        function deleteTask($scope, $rootScope, $http, id) {
-            return $http.delete($rootScope.endPoint + 'Tasks/' + id);
+        function deleteTask($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'Tasks/remove/', obj);
         }
     }
 

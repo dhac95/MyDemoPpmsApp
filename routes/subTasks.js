@@ -32,8 +32,8 @@ router.post('/', function(req, res, next) {
         }  
     });  
 });  
-router.delete('/:id', function(req, res, next) {  
-    subTask.deletesubTask(req.params.id, function(err, count) {  
+router.post('/remove', function(req, res, next) {  
+    subTask.deletesubTask(req.body, function(err, count) {  
         if (err) {  
             res.json(err);  
         } else {  

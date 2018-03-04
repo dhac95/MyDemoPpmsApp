@@ -70,21 +70,55 @@
             });
         };
 
-        getTeamList();
+        // getTeamList();
 
+        // function getTeamList() {
+        //     var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
+        //     promiseGet.then(function (pl) {
+        //         $scope.TeamList = pl.data;
+        //         if ($scope.isEditing) {
+        //             for (var team in $scope.TeamList) {
+        //                 if ($scope.TeamList[team].team_id == $scope.Charts.team_id) {
+        //                     $scope.team.selected = $scope.TeamList[team];
+        //                 }
+        //             }
+        //         }
+        //         $scope.selectTask();
+        //         $scope.selectUsers();
+        //     },
+        //         function (errorPl) {
+        //             Notification('Some Error in Getting Records.');
+        //         });
+        // }
+        getTeamList();
         function getTeamList() {
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
                 $scope.TeamList = pl.data;
-                if ($scope.isEditing) {
-                    for (var team in $scope.TeamList) {
-                        if ($scope.TeamList[team].team_id == $scope.Charts.team_id) {
-                            $scope.team.selected = $scope.TeamList[team];
+                if (pl.data.length > 1) {
+                    if ($scope.isEditing) {
+                        for (var team in $scope.TeamList) {
+                            if ($scope.TeamList[team].team_id == $scope.Charts.team_id) {
+                                $scope.team.selected = $scope.TeamList[team];
+
+                            }
+
                         }
+                        $scope.selectTask();
+                        $scope.selectUsers();
+                    }
+                    else {
+                        $scope.team.selected = $scope.TeamList[0].team_id;
+                        $scope.selectTask();
+                        $scope.selectUsers();
                     }
                 }
-                $scope.selectTask();
-                $scope.selectUsers();
+                else {
+                    $scope.team.selected = $scope.TeamList[0].team_id;
+                    $scope.selectTask();
+                    $scope.selectUsers();
+                }
+
             },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.');
@@ -218,6 +252,7 @@
             else {
                 var promiseGet = SdaReportService.getProductiviy($scope, $rootScope, $http, obj);
                 promiseGet.then(function (pl) {
+                    $scope.ProdList = "";
                     $scope.ProdList = pl.data;
                     $scope.createOverAllChart();
                 },

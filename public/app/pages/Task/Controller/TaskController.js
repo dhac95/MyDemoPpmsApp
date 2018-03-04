@@ -25,6 +25,17 @@
     
         //loadGrid();
 
+        $scope.DailyTargetTypes = [
+            { "id": 0, "Name": "Auto Target" },
+            { "id": 1, "Name": "Manual Target" }
+        ];
+
+        $scope.ChartTypes = [
+            { "id": 0, "Name": "No Chart" },
+            { "id": 1, "Name": "Task Wise" },
+            { "id": 2, "Name": "SubTask Wise" },
+        ];
+
         $scope.addTaskModel = function () {
             $scope.items.isEditing = false;
             var modalInstance = $uibModal.open({
@@ -70,29 +81,62 @@
             });
         };
 
+        // getTeamList();
+        // function getTeamList() {
+        //     var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
+        //     promiseGet.then(function (pl) {
+        //          $scope.TeamList = pl.data; 
+        //         if(pl.data.length > 1) {
+        //            if ($scope.isEditing) { 
+        //                            for (var team in $scope.TeamList) {
+        //                             if ($scope.TeamList[team].team_id == $scope.Task.team_id) {
+        //                                $scope.team.selected = $scope.TeamList[team];
+        //                          }
+        //                     }
+        //                  }
+        //                 } 
+        //         else {
+        //             $scope.temp_team = $scope.TeamList[0].team_id;
+        //         }
+                    
+        //         $scope.loadGrid();
+        //     },
+        //           function (errorPl) {
+        //               Notification('Some Error in Getting Records.');
+        //           });
+        // }
+
+
         getTeamList();
         function getTeamList() {
-            var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
+            var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
-                 $scope.TeamList = pl.data; 
-                if(pl.data.length > 1) {
-                   if ($scope.isEditing) { 
-                                   for (var team in $scope.TeamList) {
-                                    if ($scope.TeamList[team].team_id == $scope.Task.team_id) {
-                                       $scope.team.selected = $scope.TeamList[team];
-                                 }
+                $scope.TeamList = pl.data;
+                if (pl.data.length > 1) {
+                    if ($scope.isEditing) {
+                        for (var team in $scope.TeamList) {
+                            if ($scope.TeamList[team].team_id == $scope.Task.team_id) {
+                                $scope.team.selected = $scope.TeamList[team];
+
                             }
-                         }
-                        } 
+
+                        }
+                        $scope.loadGrid();
+                    }
+                    else {
+                        $scope.team.selected = $scope.TeamList[0].team_id;
+                        $scope.loadGrid();
+                    }
+                }
                 else {
                     $scope.temp_team = $scope.TeamList[0].team_id;
+                    $scope.loadGrid();
                 }
-                    
-                $scope.loadGrid();
+
             },
-                  function (errorPl) {
-                      Notification('Some Error in Getting Records.');
-                  });
+                function (errorPl) {
+                    Notification('Some Error in Getting Records.');
+                });
         }
 
         $scope.loadGrid = function() {
@@ -111,11 +155,11 @@
         };
 
         function removeTask(Task) {
-            if (Task.deletion === 1) {
-               var id = Task.task_id;
+            if (Task.status == 0) {
+               var obj = { task_id : Task.task_id };
             if (window.confirm("Do you really want to delete this Task")) {
-                TaskService.deleteTask($scope, $rootScope, $http, id).then(function (res) {
-                    if (res.data.code === 200) {
+                TaskService.deleteTask($scope, $rootScope, $http, obj).then(function (res) {
+                    if (res.data.code == 200) {
                         Notification.success("Deleted Successful");
                         $scope.loadGrid();
                     } else {
@@ -152,7 +196,8 @@
                 $scope.Task.last_modified_by = $rootScope.user_id;
                
                 $scope.Task.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
-                if($scope.Task.status == true)
+
+                if ($scope.Task.status == true || $scope.Task.status == 1)
                 {
                     $scope.Task.status = 1;
                 }
@@ -160,33 +205,42 @@
                     $scope.Task.status = 0;
                 }
 
-                if ($scope.Task.op_type == true) {
+                if ($scope.Task.device_count == true || $scope.Task.device_count == 1) {
+                    $scope.Task.device_count = 1;
+                }
+                else {
+                    $scope.Task.device_count = 0;
+                }
+
+
+                if ($scope.Task.op_type == true || $scope.Task.op_type == 1) {
                     $scope.Task.op_type = 1;
                 }
                 else {
                     $scope.Task.op_type = 0;
                 }
 
-                if ($scope.Task.deletion == undefined || $scope.Task.deletion == 1) {
-                    $scope.Task.deletion = 1;
-                }
-                else {
-                    $scope.Task.deletion = 0;
-                }
-                if ($scope.Task.have_st == "true") {
+                // if ($scope.Task.deletion == undefined || $scope.Task.deletion == 1) {
+                //     $scope.Task.deletion = 1;
+                // }
+                // else {
+                //     $scope.Task.deletion = 0;
+                // }
+
+                if ($scope.Task.have_st == "true" || $scope.Task.have_st == 1) {
                     $scope.Task.have_st = 1;
                 }
                 else {
                     $scope.Task.have_st = 0;
                 }
                 
-                if($scope.Task.about_cf == '')
-                {
-                    $scope.Task.about_cf = null;
-                }
-                else {
-                    $scope.Task.about_cf = $scope.Task.about_cf;
-                }
+                // if($scope.Task.about_cf == '')
+                // {
+                //     $scope.Task.about_cf = null;
+                // }
+                // else {
+                //     $scope.Task.about_cf = $scope.Task.about_cf;
+                // }
 
                 $scope.Task.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 TaskService.updateTask($scope, $rootScope, $http, $scope.Task,id).then(function (res) {
@@ -211,36 +265,36 @@
                 $scope.Task.added_by = $rootScope.user_id;
                
                 $scope.Task.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
-                if($scope.Task.status == true)
-                {
+                if ($scope.Task.status == true || $scope.Task.status == 1) {
                     $scope.Task.status = 1;
                 }
                 else {
                     $scope.Task.status = 0;
                 }
-                
-                if ($scope.Task.op_type == true) {
+
+                if ($scope.Task.device_count == true || $scope.Task.device_count == 1) {
+                    $scope.Task.device_count = 1;
+                }
+                else {
+                    $scope.Task.device_count = 0;
+                }
+
+
+                if ($scope.Task.op_type == true || $scope.Task.op_type == 1) {
                     $scope.Task.op_type = 1;
                 }
                 else {
                     $scope.Task.op_type = 0;
                 }
 
-                if ($scope.Task.deletion == undefined || $scope.Task.deletion == 1)
-                {
-                    $scope.Task.deletion = 1;
-                }
-                else {
-                    $scope.Task.deletion = 0;
-                }
 
-                if ($scope.Task.have_st == "true")
-                {
+                if ($scope.Task.have_st == "true" || $scope.Task.have_st == 1) {
                     $scope.Task.have_st = 1;
                 }
                 else {
                     $scope.Task.have_st = 0;
                 }
+
                 $scope.Task.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 TaskService.addTask($scope, $rootScope, $http, $scope.Task).then(function (res) {
                     if (res.data.code === 200) {
@@ -294,6 +348,16 @@
             });
 
         };
+
+        $scope.DailyTargetTypes = [
+            { "id": 0, "Name": "Auto Target" },
+            { "id": 1, "Name": "Manual Target" }
+        ];
+        $scope.ChartTypes = [
+            { "id": 0, "Name": "No Chart" },
+            { "id": 1, "Name": "Task Wise" },
+            { "id": 2, "Name": "SubTask Wise" },
+        ];
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');

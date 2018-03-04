@@ -61,10 +61,7 @@
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="task_desc">Leave Type</label>
-					<select type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="AddTask.task_desc">
-                        <option value="1">Manger approved</option>
-                        <option value="2">Manager Not Approved</option>
-                        <option value="0">Unexpected</option>
+					<select type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="AddTask.task_desc" data-ng-options="Leave.id as Leave.Name for Leave in LeaveTypes">
                     </select>
                 </div>
 
@@ -99,6 +96,7 @@
 
 
 <div class="row">
+    
     <div class="panel panel-default">
         <div class="jumbotron modal-header model-title">
             <strong>Reports  for {{$root.user_name}} on {{date.selected | date : 'MM/dd/yyyy' }} </strong>

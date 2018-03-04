@@ -1,4 +1,4 @@
-
+<div class="modal-body" id="modal-body">
     <div class="row col-md-6 col-lg-6">
             <!-- Profile Image -->
             <div class="box box-primary" data-ng-repeat="user in ProfileList">
@@ -26,7 +26,7 @@
                         </li>
                         <li class="list-group-item">
                             <b>User Name</b>
-                            <a class="pull-right">{{user.user_name}}</a>
+                            <a class="pull-right" href="https://phonetool.amazon.com/users/{{user.user_name}}">{{user.user_name}}</a>
                         </li>
                         <li class="list-group-item">
                             <b>User Mail</b>
@@ -47,4 +47,5 @@
             <!-- /.box -->
         
          </div>
-  
+         
+  </div>

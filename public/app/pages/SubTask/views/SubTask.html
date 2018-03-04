@@ -1,3 +1,7 @@
+<div class="jumbotron modal-header">
+    <h3 class="modal-title" id="modal-title">Sub Task</h3>
+</div>
+
 <div ng-show="$root.team_count > 1">
         <div class="modal-body" id="modal-body">
             <form name="myForm" role="form" class="well well-sm">
@@ -39,9 +43,9 @@
                                 <span data-ng-if="row.task_status === 0" class="label label-danger">In Active</span>
                             </td>
                             <td class="text-center" title="'Daily Report Calculations'" filter="{about_cf : 'text'}" sortable="'about_cf'">
-                                <span data-ng-if="row.about_cf === 1" class="label label-primary">Manual Calc</span>
-                                <span data-ng-if="row.about_cf === 0" class="label label-info">Auto Calc</span>
-                                <span data-ng-if="row.about_cf === null" class="label label-warning">No Calc</span>
+                                <span data-ng-if="row.about_cf === 1" class="label label-primary">Manual Target</span>
+                                <span data-ng-if="row.about_cf === 0" class="label label-info">Auto Target</span>
+                                <span data-ng-if="row.about_cf === null" class="label label-warning">No Target</span>
                             </td>
                             <td class="text-center" title="'Chart Type'" filter="{about_chart : 'text'}" sortable="'about_chart'">
                                 <span data-ng-if="row.about_chart === 1" class="label label-info">Task Wise</span>
@@ -55,10 +59,10 @@
                                 <span data-ng-if="row.op_type === 0" class="label label-danger">No</span>
                             </td>
     
-                            <td class="text-center" title="'Deletion Status'" filter="{deletion : 'text'}" sortable="'deletion'">
+                            <!-- <td class="text-center" title="'Deletion Status'" filter="{deletion : 'text'}" sortable="'deletion'">
                                 <span data-ng-if="row.deletion === 0" class="label label-success">In use</span>
                                 <span data-ng-if="row.deletion === 1" class="label label-danger">Not In Use</span>
-                            </td>
+                            </td> -->
                             <td class="text-center" title="'Modified By'" filter="{Modified : 'text'}" sortable="'Modified'">{{ row.Modified }}</td>	
     
                             <td class="text-center" title="'Action'">

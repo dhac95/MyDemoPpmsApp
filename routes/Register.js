@@ -9,6 +9,7 @@ var generator = require('generate-password');
 var nodemailer = require('nodemailer');
 var in_array = require('in_array');
 var moment = require('moment');
+var sendmail = require('sendmail')();
 //var inArray = require('in-array');
 
 var db = require('../dbconnections');
@@ -87,38 +88,49 @@ router.post('/' , function(req , res , next){
                                                                                     res.send(e5);
                                                                                 } else {
                                                                                     var today = moment().format('LLLL');
+
+                                                                                    sendmail({
+                                                                                        from: '"PPMS Admin 👻" <no-reply.ppms@amazon.com>',
+                                                                                        to: email,
+                                                                                        subject: 'New Team Registration ✔', // Subject line
+                                                                                        html: '<b> Hi ' + name + ',</b><br /> Your registration is created at ' + today + '.<br /> Wait for your request to be approved.<b><br /> Thanks</b>' // html body
+                                                                                    }, function (err, reply) {
+                                                                                        console.log(err && err.stack);
+                                                                                        console.dir(reply);
+                                                                                    });
+
                                                                                     // db.query("INSERT INTO amz_ip_list(ip_address,create_date,maintain_date) VALUES(?,?,?)", [ip, actionDate, actionDate], function (e, r, f) {
                                                                                     //     if (e) {
                                                                                     //         res.send(e);
                                                                                     //     }
                                                                                     // });
                                                                                     // create reusable transporter object using the default SMTP transport
-                                                            var transporter = nodemailer.createTransport({
-                                                                // host: 'smtp.ethereal.email',
-                                                                // port: 587,
-                                                                    service : 'Gmail' , 
-                                                            // secure: false, // true for 465, false for other ports
-                                                                auth: {
-                                                                    user: process.env.MAIL_U, // generated ethereal user
-                                                                    pass: process.env.MAIL_P  // generated ethereal password
-                                                                }
-                                                            });
-                                                        
-                                                            // setup email data with unicode symbols
-                                                            var mailOptions = {
-                                                                from: '"Fred Foo 👻" <admin_no-reply.p2r@amazon.com>', // sender address
-                                                                to: email, // list of receivers
-                                                                subject: 'New Team Registration ✔', // Subject line
-                                                                text: name, // plain text body
-                                                                html: '<b> Hi ' + name + ',</b><br /> Your registration is created at ' + today +  ' .<br /> Wait for your request to be approved.<b><br /> Thanks</b>' // html body
-                                                            };
-                                                        
-                                                            // send mail with defined transport object
-                                                            transporter.sendMail(mailOptions, function(error, info) {
-                                                                if (error) {
-                                                                    return console.log(error);
-                                                                            }
-                                                                                });
+                                                                                    // var transporter = nodemailer.createTransport({
+                                                                                    //     // host: 'smtp.ethereal.email',
+                                                                                    //     // port: 587,
+                                                                                    //         service : 'Gmail' , 
+                                                                                    // // secure: false, // true for 465, false for other ports
+                                                                                    //     auth: {
+                                                                                    //         user: process.env.MAIL_U, // generated ethereal user
+                                                                                    //         pass: process.env.MAIL_P  // generated ethereal password
+                                                                                    //     }
+                                                                                    // });
+                                                                                
+                                                                                    // // setup email data with unicode symbols
+                                                                                    // var mailOptions = {
+                                                                                    //     from: '"Fred Foo 👻" <admin_no-reply.p2r@amazon.com>', // sender address
+                                                                                    //     to: email, // list of receivers
+                                                                                    //     subject: 'New Team Registration ✔', // Subject line
+                                                                                    //     text: name, // plain text body
+                                                                                    //     html: '<b> Hi ' + name + ',</b><br /> Your registration is created at ' + today +  ' .<br /> Wait for your request to be approved.<b><br /> Thanks</b>' // html body
+                                                                                    // };
+                                                                                
+                                                                                    // // send mail with defined transport object
+                                                                                    // transporter.sendMail(mailOptions, function(error, info) {
+                                                                                    //     if (error) {
+                                                                                    //         return console.log(error);
+                                                                                    //                 }
+                                                                                    //                     });
                                                                                     res.send({
                                                                                         "code" : 200,
                                                                                         "message" : "success"
@@ -165,32 +177,42 @@ router.post('/' , function(req , res , next){
                                             });
                                             var today = moment().format('LLLL');
                                                  // create reusable transporter object using the default SMTP transport
-                                                            var transporter = nodemailer.createTransport({
-                                                            // host: 'smtp.ethereal.email',
-                                                            // port: 587,
-                                                                service : 'Gmail' , 
-                                                        // secure: false, // true for 465, false for other ports
-                                                            auth: {
-                                                                user: process.env.MAIL_U, // generated ethereal user
-                                                                pass: process.env.MAIL_P  // generated ethereal password
-                                                            }
-                                                        });
+                                                    //         var transporter = nodemailer.createTransport({
+                                                    //         // host: 'smtp.ethereal.email',
+                                                    //         // port: 587,
+                                                    //             service : 'Gmail' , 
+                                                    //     // secure: false, // true for 465, false for other ports
+                                                    //         auth: {
+                                                    //             user: process.env.MAIL_U, // generated ethereal user
+                                                    //             pass: process.env.MAIL_P  // generated ethereal password
+                                                    //         }
+                                                    //     });
                                                     
-                                                        // setup email data with unicode symbols
-                                                        var mailOptions = {
-                                                            from: '"Fred Foo 👻" <admin_no-reply.p2r@amazon.com>', // sender address
-                                                            to: email, // list of receivers
-                                                            subject: 'New User Registration ✔', // Subject line
-                                                            text: name, // plain text body
-                                                            html: '<b> Hi ' + name + ',</b><br /> Your registration is created at '+ today +'. Use this temp password to update your password  <strong> """ '+ password + ' """</strong> <br /> Wait for your request to be approved .<b><br /> Thanks</b>' // html body
-                                                        };
+                                                    //     // setup email data with unicode symbols
+                                                    //     var mailOptions = {
+                                                    //         from: '"Fred Foo 👻" <admin_no-reply.p2r@amazon.com>', // sender address
+                                                    //         to: email, // list of receivers
+                                                    //         subject: 'New User Registration ✔', // Subject line
+                                                    //         text: name, // plain text body
+                                                    //         html: '<b> Hi ' + name + ',</b><br /> Your registration is created at '+ today +'. Use this temp password to update your password  <strong> """ '+ password + ' """</strong> <br /> Wait for your request to be approved .<b><br /> Thanks</b>' // html body
+                                                    //     };
                                                     
-                                                        // send mail with defined transport object
-                                                        transporter.sendMail(mailOptions, function(error, info) {
-                                                            if (error) {
-                                                                return console.log(error);
-                                                            }
-                                                    });
+                                                    //     // send mail with defined transport object
+                                                    //     transporter.sendMail(mailOptions, function(error, info) {
+                                                    //         if (error) {
+                                                    //             return console.log(error);
+                                                    //         }
+                                                    // });
+
+                                            sendmail({
+                                                from: '"PPMS Admin 👻" <no-reply.ppms@amazon.com>',
+                                                to: email,
+                                                subject: 'New Team Registration ✔', // Subject line
+                                                html: '<b> Hi ' + name + ',</b><br /> Your registration is created at ' + today + '. Use this temp password to update your password later. Your password is : <strong> ***'+ password +'***</strong> <br /> Wait for your request to be approved, After approval login with the username and password .<b><br /> Thanks</b>' // html body
+                                            }, function (err, reply) {
+                                                console.log(err && err.stack);
+                                                console.dir(reply);
+                                            });
 
                                             res.send({
                                                 "code" : 200 ,

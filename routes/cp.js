@@ -5,6 +5,7 @@ var generator = require('generate-password');
 var nodemailer = require('nodemailer');
 var db = require('../dbconnections');
 var moment = require('moment');
+var sendmail = require('sendmail')();
 
 router.post('/', function (req, res, next) { 
             var oldPassword = req.body.old;
@@ -36,22 +37,32 @@ router.post('/', function (req, res, next) {
                                         });
                                             
                                         var today = moment().format('LLLL');
-                                        // setup email data with unicode symbols
-                                        var mailOptions = {
-                                            from: '"Fred Foo 👻" <admin_no-reply.p2r@amazon.com>', // sender address
-                                            to: email, // list of receivers
+
+                                        sendmail({
+                                            from: '"PPMS Admin 👻" <no-reply.ppms@amazon.com>',
+                                            to: email,
                                             subject: 'Password change request ✔', // Subject line
-                                            text: today, // plain text body
-                                            html: '<b> Hi ' + userName + ',</b><br /> Your mail id is used to Change a new password <br /> at ' + today + '<b><br /> Thanks</b>' // html body
-                                        };
-
-                                        // send mail with defined transport object
-                                        transporter.sendMail(mailOptions, function (error, info) {
-                                            if (error) {
-                                                return console.log(error);
-                                            }
-
+                                            html: '<b> Hi ' + userName + ',</b><br /> Your mail id is used to change a new password <br /> at ' + today + '<b><br /> Thanks</b>' // html body
+                                        }, function (err, reply) {
+                                            console.log(err && err.stack);
+                                            console.dir(reply);
                                         });
+                                        // setup email data with unicode symbols
+                                        // var mailOptions = {
+                                        //     from: '"Fred Foo 👻" <admin_no-reply.p2r@amazon.com>', // sender address
+                                        //     to: email, // list of receivers
+                                        //     subject: 'Password change request ✔', // Subject line
+                                        //     text: today, // plain text body
+                                        //     html: '<b> Hi ' + userName + ',</b><br /> Your mail id is used to Change a new password <br /> at ' + today + '<b><br /> Thanks</b>' // html body
+                                        // };
+
+                                        // // send mail with defined transport object
+                                        // transporter.sendMail(mailOptions, function (error, info) {
+                                        //     if (error) {
+                                        //         return console.log(error);
+                                        //     }
+
+                                        // });
                                         res.send({
                                             "code" : 200,
                                             "message" : "success"

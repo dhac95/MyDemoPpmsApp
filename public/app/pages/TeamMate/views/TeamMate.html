@@ -1,0 +1,92 @@
+<div class="jumbotron modal-header">
+    <h3 class="modal-title" id="modal-title">Users in my Team</h3>
+</div>
+
+<div ng-show="$root.team_count > 1">
+    <div class="modal-body" id="modal-body">
+        <form name="myForm" role="form" class="well well-sm">
+            <div class="row">
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                    <label for="Team">Change Team</label>
+                    <div class="dropdown">
+                        <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="loadGrid()"
+                            data-ng-model="team.selected">
+                            <option value="">Select the Team</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="box box-solid box-primary">
+
+    <div class="box-header">
+        Your Team Users
+    </div>
+    <div class="box-body">
+        <!-- <button TeamMate="button" ng-click="addTeamMateModel()" class="btn btn-sm btn-success">
+            <i class="glyphicon glyphicon-plus">
+            </i> Add New
+        </button> -->
+        <div style="overflow-x:auto;">
+            <table ng-table="tableParams" class="table table-striped table-responsive" show-filter="true">
+
+                <tr ng-repeat="row in $data">
+                    <!-- <td class="text-center" title="'TeamMate #'" filter="{TeamMate_id : 'text'}" sortable="'TeamMate_id'">{{ row.TeamMate_id }}</td> -->
+                    <td class="text-center" title="'User Name'" filter="{user_name : 'text'}" sortable="'user_name'">
+                         <a href="https://phonetool.amazon.com/users/{{ row.user_name }}">{{ row.user_name }}</a></td>
+                    <td class="text-center" title="'First Name'" filter="{first_name : 'text'}" sortable="'first_name'">{{ row.first_name }}</td>
+                    <td class="text-center" title="'Last Name'" filter="{last_name : 'text'}" sortable="'last_name'">{{ row.last_name }}</td>
+                    <td class="text-center" title="'Team Count'" filter="{team_count : 'text'}" sortable="'team_count'">{{ row.team_count }}</td>
+                    <!-- <td class="text-center" title="'User type'" filter="{user_type : 'text'}" sortable="'user_type'">
+                           <div class="dropdown">
+                            <select data-ng-options="Type.id as Type.Name for Type in UserTypes" data-ng-change="promoteTeamMate(row)"
+                                data-ng-model="Type.selected" data-ng-value="Type.selected = row.user_type">
+                            </select>
+                            </div>
+                    </td> -->
+                    <td class="text-center" title="'User Level'" filter="{user_type : 'text'}" sortable="'user_type'">
+                        <span data-ng-if="row.user_type === 1" class="label label-primary">DA</span>
+                        <span data-ng-if="row.user_type === 2" class="label label-primary">SDA</span>
+                        <span data-ng-if="row.user_type === 3" class="label label-success">Manager</span>
+                        <span data-ng-if="row.user_type === 4" class="label label-warning">Admin</span>
+                    </td>
+                    <td class="text-center" title="'User mail'" filter="{user_mail : 'text'}" sortable="'user_mail'"><a href="mailto: {{ row.user_mail }}"> {{ row.user_mail }}</a> </td>
+                    <!-- <td class="text-center" title="'Host Ip'" filter="{host_name_1 : 'text'}" sortable="'host_name_1'">{{ row.host_name_1 }}</td> -->
+                    <td class="text-center" title="'Approvar'" filter="{Approvar : 'text'}" sortable="'Approvar'">{{ row.Approvar }}</td>
+                    <!-- <td class="text-center" title="'User Status'" filter="{user_status : 'text'}" sortable="'user_status'">
+                        <span data-ng-if="row.user_status === 1" class="label label-success">Active</span>
+                        <span data-ng-if="row.user_status === 0" class="label label-danger">Not Active</span>
+                    </td>
+
+                    <td class="text-center" title="'User Active'" filter="{user_activation : 'text'}" sortable="'user_activation'">
+                        <span data-ng-if="row.user_activation === 1" class="label label-success">In Team</span>
+                        <span data-ng-if="row.user_activation === 0" class="label label-danger">Not In Team</span>
+                    </td> -->
+                    <td class="text-center" title="'Last Entry'" filter="{last_entry_on : 'text'}" sortable="'last_entry_on'">{{ row.last_entry_on  | date : 'MM/dd/yyyy'}}</td>
+                    <td class="text-center" title="'Create Date'" filter="{create_date : 'text'}" sortable="'create_date'">{{ row.create_date | date : 'MM/dd/yyyy'}}</td>
+                    
+                    <td class="text-center" title="'Action'" >
+                        <span class="col-md-offset-4" data-ng-if="$root.user_type < 3">
+                                <i class="glyphicon glyphicon-info-sign"></i> Manager Level Access
+                            
+                        </span>
+                        <div class="col-md-offset-4" data-ng-if="$root.user_type > 2">
+                            <button type="button" ng-click="editTeamMateModel(row)" class="btn btn-sm btn-primary">
+                                <i class="glyphicon glyphicon-pencil">
+                                </i>
+                            </button>
+                            <button type="button" ng-click="removeTeamMate(row)" class="btn btn-sm btn-danger">
+                                <i class="glyphicon glyphicon-trash">
+                                </i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>

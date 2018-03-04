@@ -36,6 +36,12 @@
         $scope.getRemaingDate = getRemaingDate;
       
       //  loadGrid();
+        $scope.LeaveTypes = [
+            { "id": 0, "Name": "Not a Leave" },
+            { "id": 1, "Name": "Manager Approved" },
+            { "id": 2, "Name": "Manager Not Approved" },
+            { "id": 3, "Name": "Unexpected" }
+        ];
 
         $scope.addAddTaskModel = function () {
             $scope.items.isEditing = false;
@@ -185,28 +191,64 @@
                 }
             };
 
+        getTeamList();
+        function getTeamList() {
+            var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
+            promiseGet.then(function (pl) {
+                $scope.TeamList = pl.data;
+                if (pl.data.length > 1) {
+                    if ($scope.isEditing) {
+                        for (var team in $scope.TeamList) {
+                            if ($scope.TeamList[team].team_id == $scope.AddTask.team_id) {
+                                $scope.team.selected = $scope.TeamList[team];
 
+                            }
 
-            getTeamList();
-
-            function getTeamList() {
-                var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
-                promiseGet.then(function (pl) {
-                     $scope.TeamList = pl.data; 
-                       if ($scope.isEditing) {
-                                       for (var team in $scope.TeamList) {
-                                        if ($scope.TeamList[team].team_id == $scope.AddTask.team_id) {
-                                           $scope.team.selected = $scope.TeamList[team];
-                                          }
+                        }
+                        $scope.selectTask();
+                        $scope.selectBuild();
                     }
-                 }
+                    else {
+                        $scope.team.selected = $scope.TeamList[0].team_id;
+                        $scope.selectTask();
+                        $scope.selectBuild();
+                    }
+                }
+                else {
+                    $scope.team.selected = $scope.TeamList[0].team_id;
                     $scope.selectTask();
                     $scope.selectBuild();
-                },
-                      function (errorPl) {
-                          Notification({message :'Some Error in Getting Records.'}, 'error');
-                      });
-            }
+                }
+
+            },
+                function (errorPl) {
+                    Notification('Some Error in Getting Records.');
+                });
+        }
+
+
+            // getTeamList();
+
+            // function getTeamList() {
+            //     var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
+            //     promiseGet.then(function (pl) {
+            //          $scope.TeamList = pl.data; 
+            //            if ($scope.isEditing) {
+            //                            for (var team in $scope.TeamList) {
+            //                             if ($scope.TeamList[team].team_id == $scope.AddTask.team_id) {
+            //                                $scope.team.selected = $scope.TeamList[team];
+            //                               }
+            //         }
+            //      }
+            //         $scope.selectTask();
+            //         $scope.selectBuild();
+            //     },
+            //           function (errorPl) {
+            //               Notification({message :'Some Error in Getting Records.'}, 'error');
+            //           });
+            // }
+
+      
     
             $scope.selectBuild = function() {
                 //  $scope.task.selected = {};
@@ -497,6 +539,18 @@
                       Notification('Some Error in Getting Records.', errorPl);
                 });
         }
+
+        $scope.LeaveTypes = [
+            { "id": 0, "Name": "Not a Leave" },
+            { "id": 1, "Name": "Manager Approved" },
+            { "id": 2, "Name": "Manager Not Approved" },
+            { "id": 3, "Name": "Unexpected" }
+        ];
+
+        // getLeaveTypes();
+        // function getLeaveTypes() {
+
+        // }
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');

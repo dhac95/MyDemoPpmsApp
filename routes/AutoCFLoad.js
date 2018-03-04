@@ -32,7 +32,6 @@ router.post('/', function (req, res, next) {
                             "error": e1
                         });
                     } else {
-                       
                         async.each(r1, function (single, callback) {
                             if(single.have_st == 0 && single.about_cf == 0) {
                                 db.query('INSERT INTO amz_daily_target (month_from , team , task , cf_updated , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )', [tempDate, team, single.task_id, '1', '1', '1', '0', actionBy, actionBy, today, today, '0'], function (e2, r2, f2) {
@@ -44,6 +43,7 @@ router.post('/', function (req, res, next) {
                                         });
                                     }
                                 });
+                                callback();
                             } else if (single.have_st == 1) {
                                 db.query('SELECT * FROM amz_sub_tasks WHERE task_status = 1 AND deletion = 0 AND about_cf = 0 AND team_id = ? AND task_id = ?', [team, single.task_id], function (e3, r3, f3) {
                                         if(e3) {
@@ -63,12 +63,14 @@ router.post('/', function (req, res, next) {
                                                         "error": e4
                                                     });
                                                 }
+                                                    callback();
                                             });
-                                                callback();
+                                              
                                         });
                                         
                                         }
                                 });
+                                callback();
                             } 
                             // else if (single.have_st == 0 && single.about_cf == undefined) {
                             //     db.query('INSERT INTO amz_daily_target (month_from , team , task , cf_updated , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )', [tempDate, team, single.task_id, '1', '1', '1', '0', actionBy, actionBy, today, today, '0'], function (e5, r5, f5) {
@@ -82,7 +84,7 @@ router.post('/', function (req, res, next) {
                             //     });
                             // }
 
-                            callback();
+                            
 
                         }, function (response) {
                             if (queryError.length > 0) {

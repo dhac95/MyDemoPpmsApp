@@ -36,6 +36,13 @@
       
       //  loadGrid();
 
+        $scope.LeaveTypes = [
+            { "id": 0, "Name": "Not a Leave" },
+            { "id": 1, "Name": "Manager Approved" },
+            { "id": 2, "Name": "Manager Not Approved" },
+            { "id": 3, "Name": "Unexpected" }
+        ];
+
         $scope.addUserOTModel = function () {
             $scope.items.isEditing = false;
             var modalInstance = $uibModal.open({
@@ -101,6 +108,8 @@
                 UserOT.sub_task_id = $scope.subtask.selected;
                 UserOT.build = $scope.build.selected;
                 UserOT.date = $scope.date.selected;
+                UserOT.user_type = $rootScope.user_type;
+
                 UserOTService.addUserOT($scope, $rootScope, $http, $scope.UserOT).then(function (res) {
                     if (res.data.code == 200) {
                         Notification.success("Added Successful");
@@ -146,29 +155,64 @@
                     });
             }
 
+    
+            // getTeamList();
 
+            // function getTeamList() {
+            //     var promiseGet = UserOTService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
+            //     promiseGet.then(function (pl) {
+            //          $scope.TeamList = pl.data; 
+            //            if ($scope.isEditing) {
+            //          for (var team in $scope.TeamList) {
+            //             if ($scope.TeamList[team].team_id == $scope.UserOT.team_id) {
+            //                 $scope.team.selected = $scope.TeamList[team];
+            //             }
+            //         }
+            //      }
+            //         $scope.selectTask();
+            //         $scope.selectBuild();
+            //     },
+            //           function (errorPl) {
+            //               Notification('Some Error in Getting Records.', errorPl);
+            //           });
+            // }
+    
+        getTeamList();
+        function getTeamList() {
+            var promiseGet = UserOTService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
+            promiseGet.then(function (pl) {
+                $scope.TeamList = pl.data;
+                if (pl.data.length > 1) {
+                    if ($scope.isEditing) {
+                        for (var team in $scope.TeamList) {
+                            if ($scope.TeamList[team].team_id == $scope.UserOT.team_id) {
+                                $scope.team.selected = $scope.TeamList[team];
 
-            getTeamList();
+                            }
 
-            function getTeamList() {
-                var promiseGet = UserOTService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
-                promiseGet.then(function (pl) {
-                     $scope.TeamList = pl.data; 
-                       if ($scope.isEditing) {
-                     for (var team in $scope.TeamList) {
-                        if ($scope.TeamList[team].team_id == $scope.UserOT.team_id) {
-                            $scope.team.selected = $scope.TeamList[team];
                         }
+                        $scope.selectTask();
+                        $scope.selectBuild();
                     }
-                 }
+                    else {
+                        $scope.team.selected = $scope.TeamList[0].team_id;
+                        $scope.selectTask();
+                        $scope.selectBuild();
+                    }
+                }
+                else {
+                    $scope.team.selected = $scope.TeamList[0].team_id;
                     $scope.selectTask();
                     $scope.selectBuild();
-                },
-                      function (errorPl) {
-                          Notification('Some Error in Getting Records.', errorPl);
-                      });
-            }
-    
+                }
+
+            },
+                function (errorPl) {
+                    Notification('Some Error in Getting Records.');
+                });
+        }
+
+
             $scope.selectBuild = function() {
                 //  $scope.task.selected = {};
                   var team_id = $scope.team.selected;
@@ -325,6 +369,7 @@
                 UserOT.sub_task_id = $scope.subtask.selected;
                 UserOT.build = $scope.build.selected;
                 UserOT.date = $scope.date.selected;
+                UserOT.user_type = $rootScope.user_type;
                // $scope.UserOT.create_date = $rootScope.date;
                 UserOTService.updateUserOT($scope, $rootScope, $http, $scope.UserOT,id).then(function (res) {
                     if (res.data.code == 200) {
@@ -342,6 +387,7 @@
                 UserOT.tasks_id = $scope.task.selected;
                 UserOT.sub_task_id = $scope.subtask.selected;
                 UserOT.build = $scope.build.selected;
+                UserOT.user_type = $rootScope.user_type;
 
                 UserOTService.addUserOT($scope, $rootScope, $http, $scope.UserOT).then(function (res) {
                     if (res.data.code == 200) {
@@ -461,6 +507,12 @@
                 });
         }
 
+        $scope.LeaveTypes = [
+            { "id": 0, "Name": "Not a Leave" },
+            { "id": 1, "Name": "Manager Approved" },
+            { "id": 2, "Name": "Manager Not Approved" },
+            { "id": 3, "Name": "Unexpected" }
+        ];
 
 
         $scope.cancel = function () {

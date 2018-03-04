@@ -7,7 +7,7 @@
                 <!-- <div class="col-md-6 col-lg-6"> -->
                     <div class="form-group col-sm-3 col-md-3 col-lg-3">
                         <label for="date">date</label>
-                        <input type="date" class="form-control" id="date" name="date" data-ng-model="date.selected" data-ng-change="getTaskbyDate()" />
+                        <input type="date" class="form-control" id="date" name="date" data-ng-model="date.selected" data-ng-change="getTaskbyDate()" required/>
                         <span ng-show="myForm.date.$touched && myForm.date.$invalid" class="text-danger">*required Date</span>
                     </div>
                     <!-- <datepicker>
@@ -18,7 +18,7 @@
                         <label for="Team">Team Name</label>
                         <div class="dropdown">
     
-                            <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected">
+                            <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected" required>
                                 <option value="">Select the Team</option>
                    
                             </select>
@@ -31,7 +31,7 @@
                         <label for="build">Build Name</label>
                         <div class="dropdown">
     
-                            <select class="form-control" id="build" name="build" data-ng-options="Build.build_no as Build.build_name for Build in BuildList" data-ng-model="build.selected">
+                            <select class="form-control" id="build" name="build" data-ng-options="Build.build_no as Build.build_name for Build in BuildList" data-ng-model="build.selected" required>
                                 <option value="">Select the Build</option>
                    
                             </select>
@@ -44,11 +44,9 @@
                         <label for="task">Task Name</label>
                         <div class="dropdown">
     
-                            <select class="form-control" id="task" name="task" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask()">
+                            <select class="form-control" id="task" name="task" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask()" required>
                                 <option value="">Select the Task</option>
-                   
                             </select>
-                            
                         </div>
                         <div ng-show="myForm.task.$touched && myForm.task.$invalid" class="text-danger">*required Task</div>
                     </div>
@@ -67,20 +65,22 @@
                     </div>
     
                     <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                        <label for="task_desc">task_desc</label>
-                        <input type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="UserOT.task_desc"  />
+                        <label for="task_desc">Leave Type</label>
+                        <select type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="AddTask.task_desc" data-ng-options="Leave.id as Leave.Name for Leave in LeaveTypes">
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                        <label for="count">Count</label>
+                        <input type="number" class="form-control" id="count" name="count" data-ng-model="UserOT.count"  />
                     </div>
                     <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                        <label for="count">count</label>
-                        <input type="text" class="form-control" id="count" name="count" data-ng-model="UserOT.count"  />
-                    </div>
-                    <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                        <label for="noofdevice">noofdevice</label>
-                        <input type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="UserOT.noofdevice"  />
+                        <label for="noofdevice">Devices</label>
+                        <input type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="UserOT.noofdevice"  disabled/>
                     </div>
                     <div class="form-group col-sm-3 col-md-3 col-lg-3">
                         <label for="time">time<span><strong class="text-danger">  *Remaing Time {{remTime.remain}}</strong></span> </label>
-                        <input type="text" class="form-control" id="time" name="time" required pattern="[0-1][0-9]:[0-5][0-9]+" placeholder="for example 15:59" data-ng-model="UserOT.time"  />
+                        <input type="text" class="form-control" id="time" name="time" required pattern="[0-1][0-9]:[0-5][0-9]+" placeholder="for example 15:59" data-ng-model="UserOT.time"  required/>
                         <div ng-show="myForm.time.$touched && myForm.time.$invalid" class="text-danger">*required Time</div>
                     </div>
                 
@@ -89,11 +89,12 @@
                         <input type="text" class="form-control" id="cmds" name="cmds" data-ng-model="UserOT.cmds"  />
                     </div>
             </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-disabled="myForm.$invalid || remTime.remain == '00:00:00'" type="button" ng-click="saveUserOT(UserOT)">Save</button>
+            </div>
         </form>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-disabled="myForm.$invalid || remTime.remain == '00:00:00'"" type="button" ng-click="saveUserOT(UserOT)">Save</button>
-    </div>
+ 
     
     
     
@@ -124,7 +125,7 @@
                             <th st-sort="build_name">Build Name</th>
                             <th st-sort="task_name">Task Name</th>
                             <th st-sort="sub_task_name">Subtask Name</th>
-                            <th st-sort="task_info">Task Description</th>
+        
                             <th st-sort="count">count</th>
                             <th st-sort="time">time</th>
                             <th st-sort="date">date</th>
@@ -139,7 +140,7 @@
                             <td>{{ row.build_name }}</td> 
                             <td>{{ row.task_name }}</td>
                             <td>{{ row.sub_task_name }}</td>
-                            <td>{{ row.task_info }}</td>
+    
                             <td>{{ row.count}}</td>
                             <td>{{ row.time}}</td>
                             <td>{{ row.date | date : 'dd/MM/yyyy' }}</td>

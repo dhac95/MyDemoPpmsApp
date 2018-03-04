@@ -1,4 +1,8 @@
-﻿<div ng-show="$root.team_count > 1">
+﻿<div class="jumbotron modal-header">
+	<h3 class="modal-title" id="modal-title">Task</h3>
+</div>
+
+<div ng-show="$root.team_count > 1">
 	<div class="modal-body" id="modal-body">
 		<form name="myForm" role="form" class="well well-sm">
 			<div class="row">
@@ -33,7 +37,12 @@
 						<td class="text-center" title="'Team Name'" filter="{team_name : 'text'}" sortable="'team_name'">{{ row.team_name }}</td>
 						<td class="text-center" title="'Task Name'" filter="{task_name : 'text'}" sortable="'task_name'">{{ row.task_name }}</td>
 						<td class="text-center" title="'Added By'" filter="{AddedBy : 'text'}" sortable="'AddedBy'">{{ row.AddedBy }}</td>
-						<td class="text-center" title="'Device Count'" filter="{device_count : 'text'}" sortable="'device_count'">{{ row.device_count }}</td>
+						<!-- <td class="text-center" title="'Device Count'" filter="{device_count : 'text'}" sortable="'device_count'">{{ row.device_count }}</td> -->
+							<td class="text-center" title="'Device Count'" filter="{device_count : 'text'}" sortable="'device_count'">
+								<span data-ng-if="row.device_count === 1" class="label label-primary">YES</span>
+								<span data-ng-if="row.device_count === 0" class="label label-info">NO</span>
+							</td>
+						
 						<td class="text-center" title="'Task Status'" filter="{status : 'text'}" sortable="'status'">
 							<span data-ng-if="row.status === 1" class="label label-success">Active</span>
 							<span data-ng-if="row.status === 0" class="label label-danger">In Active</span>
@@ -50,13 +59,13 @@
 							<span data-ng-if="row.about_chart === 0" class="label label-danger">No Chart</span>
 						</td>
 						<td class="text-center" title="'Have SubTask'" filter="{have_st : 'text'}" sortable="'have_st'">
-							<span data-ng-if="row.have_st === 1" class="label label-success">YES</span>
-							<span data-ng-if="row.have_st === 0" class="label label-danger">NO</span>
+							<span data-ng-if="row.have_st === 1" class="label label-primary">YES</span>
+							<span data-ng-if="row.have_st === 0" class="label label-warning">NO</span>
 						</td>
 
-						<td class="text-center" title="'Deletion Status'" filter="{deletion : 'text'}" sortable="'deletion'">
-							<span data-ng-if="row.deletion === 0" class="label label-success">In use</span>
-							<span data-ng-if="row.deletion === 1" class="label label-danger">Not In Use</span>
+						<td class="text-center" title="'Operational Task'" filter="{op_type : 'text'}" sortable="'op_type'">
+							<span data-ng-if="row.op_type === 1" class="label label-success">Yes</span>
+							<span data-ng-if="row.op_type === 0" class="label label-danger">No</span>
 						</td>
 						<td class="text-center" title="'Modified By'" filter="{ModifiedBy : 'text'}" sortable="'ModifiedBy'">{{ row.ModifiedBy }}</td>	
 

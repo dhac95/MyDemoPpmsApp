@@ -21,7 +21,7 @@ router.post('/', function(req, res, next) {
     res.send({
       "code":400,
       "failed":"error ocurred",
-        IsAuth : false
+        "IsAuth" : false
     });
   }else{
     // var user = results[0].user_id;
@@ -43,7 +43,7 @@ router.post('/', function(req, res, next) {
         res.send({
           "code":200,
           "success":"login sucessfull",
-            IsAuth : true, 
+            "IsAuth" : true, 
             data : results
             }
           );          
@@ -53,7 +53,7 @@ router.post('/', function(req, res, next) {
         res.send({
           "code":204,
           "success":"username and password does not match",
-            IsAuth : false
+            "IsAuth" : false
             });
       }
     }
@@ -62,7 +62,7 @@ router.post('/', function(req, res, next) {
       res.send({
         "code":204,
         "success":"username does not exits",
-        IsAuth : false
+        "IsAuth" : false
           });
     }
   }

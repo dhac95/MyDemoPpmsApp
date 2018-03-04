@@ -3,6 +3,8 @@
 <head>
     <title>P2R Dashboard | Login</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="Content/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome Icons -->
     <link href="Content/font-awesome/font-awesome.min.css" rel="stylesheet" />
@@ -27,7 +29,9 @@
             <div class="login-logo">
                 <a href="index.html"><b>P2R</b> Dashboard</a>
             </div>
-            <p class="login-box-msg">Sign in to start your session</p>
+            <p ng-if="!isPassword && !isReg" class="login-box-msg">Sign in to start your session</p>
+             <p ng-if="isPassword && !isReg" class="login-box-msg">Enter your username to receive password</p>
+              <p ng-if="!isPassword && isReg" class="login-box-msg">It's good to see new folks! Register here</p>
             <form role="form" name="myForm" ng-if="!isPassword && !isReg">
                 <div>
                     <span class="text-danger">{{loginSts}} </span>
@@ -53,7 +57,7 @@
                     <input type="checkbox" name="remember" class="icheckbox_flat-blue" ng-model="User.Remember" /> Remember  <i class="glyphicon glyphicon-floppy-disk"></i>
                 </div>
                 <div class="form-group">
-                <button type="button" class="btn btn-primary btn-block btn-flat"  data-ng-disabled="myForm.$invalid" data-ng-click="login(User)">{{subBtn}}</button>
+                <button type="submit" class="btn btn-primary btn-block btn-flat"  data-ng-disabled="myForm.$invalid" data-ng-click="login(User)">{{subBtn}}</button>
 
                     </div>
                 <div class="row">
@@ -86,7 +90,7 @@
                         <span ng-show="myForm.user.$error.required">Username is required....</span>
                     </span>
                 </div>
-                <button type="button" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Reset(Reset)">Send</button>
+                <button type="submit" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Reset(Reset)">Send</button>
                   <a href="#" ng-click="Reg()">Register</a> 
                 <a href="#" class="pull-right" ng-click="isLogin()"><strong>Login</strong></a><br>
               
@@ -112,7 +116,7 @@
                         </select>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Register(Register)">Register</button>
+                <button type="submit" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Register(Register)">Register</button>
                     <a href="#" ng-click="forgotPassword()">I forgot my password</a>
                 <a href="#" class="pull-right" ng-click="isLogin()"><strong>Login</strong></a><br>
            
@@ -130,7 +134,7 @@
             Powerd by<strong> M*EAN 🔁 </strong>
         </div>
         <!-- Default to the left -->
-        <strong>Version<a href="http://www.amazon.com/"> Beta 0.8.2 Build(p2r022418)</a>.</strong>.
+        <strong>Version<a href="https://tiny.amazon.com/2siyuo50/P2RDashboardBugs"> Beta 0.8.5 Build(p2r040318)</a>.</strong>.
     </footer>
 </div><!-- ./wrapper -->
 

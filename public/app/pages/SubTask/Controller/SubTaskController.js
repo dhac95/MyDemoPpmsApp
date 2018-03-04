@@ -70,32 +70,64 @@
             });
         };
 
+        // getTeamList();
+        // function getTeamList() {
+        //     var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
+        //     promiseGet.then(function (pl) {
+        //          $scope.TeamList = pl.data; 
+        //         if(pl.data.length > 1) {
+        //            if ($scope.isEditing) { 
+        //                            for (var team in $scope.TeamList) {
+        //                             if ($scope.TeamList[team].team_id == $scope.SubTask.team_id) {
+        //                                $scope.team.selected = $scope.TeamList[team];
+        //                                 $scope.loadGrid();
+        //                          }
+        //                     }
+        //                  }
+        //                 }
+        //         else {
+        //             $scope.temp_team = $scope.TeamList[0].team_id;
+        //             $scope.loadGrid();
+        //         }
+               
+        //     },
+        //           function (errorPl) {
+        //               Notification('Some Error in Getting Records.');
+        //           });
+        // }
+
+
         getTeamList();
         function getTeamList() {
-            var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
+            var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
-                 $scope.TeamList = pl.data; 
-                if(pl.data.length > 1) {
-                   if ($scope.isEditing) { 
-                                   for (var team in $scope.TeamList) {
-                                    if ($scope.TeamList[team].team_id == $scope.SubTask.team_id) {
-                                       $scope.team.selected = $scope.TeamList[team];
-                                        $scope.loadGrid();
-                                 }
+                $scope.TeamList = pl.data;
+                if (pl.data.length > 1) {
+                    if ($scope.isEditing) {
+                        for (var team in $scope.TeamList) {
+                            if ($scope.TeamList[team].team_id == $scope.SubTask.team_id) {
+                                $scope.team.selected = $scope.TeamList[team];
+
                             }
-                         }
+
                         }
+                        $scope.loadGrid();
+                    }
+                    else {
+                        $scope.team.selected = $scope.TeamList[0].team_id;
+                        $scope.loadGrid();
+                    }
+                }
                 else {
                     $scope.temp_team = $scope.TeamList[0].team_id;
                     $scope.loadGrid();
                 }
-               
-            },
-                  function (errorPl) {
-                      Notification('Some Error in Getting Records.');
-                  });
-        }
 
+            },
+                function (errorPl) {
+                    Notification('Some Error in Getting Records.');
+                });
+        }
 
         $scope.loadGrid = function() {
             var id = 0;
@@ -114,10 +146,10 @@
         };
 
         function removeSubTask(SubTask) {
-            if (SubTask.deletion === 1) {
-               var id = SubTask.SubTask_id;
+            if (SubTask.task_status == 0 ) {
+               var obj ={ sub_task_id : SubTask.sub_task_id };
             if (window.confirm("Do you really want to delte this SubTask")) {
-                SubTaskService.deleteSubTask($scope, $rootScope, $http, id).then(function (res) {
+                SubTaskService.deleteSubTask($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code === 200) {
                         Notification.success("Deleted Successful");
                         $scope.loadGrid();
@@ -174,22 +206,6 @@
                     $scope.SubTask.op_type = 0;
                 }
 
-
-                if ($scope.SubTask.deletion == undefined || $scope.SubTask.deletion == 1 )
-                {
-                    $scope.SubTask.deletion = 1;
-                }
-                else {
-                    $scope.SubTask.deletion = 0;
-                }
-
-                if ($scope.SubTask.about_cf == '') {
-                    $scope.SubTask.about_cf = null;
-                }
-                else {
-                    $scope.SubTask.about_cf = $scope.SubTask.about_cf;
-                }
-
                 for (var i in $scope.ChartList) {
                     if ($scope.ChartList[i].id == $scope.SubTask.about_chart) {
                         $scope.SubTask.about_chart = $scope.ChartList[i].id;
@@ -224,20 +240,18 @@
               //  $scope.SubTask.added_by = $rootScope.user_id;
                
                 $scope.SubTask.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
-                if ($scope.SubTask.task_status == true)
-                {
+                if ($scope.SubTask.task_status == true) {
                     $scope.SubTask.task_status = 1;
                 }
                 else {
                     $scope.SubTask.task_status = 0;
                 }
-                
 
-                if ($scope.SubTask.deletion == undefined || $scope.SubTask.deletion == 1) {
-                    $scope.SubTask.deletion = 1;
+                if ($scope.SubTask.op_type == true) {
+                    $scope.SubTask.op_type = 1;
                 }
                 else {
-                    $scope.SubTask.deletion = 0;
+                    $scope.SubTask.op_type = 0;
                 }
 
                 $scope.SubTask.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");

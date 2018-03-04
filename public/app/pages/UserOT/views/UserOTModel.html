@@ -66,21 +66,23 @@
                         <div ng-show="myForm.subTask.$touched && myForm.subTask.$invalid" class="text-danger">*required Sub Task</div>
                     </div>
     
+                    <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                        <label for="task_desc">Leave Type</label>
+                        <select type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="UserOT.task_desc" data-ng-options="Leave.id as Leave.Name for Leave in LeaveTypes" data-ng-value="UserOT.task_desc">
+                        </select>
+                    </div>
+
                     <div class="form-group col-md-3 col-lg-3">
-                        <label for="task_desc">task_desc</label>
-                        <input type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="UserOT.task_desc"  disabled/>
+                        <label for="count">Count</label>
+                        <input type="number" class="form-control" id="count" name="count" data-ng-model="UserOT.count"  />
                     </div>
                     <div class="form-group col-md-3 col-lg-3">
-                        <label for="count">count</label>
-                        <input type="text" class="form-control" id="count" name="count" data-ng-model="UserOT.count"  />
-                    </div>
-                    <div class="form-group col-md-3 col-lg-3">
-                        <label for="noofdevice">noofdevice</label>
-                        <input type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="UserOT.noofdevice"  />
+                        <label for="noofdevice">Devices</label>
+                        <input type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="UserOT.noofdevice" disabled />
                     </div>
                     <div class="form-group col-md-3 col-lg-3">
                         <label for="time">time <span><strong class="text-danger">  *Remaing Time {{remTime.remain}}</strong></span></label>
-                        <input type="text" class="form-control" id="time" name="time" required pattern="[0-1][0-9]:[0-5][0-9]+" placeholder="for example 07:59" data-ng-model="UserOT.time"  />
+                        <input type="text" class="form-control" id="time" name="time" required pattern="[0-1][0-9]:[0-5][0-9]+" placeholder="for example 07:59" data-ng-model="UserOT.time" required />
                         <div ng-show="myForm.time.$touched && myForm.time.$invalid" class="text-danger">*required Time</div>
                     </div>
                 

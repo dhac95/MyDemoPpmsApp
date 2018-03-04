@@ -34,8 +34,8 @@
             return $http.put($rootScope.endPoint + 'Teams/' + id , Team);
         }
 
-        function deleteTeam($scope, $rootScope, $http, id) {
-            return $http.delete($rootScope.endPoint + 'Teams/' + id);
+        function deleteTeam($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'Teams/remove/' , obj);
         }
     }
 

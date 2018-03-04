@@ -11,12 +11,18 @@
                 template: '<ui-view></ui-view>',
                 abstract: true,
                 title: 'SubTask',
+                data: {
+                    needSda: true
+                }
             })
             .state('SubTask.master', {
                 url: '/master',
                 controller: 'SubTaskController',
                 templateUrl: 'app/pages/SubTask/views/SubTask.html',
                 title: 'SubTask Master',
-            })
+                data: {
+                    needSda: true
+                }
+            });
     }
 })();

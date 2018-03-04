@@ -69,27 +69,70 @@
             });
         };
 
-            getTeamList();
+        $scope.LeaveTypes = [
+            { "id": 0, "Name": "Not a Leave" },
+            { "id": 1, "Name": "Manager Approved" },
+            { "id": 2, "Name": "Manager Not Approved" },
+            { "id": 3, "Name": "Unexpected" }
+        ];
 
-            function getTeamList() {
-                var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
-                promiseGet.then(function (pl) {
-                     $scope.TeamList = pl.data; 
-                       if ($scope.isEditing) {
-                                       for (var team in $scope.TeamList) {
-                                        if ($scope.TeamList[team].team_id == $scope.SdaReport.team_id) {
-                                           $scope.team.selected = $scope.TeamList[team];
-                                          }
+            // getTeamList();
+
+            // function getTeamList() {
+            //     var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
+            //     promiseGet.then(function (pl) {
+            //          $scope.TeamList = pl.data; 
+            //            if ($scope.isEditing) {
+            //                            for (var team in $scope.TeamList) {
+            //                             if ($scope.TeamList[team].team_id == $scope.SdaReport.team_id) {
+            //                                $scope.team.selected = $scope.TeamList[team];
+            //                               }
+            //         }
+            //      }
+            //         $scope.selectTask();
+            //         $scope.selectUsers();
+            //     },
+            //           function (errorPl) {
+            //               Notification('Some Error in Getting Records.');
+            //           });
+            // }
+        //$scope.SdaReport.To = new Date();
+        getTeamList();
+        function getTeamList() {
+            var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
+            promiseGet.then(function (pl) {
+                $scope.TeamList = pl.data;
+                if (pl.data.length > 1) {
+                    if ($scope.isEditing) {
+                        for (var team in $scope.TeamList) {
+                            if ($scope.TeamList[team].team_id == $scope.SdaReport.team_id) {
+                                $scope.team.selected = $scope.TeamList[team];
+
+                            }
+
+                        }
+                        $scope.selectTask();
+                        $scope.selectUsers();
                     }
-                 }
+                    else {
+                        $scope.team.selected = $scope.TeamList[0].team_id;
+                        $scope.selectTask();
+                        $scope.selectUsers();
+                    }
+                }
+                else {
+                    $scope.team.selected = $scope.TeamList[0].team_id;
                     $scope.selectTask();
                     $scope.selectUsers();
-                },
-                      function (errorPl) {
-                          Notification('Some Error in Getting Records.');
-                      });
-            }
-    
+                }
+
+            },
+                function (errorPl) {
+                    Notification('Some Error in Getting Records.');
+                });
+        }
+
+
             $scope.selectUsers = function() {
                 //  $scope.task.selected = {};
                   var team_id = $scope.team.selected;
@@ -514,6 +557,12 @@
             }
         };
 
+        $scope.LeaveTypes = [
+            { "id": 0, "Name": "Not a Leave" },
+            { "id": 1, "Name": "Manager Approved" },
+            { "id": 2, "Name": "Manager Not Approved" },
+            { "id": 3, "Name": "Unexpected" }
+        ];
 
         getTeamList();
 

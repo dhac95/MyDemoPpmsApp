@@ -15,6 +15,7 @@
         $rootScope.isLoginPage = false;
         $scope.noOfRows = "10";
         $scope.items = {};
+        $scope.activeUsers = false;
 
         $scope.isEditing = false;
         $scope.items.isEditing = $scope.isEditing;
@@ -97,6 +98,7 @@
             var self = this;
             ApproveService.getRegisteredUsers($scope, $rootScope, $http , id).then(function (responce) {
                 $scope.ApproveList = responce.data;
+                $scope.activeUsers = true;
                 $scope.tableParams = new NgTableParams({}, { 
                     dataset: responce.data
                  });

@@ -281,10 +281,10 @@
                     } , 1000);
                 }
                 else if(response.data.code === 300){
-                    Notification({message: 'error ' +  'user already registered in team'}, 'warning' );
-                    $timeout(function () {
-                        window.location.replace("/index.html");
-                    }, 1000);
+                    Notification({message: 'User already registered in team, Wait for approval if you don\'t see the team name '}, 'warning' );
+                    // $timeout(function () {
+                    //     window.location.replace("/index.html");
+                    // }, 1000);
                 }
                 else if(response.data.code === 204) {
                     Notification('User already registerd Wait for approval' );

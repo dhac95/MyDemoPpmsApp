@@ -15,6 +15,7 @@
         $rootScope.isLoginPage = false;
         $scope.noOfRows = "10";
         $scope.items = {};
+        $scope.team = {};
 
         $scope.isEditing = false;
         $scope.items.isEditing = $scope.isEditing;
@@ -69,6 +70,32 @@
             });
         };
 
+        // getTeamList();
+        // function getTeamList() {
+        //     var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
+        //     promiseGet.then(function (pl) {
+        //         $scope.TeamList = pl.data;
+        //         if (pl.data.length > 1) {
+        //             if ($scope.isEditing) {
+        //                 for (var team in $scope.TeamList) {
+        //                     if ($scope.TeamList[team].team_id == $scope.Release.team_id) {
+        //                         $scope.team.selected = $scope.TeamList[team];
+        //                         $scope.loadGrid();
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //         else {
+        //             $scope.temp_team = $scope.TeamList[0].team_id;
+        //             $scope.loadGrid();
+        //         }
+        //     },
+        //         function (errorPl) {
+        //             Notification('Some Error in Getting Records.');
+        //         });
+        // }
+
+
         getTeamList();
         function getTeamList() {
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
@@ -79,15 +106,22 @@
                         for (var team in $scope.TeamList) {
                             if ($scope.TeamList[team].team_id == $scope.Release.team_id) {
                                 $scope.team.selected = $scope.TeamList[team];
-                                $scope.loadGrid();
+
                             }
+
                         }
+                        $scope.loadGrid();
+                    }
+                    else {
+                        $scope.team.selected = $scope.TeamList[0].team_id;
+                        $scope.loadGrid();
                     }
                 }
                 else {
                     $scope.temp_team = $scope.TeamList[0].team_id;
                     $scope.loadGrid();
                 }
+
             },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.');
@@ -171,7 +205,7 @@
 
                 $scope.Release.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                
-                if ($scope.Release.release_status == true) {
+                if ($scope.Release.release_status == true || $scope.Release.release_status == '1') {
                     $scope.Release.release_status = '1';
                 }
                 else {

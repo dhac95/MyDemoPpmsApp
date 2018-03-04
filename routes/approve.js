@@ -6,6 +6,7 @@ var datetime = require('node-datetime');
 var in_array = require('in_array');
 var nodemailer = require('nodemailer');
 var moment = require('moment');
+var sendmail = require('sendmail')();
 var db = require('../dbconnections');
 
 router.post('/' , function(req , res , next){ 
@@ -31,31 +32,41 @@ router.post('/' , function(req , res , next){
                                                             res.send(e3);
                                                         } else {
                                                             var today = moment().format('LLLL');
-                                                            var transporter = nodemailer.createTransport({
-                                                                // host: 'smtp.ethereal.email',
-                                                                // port: 587,
-                                                                service: 'Gmail',
-                                                                // secure: false, // true for 465, false for other ports
-                                                                auth: {
-                                                                    user: process.env.MAIL_U, // generated ethereal user
-                                                                    pass: process.env.MAIL_P  // generated ethereal password
-                                                                }
-                                                            });
+                                                            // var transporter = nodemailer.createTransport({
+                                                            //     // host: 'smtp.ethereal.email',
+                                                            //     // port: 587,
+                                                            //     service: 'Gmail',
+                                                            //     // secure: false, // true for 465, false for other ports
+                                                            //     auth: {
+                                                            //         user: process.env.MAIL_U, // generated ethereal user
+                                                            //         pass: process.env.MAIL_P  // generated ethereal password
+                                                            //     }
+                                                            // });
                                                            
-                                                            // setup email data with unicode symbols
-                                                            var mailOptions = {
-                                                                from: '"Fred Foo 👻" <admin_no-reply.p2r@amazon.com>', // sender address
-                                                                to: email, // list of receivers
-                                                                subject: 'Team request approved ✔', // Subject line
-                                                                text: name, // plain text body
-                                                                html: '<b> Hi ' + name + ',</b><br /> You request have been approved  at ' + today +'<br /> You are now able to login with your username and password.<b><br /> Thanks</b>' // html body
-                                                            };
+                                                            // // setup email data with unicode symbols
+                                                            // var mailOptions = {
+                                                            //     from: '"Fred Foo 👻" <admin_no-reply.p2r@amazon.com>', // sender address
+                                                            //     to: email, // list of receivers
+                                                            //     subject: 'Team request approved ✔', // Subject line
+                                                            //     text: name, // plain text body
+                                                            //     html: '<b> Hi ' + name + ',</b><br /> You request have been approved  at ' + today +'<br /> You are now able to login with your username and password.<b><br /> Thanks</b>' // html body
+                                                            // };
 
-                                                            // send mail with defined transport object
-                                                            transporter.sendMail(mailOptions, function (error, info) {
-                                                                if (error) {
-                                                                    return console.log(error);
-                                                                }
+                                                            // // send mail with defined transport object
+                                                            // transporter.sendMail(mailOptions, function (error, info) {
+                                                            //     if (error) {
+                                                            //         return console.log(error);
+                                                            //     }
+                                                            // });
+
+                                                            sendmail({
+                                                                from: '"PPMS Admin 👻" <no-reply.ppms@amazon.com>',
+                                                                to: email,
+                                                                subject: 'Team request approved ✔', // Subject line
+                                                                html: '<b> Hi ' + name + ',</b><br /> You request have been approved  at ' + today + '<br /> You are now able to login with your username and password.<b><br /> Thanks</b>' // html body
+                                                            }, function (err, reply) {
+                                                                console.log(err && err.stack);
+                                                                console.dir(reply);
                                                             });
                                                             res.send({
                                                                     "code" : 200 , 
@@ -98,32 +109,44 @@ router.post('/' , function(req , res , next){
                                                 });
                                             } else {
                                                 var today = moment().format('LLLL');
-                                                var transporter = nodemailer.createTransport({
-                                                    // host: 'smtp.ethereal.email',
-                                                    // port: 587,
-                                                    service: 'Gmail',
-                                                    // secure: false, // true for 465, false for other ports
-                                                    auth: {
-                                                        user: process.env.MAIL_U, // generated ethereal user
-                                                        pass: process.env.MAIL_P  // generated ethereal password
-                                                    }
-                                                });
+                                                // var transporter = nodemailer.createTransport({
+                                                //     // host: 'smtp.ethereal.email',
+                                                //     // port: 587,
+                                                //     service: 'Gmail',
+                                                //     // secure: false, // true for 465, false for other ports
+                                                //     auth: {
+                                                //         user: process.env.MAIL_U, // generated ethereal user
+                                                //         pass: process.env.MAIL_P  // generated ethereal password
+                                                //     }
+                                                // });
 
-                                                // setup email data with unicode symbols
-                                                var mailOptions = {
-                                                    from: '"Fred Foo 👻" <admin_no-reply.p2r@amazon.com>', // sender address
-                                                    to: email, // list of receivers
+                                                // // setup email data with unicode symbols
+                                                // var mailOptions = {
+                                                //     from: '"Fred Foo 👻" <admin_no-reply.p2r@amazon.com>', // sender address
+                                                //     to: email, // list of receivers
+                                                //     subject: 'Team request Rejected :(', // Subject line
+                                                //     text: name, // plain text body
+                                                //     html: '<b> Hi ' + name + ',</b><br /> You request have been rejected at '+ today +'<br /> You are now removed from the team and can\'t login with that team.<b><br /> Thanks</b>' // html body
+                                                // };
+
+                                                // // send mail with defined transport object
+                                                // transporter.sendMail(mailOptions, function (error, info) {
+                                                //     if (error) {
+                                                //         return console.log(error);
+                                                //     }
+                                                // });
+
+                                                sendmail({
+                                                    from: '"PPMS Admin 👻" <no-reply.ppms@amazon.com>',
+                                                    to: email,
                                                     subject: 'Team request Rejected :(', // Subject line
-                                                    text: name, // plain text body
-                                                    html: '<b> Hi ' + name + ',</b><br /> You request have been rejected at '+ today +'<br /> You are now removed from the team and can\'t login with that team.<b><br /> Thanks</b>' // html body
-                                                };
-
-                                                // send mail with defined transport object
-                                                transporter.sendMail(mailOptions, function (error, info) {
-                                                    if (error) {
-                                                        return console.log(error);
-                                                    }
+                                                    html: '<b> Hi ' + name + ',</b><br /> You request have been rejected at ' + today + '<br /> You are now removed from the team and can\'t login with that team. Please contact your manager if you think this is a mistake.<b><br /> Thanks</b>' // html body
+                                                }, function (err, reply) {
+                                                    console.log(err && err.stack);
+                                                    console.dir(reply);
                                                 });
+
+
                                                 res.send({
                                                     "code": 200,
                                                     "message" : "success"
