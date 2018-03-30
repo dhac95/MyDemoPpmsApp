@@ -255,6 +255,7 @@
                     $scope.ProdList = "";
                     $scope.ProdList = pl.data;
                     $scope.createOverAllChart();
+                    $scope.chartTitle = "Bar Chart - OverAll Productivity";
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
@@ -299,6 +300,7 @@
                     $scope.ProdList = "";
                     $scope.ProdList = pl.data;
                     $scope.createUserChart();
+                    $scope.chartTitle = "Bar Chart - UserWise Productivity";
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
@@ -343,6 +345,7 @@
                     $scope.ProdList = "";
                     $scope.ProdList = pl.data;
                     $scope.createTaskChart();
+                    $scope.chartTitle = "Bar Chart - Taskwise Productivity";
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
@@ -387,12 +390,108 @@
                     $scope.ProdList = "";
                     $scope.ProdList = pl.data;
                     $scope.createSubTaskChart();
+                    $scope.chartTitle = "Bar Chart - SubTaskWise Productivity";
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
                     });
             }
         }
+
+        // $scope.exportToPng = function() {
+        //     window.onload = function () {
+        //         var canvas = document.getElementById("basicChart");
+        //         var context = canvas.getContext("2d");
+        //         context.fillStyle = "green";
+        //         context.fillRect(50, 50, 100, 100);
+        //         // no argument defaults to image/png; image/jpeg, etc also work on some
+        //         // implementations -- image/png is the only one that must be supported per spec.
+        //         window.location = canvas.toDataURL("image/png");
+        //     };
+        // };
+        $scope.exportToPNG2 = function () {
+
+            var svg = document.querySelector('#basicChart');
+
+            //create a canvas
+            var canvas = document.createElement("canvas");
+
+            //set size for the canvas
+            var svgSize = svg.getBoundingClientRect();
+            canvas.width = svgSize.width;
+            canvas.height = svgSize.height;
+
+            var ctx = canvas.getContext('2d');
+
+            var data = new XMLSerializer().serializeToString(svg);
+
+            var DOMURL = window.URL || window.webkitURL || window;
+
+            var img = new Image();
+            var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
+            var url = DOMURL.createObjectURL(svgBlob);
+
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0);
+                DOMURL.revokeObjectURL(url);
+
+                var imgURI = canvas
+                    .toDataURL('image/png')
+                    .replace('image/png', 'image/octet-stream');
+
+                // triggerDownload(imgURI);
+                var link = document.createElement('a');
+                document.body.appendChild(link);  // For Mozilla
+                link.href = imgURI;
+
+                link.download = $scope.chartTitle + '.png';
+                link.click();
+            };
+
+            img.src = url;
+        };
+
+        $scope.exportToJPG = function () {
+
+            var svg = document.querySelector('#basicChart');
+
+            //create a canvas
+            var canvas = document.createElement("canvas");
+
+            //set size for the canvas
+            var svgSize = svg.getBoundingClientRect();
+            canvas.width = svgSize.width;
+            canvas.height = svgSize.height;
+
+            var ctx = canvas.getContext('2d');
+
+            var data = new XMLSerializer().serializeToString(svg);
+
+            var DOMURL = window.URL || window.webkitURL || window;
+
+            var img = new Image();
+            var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
+            var url = DOMURL.createObjectURL(svgBlob);
+
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0);
+                DOMURL.revokeObjectURL(url);
+
+                var imgURI = canvas
+                    .toDataURL('image/jpeg')
+                    .replace('image/jpeg', 'image/octet-stream');
+
+                // triggerDownload(imgURI);
+                var link = document.createElement('a');
+                document.body.appendChild(link);  // For Mozilla
+                link.href = imgURI;
+
+                link.download = $scope.chartTitle + '.jpg';
+                link.click();
+            };
+
+            img.src = url;
+        };
 
 
         function showCharts() {
@@ -471,11 +570,14 @@
                 chart = nv.models.discreteBarChart()
                      .x(function (d) { return d.total; })    //Specify the data accessors.
                      .y(function (d) { return d.AverageWorkUnit; })
+                     
                     .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
                      //.tooltips(true)        //Don't show tooltips
                     .showValues(true)       //...instead, show the bar value right on top of each bar.
                    // .transitionDuration(350)
                     ;       
+                chart.xAxis
+                    .axisLabel('Time');
 
             d3.select('#basicChart').datum([
                 {
@@ -571,7 +673,7 @@
             // //     //Active: Charts.Active,
             // //     //ActionBy: $rootScope.loggedUserId
             //   };
-            if (window.confirm("Do you really want to delte this Charts")) {
+            if (window.confirm("Do you really want to delete this Charts")) {
                 AddTaskService.deleteAddTask($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code == 200) {
                         Notification.success("Deleted Successful");

@@ -94,7 +94,7 @@
             // //     //Active: Team.Active,
             // //     //ActionBy: $rootScope.loggedUserId
            //   };
-            if (window.confirm("Do you really want to delte this Team")) {
+            if (window.confirm("Do you really want to delete this Team")) {
                 TeamService.deleteTeam($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code == 200) {
                         Notification.success("Deleted Successful");

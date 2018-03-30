@@ -15,6 +15,7 @@ var strtotime = require('strtotime');
 var nodestrtotime = require('nodestrtotime');
 var in_array = require('in_array');
 var moment = require('moment'); 
+var os = require('os');
 
 
 //Custom modules
@@ -53,7 +54,7 @@ var ncf = require('./routes/NonCFLoad');
 var mcf = require('./routes/ManualCFLoad');
 var WorkUnit = require('./routes/LoadWorkUnit');
 var TeamMates = require('./routes/TeamMates');
-
+var checkDE = require('./routes/CheckDEStatus');
 // Express init
 var app = express();  
 
@@ -116,6 +117,7 @@ app.use('/ncf', ncf);
 app.use('/mcf' , mcf);
 app.use('/WorkUnit', WorkUnit);
 app.use('/TeamMates', TeamMates);
+app.use('/checkDE', checkDE);
 
 //process.env.NODE_ENV = 'production';
 
@@ -154,6 +156,21 @@ app.get('/*', function(req, res, next) {
 
 // var x = moment('January 2015').format('YYYY-MM');
 // console.log(x);
+
+/* var addresses = [];
+for (var k in interfaces) {
+    for (var k2 in interfaces[k]) {
+        var address = interfaces[k][k2];
+        if (address.family === 'IPv4' && !address.internal) {
+            addresses.push(address.address);
+        }
+    }
+}
+var ip = addresses[0]; */
+
+// var ip3 = os.hostname();
+
+// console.log("New Login " + ip3);
 
 console.log('Node is now listening at port 3000' + ' host : http://localhost:3000/');
 module.exports = app; 

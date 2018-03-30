@@ -17,6 +17,7 @@
        // $scope.getChartData = getChartData;
         $scope.ChartList = [];
         $scope.exampleData = exampleData;
+        $rootScope.title = "Home";
        // $scope.createBasicChart1 = createBasicChart1;
 
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();

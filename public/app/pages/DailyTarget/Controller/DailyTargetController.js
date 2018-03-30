@@ -433,7 +433,7 @@
                 var obj ={ 
                          s_no : DailyTarget.s_no
                      };
-                if (window.confirm("Do you really want to delte this DailyTarget")) {
+                if (window.confirm("Do you really want to delete this DailyTarget")) {
                     DailyTargetService.deleteDailyTarget($scope, $rootScope, $http, obj).then(function (res) {
                         if (res.data.code === 200) {
                             Notification.success("Deleted Successful");

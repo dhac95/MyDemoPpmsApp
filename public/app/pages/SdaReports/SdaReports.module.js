@@ -11,6 +11,9 @@
                 template: '<ui-view></ui-view>',
                 abstract: true,
                 title: 'SdaReport',
+                data: {
+                    needSda: true
+                }
                 
             })
             .state('SdaReport.master', {

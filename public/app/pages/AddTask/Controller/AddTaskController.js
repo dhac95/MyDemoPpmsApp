@@ -8,8 +8,8 @@
         .controller('AddTaskModelController', AddTaskModelController);
 
 
-    AddTaskController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'AddTaskService', '$uibModal', 'Notification', 'NgTableParams'];
-    function AddTaskController($scope, $rootScope, $http, $filter, AddTaskService, $uibModal, Notification , NgTableParams) {
+    AddTaskController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'AddTaskService', '$uibModal', 'Notification', 'NgTableParams', 'Excel', '$timeout'];
+    function AddTaskController($scope, $rootScope, $http, $filter, AddTaskService, $uibModal, Notification, NgTableParams, Excel, $timeout) {
 
         $rootScope.title = "AddTask";
         $rootScope.isLoginPage = false;
@@ -28,6 +28,7 @@
        
 
         $scope.team = {};
+        $scope.date = {};
         $scope.build = {};
         $scope.task = {};
         $scope.subtask = {};
@@ -157,6 +158,8 @@
             }
 
           //  getTaskbyDate();
+
+
            
         $scope.getTaskbyDate = function() {
                  var myDate = $scope.date.selected;
@@ -324,6 +327,22 @@
             return totCount;
         }
 
+        // Export to excel
+        $scope.exportToExcel = function (tableId) { // ex: '#my-table'
+            var name = $rootScope.user_name;
+            var exportHref = Excel.tableToExcel(tableId, 'sheet name');
+            $timeout(function () {
+                var link = document.createElement('a');
+                document.body.appendChild(link);  // For Mozilla
+                link.href = exportHref;
+                var reportDate = $filter('date')($scope.date.selected, "dd-MMM-yyyy");
+                link.download = name + ' ' + reportDate + ' Reports.xls';
+                link.click();
+            }, 100);
+            // $timeout(function(){location.href=exportHref;},100); // trigger download
+        };
+
+
 
         getTotalTime();
         function getTotalTime() {
@@ -352,7 +371,7 @@
             // //     //Active: AddTask.Active,
             // //     //ActionBy: $rootScope.loggedUserId
            //   };
-            if (window.confirm("Do you really want to delte this AddTask")) {
+            if (window.confirm("Do you really want to delete this AddTask")) {
                 AddTaskService.deleteAddTask($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code == 200) {
                         Notification("Removed successfully");

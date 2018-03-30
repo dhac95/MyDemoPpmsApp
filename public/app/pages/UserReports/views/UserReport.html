@@ -1,5 +1,5 @@
 <div class="jumbotron modal-header">
-	<h3 class="modal-title" id="modal-title">Reports</h3>
+	<h3 class="modal-title" id="modal-title">{{$root.user_name}}'s Reports</h3>
 </div>
 <div class="modal-body" id="modal-body">
 	<form name="myForm" role="form" class="well well-sm">
@@ -13,7 +13,7 @@
                 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="to">Date TO</label>
-                    <input type="date" class="form-control" id="to" name="to" data-ng-model="UserReport.To" required/>
+                    <input type="date" class="form-control" id="datefield" name="to" data-ng-model="UserReport.To" required/>
                     <span ng-show="myForm.to.$touched && myForm.to.$invalid" class="text-danger">*required To Date</span>
                 </div>
 
@@ -99,7 +99,7 @@
             <!-- </div> -->
     <div class="panel panel-default" id="userData">
         <div class="jumbotron modal-header model-title">
-            <strong>Reports  for {{$root.user_name}} on {{UserReport.From | date : 'MM/dd/yyyy' }}  to {{UserReport.To | date : 'MM/dd/yyyy' }} </strong>
+            <strong>Reports  for {{$root.user_name}} from {{UserReport.From | date : 'MM/dd/yyyy' }}  to {{UserReport.To | date : 'MM/dd/yyyy' }} </strong>
         </div>
         <div class="panel-body">
             <div style="overflow-x:auto;">
@@ -119,14 +119,15 @@
                         <th colspan="3"><input st-search="" class="input-sm form-control" placeholder="Search text" type="text" /></th>
                     </tr>
                     <tr>
+                        <th>#</th>
                         <th st-sort="team_name">Team Name</th>
                         <th st-sort="build_name">Build Name</th>
                         <th st-sort="task_name">Task Name</th>
                         <th st-sort="sub_task_name">Subtask Name</th>
                         <th st-sort="task_info">Leave Type</th>
-                        <th st-sort="count">count</th>
-                        <th st-sort="time">time</th>
-                        <th st-sort="date">date</th>
+                        <th st-sort="count">Count</th>
+                        <th st-sort="time">Time</th>
+                        <th st-sort="date">Date</th>
                         <th st-sort="cmds">Comments</th>
 
                         <th>Action</th>
@@ -134,6 +135,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="row in displayedCollection">
+                        <td>{{ $index +1}}</td>
                         <td>{{ row.team_name }}</td>
                         <td>{{ row.build_name }}</td> 
                         <td>{{ row.task_name }}</td>

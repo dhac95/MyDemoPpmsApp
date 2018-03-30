@@ -73,24 +73,24 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showProductivity()"> Prepare Charts</button>
+    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button"  ng-Click="showProductivity()"> Prepare Charts</button>
 </div>
 
 <div class="row">
 
     <div class="nav-tabs-custom" ng-if="isProd">
         <ul class="nav nav-tabs">
-            <li class="active">
-                <a ng-click="showProductivity()" data-toggle="tab">Overall Produvity</a>
+            <li>
+                <a ng-click="showProductivity()">Overall Productivity</a>
             </li>
             <li>
-                <a ng-click="showProductivityByUser()" data-toggle="tab">UserWise</a>
+                <a ng-click="showProductivityByUser()">UserWise</a>
             </li>
             <li>
-                <a ng-click="showProductivityByTask()" data-toggle="tab">Taskwise</a>
+                <a ng-click="showProductivityByTask()">Taskwise</a>
             </li>
             <li>
-                <a ng-click="showProductivityBySubTask()" data-toggle="tab">Subtask Wise</a>
+                <a ng-click="showProductivityBySubTask()">Subtask Wise</a>
             </li>
             <!-- <li class="pull-right">
             <a href="#" class="text-muted">
@@ -104,18 +104,20 @@
     <!-- Producive data -->
     <div ng-if='isProd'>
                 <div class="jumbotron modal-header model-title">
-                    <strong>Reports for
+                    <strong>Charts for
                         <span ng-if="user.selected == null "> the team</span>
                         <span ng-repeat="u in UserList" ng-if="u.user_id == user.selected">
                             <strong>{{u.user_name}}</strong>
                         </span> from {{Charts.From | date : 'MM/dd/yyyy' }} to {{Charts.To | date : 'MM/dd/yyyy' }} </strong>
                 </div>
   
-                        <div class="col-md-12" > 
+                        <!-- <div class="col-md-12">  -->
                             <!-- CHART -->
                             <div class="box box-success">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Bar Chart</h3>
+                                    <h3 class="box-title">{{chartTitle}}</h3>
+                                    <div class="model-title"> <button class="btn btn-primary" ng-click="exportToPNG2()">PNG</button></div>
+                                    <!-- <div class="mode-title"> <button class="btn btn-success" ng-click="exportToJPG()">JPG</button></div> -->
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
                                             <i class="fa fa-minus"></i>
@@ -130,7 +132,7 @@
                                 <!-- /.box-body -->
                             </div>
                             <!-- /.box -->
-                        </div>
+                        <!-- </div> -->
                         
             </div>
         </div>

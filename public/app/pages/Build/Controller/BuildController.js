@@ -143,7 +143,7 @@
         function removeBuild(Build) {
             if (Build.build_status === 0) {
                var id = Build.build_no;
-            if (window.confirm("Do you really want to delte this Build")) {
+            if (window.confirm("Do you really want to delete this Build")) {
                 BuildService.deleteBuild($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code === 200) {
                         Notification.success("Deleted Successful");

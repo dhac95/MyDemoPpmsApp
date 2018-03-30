@@ -153,7 +153,7 @@
                 // //     //Active: AddTask.Active,
                 // //     //ActionBy: $rootScope.loggedUserId
                //   };
-                if (window.confirm("Do you really want to delte this AddTask")) {
+                if (window.confirm("Do you really want to delete this AddTask")) {
                     AddTaskService.deleteAddTask($scope, $rootScope, $http, id).then(function (res) {
                         if (res.data.code == 200) {
                             alert("Deleted Successful");

@@ -148,7 +148,7 @@
         function removeSubTask(SubTask) {
             if (SubTask.task_status == 0 ) {
                var obj ={ sub_task_id : SubTask.sub_task_id };
-            if (window.confirm("Do you really want to delte this SubTask")) {
+            if (window.confirm("Do you really want to delete this SubTask")) {
                 SubTaskService.deleteSubTask($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code === 200) {
                         Notification.success("Deleted Successful");

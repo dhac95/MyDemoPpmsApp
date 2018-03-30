@@ -56,6 +56,8 @@ today = yyyy + '-' + mm + '-' + dd;
 //  	$rootScope.user_name = 'cdhanase';
 // }]);
 
+//Sign-out if user is idle
+
 app.config(function (IdleProvider, KeepaliveProvider) {
 	IdleProvider.idle(600); // 10 min
 	IdleProvider.timeout(11);

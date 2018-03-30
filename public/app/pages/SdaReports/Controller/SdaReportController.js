@@ -262,6 +262,7 @@
                 var promiseGet = SdaReportService.getProductiviy($scope, $rootScope, $http, obj);
                 promiseGet.then(function (pl) {
                     $scope.ProdList = pl.data;
+                    $scope.reportTitle = "Overall Productivity";
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
@@ -305,6 +306,7 @@
                 promiseGet.then(function (pl) {
                     $scope.ProdList = "";
                     $scope.ProdList = pl.data;
+                    $scope.reportTitle = "Userwise Productivity";
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
@@ -348,6 +350,7 @@
                 promiseGet.then(function (pl) {
                     $scope.ProdList = "";
                     $scope.ProdList = pl.data;
+                    $scope.reportTitle = "Taskwise Productivity";
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
@@ -391,6 +394,7 @@
                 promiseGet.then(function (pl) {
                     $scope.ProdList = "";
                     $scope.ProdList = pl.data;
+                    $scope.reportTitle = "Subtaskwise Productivity";
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
@@ -477,7 +481,7 @@
             // //     //Active: SdaReport.Active,
             // //     //ActionBy: $rootScope.loggedUserId
            //   };
-            if (window.confirm("Do you really want to delte this SdaReport")) {
+            if (window.confirm("Do you really want to delete this SdaReport")) {
                 AddTaskService.deleteAddTask($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code == 200) {
                         Notification.success("Deleted Successful");

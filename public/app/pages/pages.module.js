@@ -25,10 +25,10 @@
                 if (next.data && next.data.needSda && $rootScope.user_type == 1 || undefined) {
                     event.preventDefault();
                     $state.go(prev.name, prevParams); //send to previous
-                    $state.go('home'); //send to some other state
+                 //   $state.go('home'); //send to some other state
 
                 } 
-                // else if (next.data && next.data.needManager && $rootScope.user_type == 1 || $rootScope.user_type == 2 || undefined) {
+                // else if (next.data && next.data.needManager && $rootScope.user_type < 3 || undefined) {
                 //     event.preventDefault();
                 //     $state.go(prev.name, prevParams); //send to previous
                 //     $state.go('home'); //send to some other state

@@ -1,10 +1,11 @@
 <div class="modal-body" id="modal-body">
-    <div class="row col-md-6 col-lg-6">
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
             <!-- Profile Image -->
             <div class="box box-primary" data-ng-repeat="user in ProfileList">
                 <div class="box-body box-profile">
-                    <img ng-if='user.below_on == null' class="profile-user-img img-responsive img-circle" src="../../../../AdminLTE/img/avatar04.png" alt="User profile picture">
-                    <img ng-if="user.below_on == 1" class="profile-user-img img-responsive img-circle" src="../../../../AdminLTE/img/avatar3.png" alt="User profile picture">
+                    <img ng-if='user.below_on == null' class="profile-user-img img-responsive img-circle" src="../../../../AdminLTE/img/peccy-3.png" alt="User profile picture">
+                    <img ng-if="user.below_on == 1" class="profile-user-img img-responsive img-circle" src="../../../../AdminLTE/img/peccy-1.gif" alt="User profile picture">
 
                     <h3 class="profile-username text-center">{{user.first_name}} {{user.last_name}}</h3>
 
@@ -47,5 +48,7 @@
             <!-- /.box -->
         
          </div>
+
+        </div>
          
   </div>

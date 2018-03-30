@@ -1,13 +1,13 @@
 <div class="jumbotron modal-header">
-        <h3 class="modal-title" id="modal-title">UserOT</h3>
+        <h3 class="modal-title" id="modal-title"> User OT</h3>
     </div>
     <div class="modal-body" id="modal-body">
         <form name="myForm" role="form" class="well well-sm">
             <div class="row">
                 <!-- <div class="col-md-6 col-lg-6"> -->
                     <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                        <label for="date">date</label>
-                        <input type="date" class="form-control" id="date" name="date" data-ng-model="date.selected" data-ng-change="getTaskbyDate()" required/>
+                        <label for="date">Date</label>
+                        <input type="date" data-polyfill="all" class="form-control" id="date" name="date" data-ng-model="date.selected" data-ng-change="getTaskbyDate()" required/>
                         <span ng-show="myForm.date.$touched && myForm.date.$invalid" class="text-danger">*required Date</span>
                     </div>
                     <!-- <datepicker>
@@ -72,20 +72,21 @@
 
                     <div class="form-group col-sm-3 col-md-3 col-lg-3">
                         <label for="count">Count</label>
-                        <input type="number" class="form-control" id="count" name="count" data-ng-model="UserOT.count"  />
+                        <input type="number" class="form-control" id="count" name="count" data-ng-model="UserOT.count" ng-min = "0" />
+                        <div ng-show="myForm.count.$invalid" class="text-danger">*Count cannot be in negative value</div>
                     </div>
                     <div class="form-group col-sm-3 col-md-3 col-lg-3">
                         <label for="noofdevice">Devices</label>
                         <input type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="UserOT.noofdevice"  disabled/>
                     </div>
                     <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                        <label for="time">time<span><strong class="text-danger">  *Remaing Time {{remTime.remain}}</strong></span> </label>
+                        <label for="time">Time<span><strong class="text-danger">  *Remaining Time {{remTime.remain}}</strong></span> </label>
                         <input type="text" class="form-control" id="time" name="time" required pattern="[0-1][0-9]:[0-5][0-9]+" placeholder="for example 15:59" data-ng-model="UserOT.time"  required/>
                         <div ng-show="myForm.time.$touched && myForm.time.$invalid" class="text-danger">*required Time</div>
                     </div>
                 
                     <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                        <label for="cmds">cmds</label>
+                        <label for="cmds">Comments</label>
                         <input type="text" class="form-control" id="cmds" name="cmds" data-ng-model="UserOT.cmds"  />
                     </div>
             </div>
@@ -101,7 +102,7 @@
     <div class="row">
         <div class="panel panel-default">
             <div class="jumbotron modal-header model-title">
-                <strong>Reports  for {{$root.user_name}} on {{date.selected | date : 'dd/MM/yyyy' }} </strong>
+                <strong>Reports  for {{$root.user_name}} from {{date.selected | date : 'dd/MM/yyyy' }} </strong>
             </div>
             <div class="panel-body">
                 <div style="overflow-x:auto;">
@@ -121,14 +122,15 @@
                             <th colspan="5"><input st-search="" class="input-sm form-control" placeholder="Search text" type="text" /></th>
                         </tr>
                         <tr>
+                            <th>#</th>
                             <th st-sort="team_name">Team Name</th>
                             <th st-sort="build_name">Build Name</th>
                             <th st-sort="task_name">Task Name</th>
                             <th st-sort="sub_task_name">Subtask Name</th>
         
-                            <th st-sort="count">count</th>
-                            <th st-sort="time">time</th>
-                            <th st-sort="date">date</th>
+                            <th st-sort="count">Count</th>
+                            <th st-sort="time">Time</th>
+                            <th st-sort="date">Date</th>
                             <th st-sort="cmds">Comments</th>
     
                             <th>Action</th>
@@ -136,6 +138,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="row in displayedCollection">
+                            <td>{{ $index +1}}</td>
                             <td>{{ row.team_name }}</td>
                             <td>{{ row.build_name }}</td> 
                             <td>{{ row.task_name }}</td>

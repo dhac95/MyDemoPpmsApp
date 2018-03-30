@@ -1,5 +1,5 @@
 <div class="jumbotron modal-header">
-	<h3 class="modal-title" id="modal-title">Reports</h3>
+	<h3 class="modal-title" id="modal-title">My Team's Reports</h3>
 </div>
 <div class="modal-body" id="modal-body">
 	<form name="myForm" role="form" class="well well-sm">
@@ -75,24 +75,24 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showSdaReports()">Show Raw Data</button>
-    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showProductivity()">Show Producive Data</button>
+    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showProductivity()">Show Productive Data</button>
 </div>
 
 <div class="row">  
 
 <div class="nav-tabs-custom" ng-if="isProd">
     <ul class="nav nav-tabs">
-        <li class="active">
-            <a  ng-click="showProductivity()" data-toggle="tab">Overall Produvity</a>
+        <li>
+            <a  ng-click="showProductivity()">Overall Productivity</a>
         </li>
         <li>
-            <a  ng-click="showProductivityByUser()" data-toggle="tab">UserWise</a>
+            <a  ng-click="showProductivityByUser()">UserWise</a>
         </li>
         <li>
-            <a  ng-click="showProductivityByTask()" data-toggle="tab">Taskwise</a>
+            <a  ng-click="showProductivityByTask()">Taskwise</a>
         </li>
           <li>
-            <a  ng-click="showProductivityBySubTask()" data-toggle="tab">Subtask Wise</a>
+            <a  ng-click="showProductivityBySubTask()">Subtask Wise</a>
         </li>
         <!-- <li class="pull-right">
             <a href="#" class="text-muted">
@@ -107,7 +107,7 @@
     <div ng-if='!isProd && ReportList !=null && ReportList !=""'>
     <div class="row">
        
-        <div class="model-header">
+        <div class="model-header"> 
             <button class="btn btn-success btn-default-focus" ng-click="exportToExcel('#userData')">
                     <span class="fa fa-file-excel-o"></span>
                                 Export to Excel
@@ -204,15 +204,19 @@
     </div>
     </div>
     </div>
+
+
 <!-- Producive data -->
 <div ng-if='isProd'>
     <div class="row">
         <div class="model-header">
+            <!-- <div class="model-title"></div> -->
             <button class="btn btn-success btn-default-focus" ng-click="exportToExcel('#ProductivityData')">
                 <span class="fa fa-file-excel-o"></span>
                 Export to Excel
             </button>
         </div>
+        
         <div class="panel panel-default" id="ProductivityData">
             <div class="jumbotron modal-header model-title">
                 <strong>Reports for
@@ -221,6 +225,18 @@
                         <strong>{{u.user_name}}</strong>
                     </span> from {{SdaReport.From | date : 'MM/dd/yyyy' }} to {{SdaReport.To | date : 'MM/dd/yyyy' }} </strong>
             </div>
+            <div class="col-md-12">
+                <!-- CHART -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">{{reportTitle}}</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
+                        </div>
+                    </div>
             <div class="panel-body">
                 <div style="overflow-x:auto;">
                     <table st-table="displayedCollection" st-safe-src="ProdList" class="table table-striped">
@@ -277,5 +293,8 @@
                 </div>
             </div>
         </div>
+        </div>
+        </div>
+</div>
 </div>
 </div>

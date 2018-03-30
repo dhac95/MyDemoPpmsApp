@@ -6,7 +6,7 @@
 		<div class="row">
 			<!-- <div class="col-md-6 col-lg-6"> -->
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-					<label for="date">date</label>
+					<label for="date">Date</label>
                     <input type="date" class="form-control" id="date" name="date" data-ng-model="date.selected" data-ng-change="getTaskbyDate() ; getTotalTime()" required ng-disabled="$root.prop"/>
                     <span ng-show="myForm.date.$touched && myForm.date.$invalid" class="text-danger">*required Date</span>
                 </div>
@@ -38,7 +38,7 @@
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
                     <label for="task">Task Name</label>
                     <div class="dropdown">
-                        <select class="form-control"  id="task" name="task"  data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask()">
+                        <select class="form-control"  id="task" name="task" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask()">
                             <option value="">Select the Task</option>
                         </select>
                         
@@ -66,17 +66,17 @@
                 </div>
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-					<label for="count">count</label>
-                    <input type="number" class="form-control" id="count" name="count" data-ng-model="AddTask.count"/>
-                    <!-- <div ng-show="myForm.count.$touched && myForm.count.$invalid" class="text-danger">*required Count</div> -->
+					<label for="count">Count</label>
+                    <input type="number" class="form-control" id="count" name="count" data-ng-model="AddTask.count" ng-min = "0"/>
+                     <div ng-show="myForm.count.$invalid" class="text-danger">*Count cannot be in negative value</div>
                 </div>
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-					<label for="noofdevice">noofdevice</label>
+					<label for="noofdevice">Device Count</label>
                     <input type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="AddTask.noofdevice"  disabled/>
                     <!-- <div ng-show="myForm.count.$touched && myForm.count.$invalid" class="text-danger">*required Count</div> -->
                 </div>
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
-					<label for="time">Time <span><strong class="text-danger">  *Remaing Time {{remTime.remain}}</strong></span></label>
+					<label for="time">Time <span><strong class="text-danger">  *Remaining Time {{remTime.remain}}</strong></span></label>
                     <input type="text" class="form-control" id="time" name="time" required pattern="[0-0][0-8]:[0-5][0-9]+" placeholder="for example 07:59" data-ng-model="AddTask.time" ng-maxlength="5" maxlength="5" required />
                     <div ng-show="myForm.time.$touched && myForm.time.$invalid" class="text-danger">*required Time</div>
                 </div>
@@ -101,9 +101,13 @@
         <div class="jumbotron modal-header model-title">
             <strong>Reports  for {{$root.user_name}} on {{date.selected | date : 'MM/dd/yyyy' }} </strong>
         </div>
+        <button class="btn btn-link" ng-click="exportToExcel('#userData')">
+            <span class="glyphicon glyphicon-share"></span>
+            Export to Excel
+        </button>
         <div class="panel-body">
             <div style="overflow-x:auto;">
-            <table st-table="displayedCollection" st-safe-src="Addedtasklist" class="table table-striped">
+            <table st-table="displayedCollection" st-safe-src="Addedtasklist" class="table table-striped" id = "userData">
                 <thead>
                     <tr>
                         <td>

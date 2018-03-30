@@ -20,6 +20,7 @@
         
           $scope.isPassword = false;
           $scope.isReg = false;
+          $scope.User = {};
 
           if (localStorage.getItem('IsAuth') == "false" && sessionStorage.getItem('IsAuth') == "false") {
               sessionStorage.removeItem('user_id');
@@ -98,11 +99,11 @@
               $http.post(endPoint, User).success(function (response) {
                   $scope.loginSts = response.Message;
                   if (response.IsAuth) {
-                      if ($scope.remember) {
+                      if ($scope.User.Remember) {
                           localStorage.setItem('user_id', response.data[0].user_id);
                           localStorage.setItem('first_name', response.data[0].first_name);
                           localStorage.setItem('last_name', response.data[0].last_name);
-                          localStorage.setItem('IsAuth', response.data[0].IsAuth);
+                          localStorage.setItem('IsAuth', true);
                           localStorage.setItem('user_name', response.data[0].user_name);
                           localStorage.setItem('team_count', response.data[0].team_count);
                           localStorage.setItem('user_type', response.data[0].user_type);
@@ -123,7 +124,7 @@
                         sessionStorage.setItem('user_id', response.data[0].user_id);
                         sessionStorage.setItem('first_name', response.data[0].first_name);
                         sessionStorage.setItem('last_name', response.data[0].last_name);
-                        sessionStorage.setItem('IsAuth', response.data[0].IsAuth);
+                        sessionStorage.setItem('IsAuth', true);
                         sessionStorage.setItem('user_name', response.data[0].user_name);
                         sessionStorage.setItem('team_count', response.data[0].team_count);
                         sessionStorage.setItem('user_type', response.data[0].user_type);
@@ -235,24 +236,30 @@
               });
           };
 
+          $scope.resetBtn = "Send";
+
           $scope.Reset = function(Reset) {
+              $scope.resetBtn = "Sending.........";
             var obj = { name : $scope.Reset.user_name };
           $http.post(forgot, obj).then(function(response) { 
                   if(response.data.code === 200) {
                       Notification.success('Success password updated! Check the mail <iframe src="https://giphy.com/embed/6brH8dM3zeMyA" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>' );
                       $timeout(function () {
                           window.location.replace("/index.html");
-                      }, 1000);
+                      }, 2000);
                   }
                   else if(response.data.code === 300){
                       Notification({ message: 'User does not exist !!! Register first <iframe src="https://giphy.com/embed/3ohzdYt5HYinIx13ji" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'} , 'warning');
+                      $scope.resetBtn = "Send";
 
                   }
                   else {
                       Notification({ message: 'Password not updated!!! Error occoured <iframe src="https://giphy.com/embed/r7zNTsMZ1XV6g" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'}, 'error' );
+                      $scope.resetBtn = "Send";
                   }
            },function(eresponse) {
                Notification({ message: 'Password not updated!!! Error occoured <iframe src="https://giphy.com/embed/r7zNTsMZ1XV6g" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>' }, 'error');  
+               $scope.resetBtn = "Send";
            });
         };
 
@@ -267,33 +274,38 @@
                     $scope.TeamList = response.data;
             }); 
         }
-
+          $scope.regBtn = "Register";
           $scope.Register = function(Register) {
               var obj = {
                     user_name : $scope.Register.user_name,
                     team_id : $scope.Register.team_id
               };
+              $scope.regBtn = "Please wait...";
               $http.post(register, obj).then(function(response) { 
                 if(response.data.code === 200) {
                     Notification.success('success ' + 'Check the mail '  );
                     $timeout(function () {
                     window.location.replace("/index.html");
-                    } , 1000);
+                    } , 2000);
                 }
                 else if(response.data.code === 300){
+                    $scope.regBtn = "Register";
                     Notification({message: 'User already registered in team, Wait for approval if you don\'t see the team name '}, 'warning' );
                     // $timeout(function () {
                     //     window.location.replace("/index.html");
                     // }, 1000);
                 }
                 else if(response.data.code === 204) {
+                    $scope.regBtn = "Register";
                     Notification('User already registerd Wait for approval' );
                 }
                 else {
+                    $scope.regBtn = "Register";
                     Notification({message :'Processing error , Try after sometimes !!!'} , 'error');
                 }
          },
          function(errorresponse) {
+             $scope.regBtn = "Register";
              Notification({ message : 'An Error has occured while resetting password! <iframe src="https://giphy.com/embed/r7zNTsMZ1XV6g" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'} , 'warning') ;  
        });
     };

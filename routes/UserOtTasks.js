@@ -15,7 +15,7 @@ function secondsToHms(d) {
     var m = Math.floor(d % 3600 / 60);
     var s = Math.floor(d % 3600 % 60);
 
-    return ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+    return ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2); //+ ":" + ('0' + s).slice(-2);
 }
 
 router.post('/', function(req, res, next) {
@@ -211,7 +211,7 @@ router.post('/getTime', function (req, res, next) {
                 var remainHours = secondsToHms(remainSecs);
                 var TotalHours = secondsToHms(secs);
                 res.json({
-                    total: '00:00:00',
+                    total: '00:00',
                     remain: remainHours
 
                 });

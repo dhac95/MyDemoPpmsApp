@@ -94,7 +94,7 @@
             // //     //Active: Employee.Active,
             // //     //ActionBy: $rootScope.loggedUserId
            //   };
-            if (window.confirm("Do you really want to delte this Employee")) {
+            if (window.confirm("Do you really want to delete this Employee")) {
                 EmployeeService.deleteEmployee($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.result) {
                         alert("Deleted Successful")

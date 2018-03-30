@@ -166,7 +166,7 @@
         function removeRelease(Release) {
             if (Release.release_status == 0) {
                 var id = Release.s_no;
-                if (window.confirm("Do you really want to delte this Release")) {
+                if (window.confirm("Do you really want to delete this Release")) {
                     ReleaseService.deleteRelease($scope, $rootScope, $http, id).then(function (res) {
                         if (res.data.code === 200) {
                             Notification.success("Deleted Successful");

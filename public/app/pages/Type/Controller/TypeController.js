@@ -1,4 +1,4 @@
-﻿/// <reference path="TypeController.js" />
+﻿
 (function () {
     'use strict';
 
@@ -94,7 +94,7 @@
                 //Active: Type.Active,
                 ActionBy: $rootScope.loggedUserId
             }
-            if (window.confirm("Do you really want to delte this Type")) {
+            if (window.confirm("Do you really want to delete this Type")) {
                 TypeService.deleteType($scope, $rootScope, $http, removeType).then(function (res) {
                     if (res.data.result) {
                         alert("Deleted Successful")

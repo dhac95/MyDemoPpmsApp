@@ -17,10 +17,10 @@
                             </div>
             
                 <div ng-show="$root.team_count > 1">
-                    <div class="form-group col-md-6 col-lg-6">
+                    <div class="form-group col-md-3 col-lg-3">
                         <label for="Team">Team Name</label>
                         <div class="dropdown">
-                            <select class="form-control" id="Team" name="Team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="loadGrid(); selectTask()" data-ng-model="team.selected" data-ng-init="team.selected = SubTask.team_id" required>
+                            <select class="form-control" id="Team" name="Team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="loadGrid(); selectTask()" data-ng-model="team.selected" data-ng-init="team.selected = SubTask.team_id" data-ng-required = "$root.team_count > 1">
                                 <option value="">Select the Team</option>
                             </select>               
                         </div>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="form-group col-md-6 col-lg-6">
+                <div class="form-group col-md-3 col-lg-3">
                     <label for="task">Task Name</label>
                     <div class="dropdown">
                         <select class="form-control" id="task" name="task" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-init="task.selected = SubTask.task_id" required>
@@ -39,9 +39,9 @@
                     <span ng-show="myForm.task.$touched && myForm.task.$invalid" class="text-danger">*required Task</span>
                 </div>
                 
-                    <div class="form-group col-md-6 col-lg-6">
+                    <div class="form-group col-md-3 col-lg-3">
                         <label for="subtaskname">SubTask Name</label>
-                        <input type="text" class="form-control" id="subtaskname" name="subtaskname" data-ng-model="SubTask.sub_task_name"/>
+                        <input type="text" class="form-control" id="subtaskname" name="subtaskname" data-ng-model="SubTask.sub_task_name" required/>
                         <span ng-show="myForm.subtaskname.$touched && myForm.subtaskname.$invalid" class="text-danger">*required Sub Task</span>
                     </div>
     
@@ -50,7 +50,7 @@
                         <switch id="about_cf" name="about_cf" class="col-md-push-3" ng-model="SubTask.about_cf" class="switch small green" data-ng-init="SubTask.about_cf"></switch>
                     </div> -->
     
-                    <div class="form-group col-md-6 col-lg-6">
+                    <div class="form-group col-md-3 col-lg-3">
                         <label for="about_cf">Daily Target Type</label>
                         <div class="dropdown">
                         <select class="form-control" data-ng-model="SubTask.about_cf" data-ng-options="about_cf.id as about_cf.name for about_cf in cfList" data-ng-value = "SubTask.about_cf" id="about_cf" name="about_cf">
@@ -58,7 +58,7 @@
                         </select>
                     </div>
                  </div>
-                <div class="form-group col-md-6 col-lg-6">
+                <div class="form-group col-md-3 col-lg-3">
                     <label for="about_chart">Trend Chart Type</label>
                     <div class="dropdown">
                         <select class="form-control" name="about_chart" id="about_chart" data-ng-options="about_chart.id as about_chart.name for about_chart in ChartList" data-ng-model="SubTask.about_chart" data-ng-value="SubTask.about_chart" required>

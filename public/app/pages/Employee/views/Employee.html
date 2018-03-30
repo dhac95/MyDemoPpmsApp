@@ -12,30 +12,30 @@
             <table ng-table="tableParams" class="table table-striped table-responsive" show-filter="true">
 
                 <tr ng-repeat="row in $data">
-                    <td class="text-center" title="'user_id'" filter="{user_id : 'text'}" sortable="'user_id'">{{ row.user_id }}</td>
-                    <td class="text-center" title="'first_name'" filter="{first_name : 'text'}" sortable="'first_name'">{{ row.first_name }}</td>
-                    <td class="text-center" title="'last_name'" filter="{last_name : 'text'}" sortable="'last_name'">{{ row.last_name }}</td>
-                    <td class="text-center" title="'user_name'" filter="{user_name : 'text'}" sortable="'user_name'">{{ row.user_name }}</td>
-                    <td class="text-center" title="'team_count'" filter="{team_count : 'text'}" sortable="'team_count'">{{ row.team_count }}</td>
+                    <td class="text-center" title="'User ID'" filter="{user_id : 'text'}" sortable="'user_id'">{{ row.user_id }}</td>
+                    <td class="text-center" title="'First Name'" filter="{first_name : 'text'}" sortable="'first_name'">{{ row.first_name }}</td>
+                    <td class="text-center" title="'Last Name'" filter="{last_name : 'text'}" sortable="'last_name'">{{ row.last_name }}</td>
+                    <td class="text-center" title="'User Name'" filter="{user_name : 'text'}" sortable="'user_name'">{{ row.user_name }}</td>
+                    <td class="text-center" title="'Team Count'" filter="{team_count : 'text'}" sortable="'team_count'">{{ row.team_count }}</td>
 
-                    <td class="text-center" title="'password'" filter="{password : 'text'}" sortable="'password'">{{ row.password }}</td>
-                    <td class="text-center" title="'user_type'" filter="{user_type : 'text'}" sortable="'user_type'">{{ row.user_type }}</td>
-                    <td class="text-center" title="'user_mail'" filter="{user_mail : 'text'}" sortable="'user_mail'">{{ row.user_mail }}</td>
+                    <td class="text-center" title="'Password'" filter="{password : 'text'}" sortable="'password'">{{ row.password }}</td>
+                    <td class="text-center" title="'User Type'" filter="{user_type : 'text'}" sortable="'user_type'">{{ row.user_type }}</td>
+                    <td class="text-center" title="'User Mail'" filter="{user_mail : 'text'}" sortable="'user_mail'">{{ row.user_mail }}</td>
 
-                    <td class="text-center" title="'host_name_1'" filter="{host_name_1 : 'text'}" sortable="'host_name_1'">{{ row.host_name_1 }}</td>
-                    <td class="text-center" title="'host_name_2'" filter="{host_name_2 : 'text'}" sortable="'host_name_2'">{{ row.host_name_2 }}</td>
-                    <td class="text-center" title="'below_on'" filter="{below_on : 'text'}" sortable="'below_on'">{{ row.below_on }}</td>
+                    <td class="text-center" title="'Host 1'" filter="{host_name_1 : 'text'}" sortable="'host_name_1'">{{ row.host_name_1 }}</td>
+                    <td class="text-center" title="'Host 2'" filter="{host_name_2 : 'text'}" sortable="'host_name_2'">{{ row.host_name_2 }}</td>
+                    <td class="text-center" title="'Below On'" filter="{below_on : 'text'}" sortable="'below_on'">{{ row.below_on }}</td>
 
-                    <td class="text-center" title="'manager'" filter="{manager : 'text'}" sortable="'manager'">{{ row.manager }}</td>
-                    <td class="text-center" title="'approved_by'" filter="{approved_by : 'text'}" sortable="'approved_by'">{{ row.approved_by }}</td>
-                    <td class="text-center" title="'user_status'" filter="{user_status : 'text'}" sortable="'user_status'">{{ row.user_status }}</td>
+                    <td class="text-center" title="'Manager'" filter="{manager : 'text'}" sortable="'manager'">{{ row.manager }}</td>
+                    <td class="text-center" title="'Approved by'" filter="{approved_by : 'text'}" sortable="'approved_by'">{{ row.approved_by }}</td>
+                    <td class="text-center" title="'User Status'" filter="{user_status : 'text'}" sortable="'user_status'">{{ row.user_status }}</td>
 
-                    <td class="text-center" title="'user_activation'" filter="{user_activation : 'text'}" sortable="'user_activation'">{{ row.user_activation }}</td>
-                    <td class="text-center" title="'user_deletion'" filter="{user_deletion : 'text'}" sortable="'user_deletion'">{{ row.user_deletion }}</td>
+                    <td class="text-center" title="'User Activation'" filter="{user_activation : 'text'}" sortable="'user_activation'">{{ row.user_activation }}</td>
+                    <td class="text-center" title="'User Deletion'" filter="{user_deletion : 'text'}" sortable="'user_deletion'">{{ row.user_deletion }}</td>
 
-                    <td title="'last_entry_on'" filter="{last_entry_on : 'text'}" sortable="'last_entry_on'">{{ row.last_entry_on | date : "dd.MM.y" }}</td>
-                    <td title="'create_date'" filter="{create_date : 'text'}" sortable="'create_date'">{{ row.create_date | date : "dd.MM.y" }}</td>
-                    <td title="'maintain_date'" filter="{maintain_date : 'text'}" sortable="'maintain_date'">{{ row.maintain_date | date : "dd.MM.y" }}</td>
+                    <td title="'Last Entry'" filter="{last_entry_on : 'text'}" sortable="'last_entry_on'">{{ row.last_entry_on | date : "dd.MM.y" }}</td>
+                    <td title="'Create Date'" filter="{create_date : 'text'}" sortable="'create_date'">{{ row.create_date | date : "dd.MM.y" }}</td>
+                    <td title="'Maintan Date'" filter="{maintain_date : 'text'}" sortable="'maintain_date'">{{ row.maintain_date | date : "dd.MM.y" }}</td>
                     <!--<td class="text-center" title="'Owner'" filter="{Owner : 'text'}" sortable="'Owner'">{{ row.Owner }}</td>-->
                     <!-- <td class="text-center" title="'Action'">
                         <div class="col-md-offset-4">

@@ -314,6 +314,21 @@
         //     return grandTot;
         // }
 
+        
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("date").setAttribute("max", today);
+
         function removeUserOT(UserOT) {
             //if (UserOT.Active === 0) {
                var id = UserOT.task_id;
@@ -321,7 +336,7 @@
             // //     //Active: UserOT.Active,
             // //     //ActionBy: $rootScope.loggedUserId
            //   };
-            if (window.confirm("Do you really want to delte this UserOT")) {
+            if (window.confirm("Do you really want to delete this UserOT")) {
                 UserOTService.deleteUserOT($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code == 200) {
                         Notification.success("Deleted Successful");

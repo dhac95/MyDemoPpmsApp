@@ -19,11 +19,14 @@
     <link href="AdminLTE/plugins/iCheck/all.css" rel="stylesheet" />
      <!-- UI - Notifications -->
      <link href="Scripts\Ui-Notifications\angular-ui-notification.min.css" rel="stylesheet" />
+     <link href="vendor/Loader/Loader.css" rel="stylesheet" /> 
  
 </head>
 <body data-ng-controller="LoginController">
+<div id="load"></div>
+<div id="contents">
     <div class="login-box">
-
+  
         <!-- /.login-logo -->
         <div class="login-box-body">
             <div class="login-logo">
@@ -54,12 +57,12 @@
                     </span>
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" name="remember" class="icheckbox_flat-blue" ng-model="User.Remember" /> Remember  <i class="glyphicon glyphicon-floppy-disk"></i>
+                    <input type="checkbox" name="Remember" id="Remember" class="icheckbox_flat-blue" data-ng-model="User.Remember" /> Remember Me  <i class="glyphicon glyphicon-floppy-disk"></i>
+                    <span ng-if="User.Remember" class="text-success"> <br> By Checking this you are allowing this site to use your cookies. If you don't want that please uncheck.</span>
                 </div>
                 <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block btn-flat"  data-ng-disabled="myForm.$invalid" data-ng-click="login(User)">{{subBtn}}</button>
-
-                    </div>
+                </div>
                 <div class="row">
                     <!--<div class="col-xs-8">
                         <div class="checkbox icheck">
@@ -90,7 +93,7 @@
                         <span ng-show="myForm.user.$error.required">Username is required....</span>
                     </span>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Reset(Reset)">Send</button>
+                <button type="submit" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Reset(Reset)">{{resetBtn}}</button>
                   <a href="#" ng-click="Reg()">Register</a> 
                 <a href="#" class="pull-right" ng-click="isLogin()"><strong>Login</strong></a><br>
               
@@ -116,7 +119,7 @@
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Register(Register)">Register</button>
+                <button type="submit" class="btn btn-primary btn-block btn-flat" data-ng-disabled="myForm.$invalid" data-ng-click="Register(Register)">{{regBtn}}</button>
                     <a href="#" ng-click="forgotPassword()">I forgot my password</a>
                 <a href="#" class="pull-right" ng-click="isLogin()"><strong>Login</strong></a><br>
            
@@ -134,9 +137,10 @@
             Powerd by<strong> M*EAN 🔁 </strong>
         </div>
         <!-- Default to the left -->
-        <strong>Version<a href="https://tiny.amazon.com/2siyuo50/P2RDashboardBugs"> Beta 0.8.5 Build(p2r040318)</a>.</strong>.
+        <strong>Version<a href="https://tiny.amazon.com/2siyuo50/P2RDashboardBugs"> Beta 0.8.7 Build(p2r032618)</a>.</strong>.
     </footer>
 </div><!-- ./wrapper -->
+</div>
 
     <script src="Scripts/jquery-3.1.1.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -147,6 +151,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
       <!-- ui - notifications -->
   <script src="Scripts\Ui-Notifications\angular-ui-notification.min.js"></script>
+  <script src="vendor/Loader/Loader.js"></script>
 
 </body>
 </html>

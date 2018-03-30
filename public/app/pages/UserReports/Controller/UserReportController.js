@@ -168,7 +168,33 @@
             // $scope.UserReport.TotalTime = grandTot;
             return totCount;
         }
+        
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("datefield").setAttribute("max", today);
 
+
+        var Create = new Date($rootScope.create_date);
+        var ddd = Create.getDate();
+        var mmm = Create.getMonth() + 1; //January is 0!
+        var yyy = Create.getFullYear();
+        if (ddd < 10) {
+            ddd = '0' + ddd;
+        }
+        if (mmm < 10) {
+            mmm = '0' + mmm;
+        }
+        Create = yyy + '-' + mmm + '-' + ddd;
+        document.getElementById("from").setAttribute("min", Create);
         
         function showUserReports() {
             var Date1 = $scope.UserReport.From;
@@ -219,7 +245,7 @@
             var link = document.createElement('a');
             document.body.appendChild(link);  // For Mozilla
             link.href = exportHref;
-            link.download = name + ' Reports';
+            link.download = name + ' Reports.xls';
             link.click();
             }, 100);
        // $timeout(function(){location.href=exportHref;},100); // trigger download
@@ -261,7 +287,7 @@
             // //     //Active: UserReport.Active,
             // //     //ActionBy: $rootScope.loggedUserId
            //   };
-            if (window.confirm("Do you really want to delte this UserReport")) {
+            if (window.confirm("Do you really want to delete this UserReport")) {
                 AddTaskService.deleteAddTask($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.code == 200) {
                         Notification.success("Deleted Successful");
