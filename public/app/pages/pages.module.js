@@ -17,7 +17,8 @@
         'ERP.pages.Release',
         'ERP.pages.DailyTarget',
         'ERP.pages.Charts',
-        'ERP.pages.TeamMate'
+        'ERP.pages.TeamMate',
+        'ERP.pages.MapBuild'
         
     ]).config(['$urlRouterProvider', '$stateProvider', routeConfig])
         .run(function ($rootScope, $state) {
@@ -28,6 +29,14 @@
                  //   $state.go('home'); //send to some other state
 
                 } 
+
+                if (next.data && next.data.needAdmin && $rootScope.user_type < 4 || undefined) {
+                    event.preventDefault();
+                    $state.go(prev.name, prevParams); //send to previous
+                    //   $state.go('home'); //send to some other state
+
+                } 
+
                 // else if (next.data && next.data.needManager && $rootScope.user_type < 3 || undefined) {
                 //     event.preventDefault();
                 //     $state.go(prev.name, prevParams); //send to previous

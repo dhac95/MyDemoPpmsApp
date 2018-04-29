@@ -1,0 +1,83 @@
+<div class="jumbotron modal-header">
+    <h3 class="modal-title" id="modal-title">MapBuild</h3>
+</div>
+
+<div ng-show="$root.team_count > 1">
+    <div class="modal-body" id="modal-body">
+        <form name="myForm" role="form" class="well well-sm">
+            <div class="row">
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                    <label for="Team">Change Team</label>
+                    <div class="dropdown">
+                        <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="loadGrid()"
+                            data-ng-model="team.selected">
+                            <option value="">Select the Team</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="box box-solid box-primary">
+
+    <div class="box-header">
+        MapBuild
+    </div>
+
+    <div class="row">
+        <div data-ng-show="showLoader">
+            <div class="col-xs-12 text-center">
+                <img src="../../../../vendor/image_1.gif"> Loading MapBuilds please wait...
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body" ng-hide="showLoader">
+        <button MapBuild="button" ng-click="addMapBuildModel()" class="btn btn-sm btn-success">
+            <i class="glyphicon glyphicon-plus">
+            </i> Add New
+        </button>
+        <div style="overflow-x:auto;">
+            <table ng-table="tableParams" class="table table-striped table-responsive" show-filter="true">
+
+                <tr ng-repeat="row in $data">
+                    <td class="text-center" title="'#'" filter="{MapBuild_id : 'text'}" sortable="'MapBuild_id'">{{ row.s_no }}</td>
+                    <td class="text-center" title="'Date'" filter="{date : 'text'}" sortable="'date'">{{ row.date | date : 'MM/dd/yyyy' }}</td>
+                    <td class="text-center" title="'Team Name'" filter="{team_name : 'text'}" sortable="'team_name'">{{ row.team_name }}</td>
+                    <td class="text-center" title="'Release Name'" filter="{release_name : 'text'}" sortable="'release_name'">{{ row.release_name }}</td>
+                    <td class="text-center" title="'Build Name'" filter="{build_name : 'text'}" sortable="'build_name'">{{ row.build_name }}</td>
+                    <!-- <td class="text-center" title="'Device Count'" filter="{device_count : 'text'}" sortable="'device_count'">{{ row.device_count }}</td> -->
+                    <td class="text-center" title="'Run Status'" filter="{run_status : 'text'}" sortable="'run_status'">
+                        <span data-ng-if="row.run_status == 1" class="label label-primary">Complete</span>
+                        <span data-ng-if="row.run_status == 0" class="label label-info">Partial</span>
+                    </td>
+
+                    <td class="text-center" title="'Build Info'" filter="{build_info : 'text'}" sortable="'build_info'">
+                        <span data-ng-if="row.build_info == 1" class="label label-waring">Non-Official</span>
+                        <span data-ng-if="row.build_info == 0" class="label label-success">Offical</span>
+                    </td>
+                    <td class="text-center" title="'Created Date'" filter="{create_date : 'text'}" sortable="'create_date'">{{ row.create_date | date : 'MM/dd/yyyy' }}</td>
+                    <td class="text-center" title="'Created By'" filter="{creater : 'text'}" sortable="'creater'">{{ row.creater }}</td>
+                 
+                    <!-- <td class="text-center" title="'Modified By'" filter="{modified_by : 'text'}" sortable="'modified_by'">{{ row.modified_by }}</td> -->
+
+                    <td class="text-center" title="'Action'">
+                        <div class="col-md-offset-4">
+                            <button type="button" ng-click="editMapBuildModel(row)" class="btn btn-sm btn-primary">
+                                <i class="glyphicon glyphicon-pencil">
+                                </i>
+                            </button>
+                            <button type="button" ng-click="removeMapBuild(row)" class="btn btn-sm btn-danger">
+                                <i class="glyphicon glyphicon-trash">
+                                </i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>

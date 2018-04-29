@@ -9,7 +9,7 @@ var db = require('../dbconnections'); //reference of dbconnection.js
 
 router.get('/:id?', function(req , res , next) {
     //var team = req.body.team_id;
-    db.query('SELECT * FROM amz_tasks where team_id = ? and amz_tasks.status = 1 and amz_tasks.deletion = 0 ORDER BY amz_tasks.task_name ASC',[req.params.id] , function(error, results , fields){
+    db.query('SELECT task_id , task_name FROM amz_tasks where team_id = ? and amz_tasks.status = 1 and amz_tasks.deletion = 0 ORDER BY amz_tasks.task_name ASC',[req.params.id] , function(error, results , fields){
         if(error) {
             res.json({
                 "code":400,
@@ -29,7 +29,7 @@ router.get('/:id?', function(req , res , next) {
 router.get('/subTask/:id' , function(req , res , next) {
    //var taskID = req.body.task_id;
 
-    db.query('SELECT * FROM amz_sub_tasks where task_id=? and deletion = 0 and task_status=1 ORDER BY sub_task_name ASC',[req.params.id] , function(error, results , fields){
+    db.query('SELECT sub_task_id , sub_task_name FROM amz_sub_tasks where task_id=? and deletion = 0 and task_status=1 ORDER BY sub_task_name ASC',[req.params.id] , function(error, results , fields){
         if(error) {
             res.json({
                 "code":400,

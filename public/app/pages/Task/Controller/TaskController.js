@@ -129,7 +129,7 @@
                     }
                 }
                 else {
-                    $scope.temp_team = $scope.TeamList[0].team_id;
+                    $scope.team.selected = $scope.TeamList[0].team_id;
                     $scope.loadGrid();
                 }
 
@@ -140,15 +140,18 @@
         }
 
         $scope.loadGrid = function() {
-            if($rootScope.team_count > 1) {
-                var id = $scope.team.selected;
-            }
-            else {
-                  var id =  $scope.temp_team;
-            }
+            $scope.showLoader = true;
+            var id = $scope.team.selected;
+            // if($rootScope.team_count > 1) {
+            //     var id = $scope.team.selected;
+            // }
+            // else {
+            //       var id =  $scope.temp_team;
+            // }
             var self = this;
             TaskService.getAllTaskbyID($scope, $rootScope, $http , id).then(function (responce) {
                 $scope.tableParams = new NgTableParams({}, { dataset: responce.data });
+                $scope.showLoader = false;
 
             });
 
@@ -187,12 +190,15 @@
         $scope.saveTask = function (Task) {
             if (items.isEditing) {
                 var id = Task.task_id;
-                if($rootScope.team_count > 1) {
-                    $scope.Task.team_id = $scope.team.selected;
-                }
-                else {
-                    $scope.Task.team_id =  $scope.temp_team;
-                } 
+
+                $scope.Task.team_id = $scope.team.selected;
+
+                // if($rootScope.team_count > 1) {
+                //     $scope.Task.team_id = $scope.team.selected;
+                // }
+                // else {
+                //     $scope.Task.team_id =  $scope.temp_team;
+                // } 
                 $scope.Task.last_modified_by = $rootScope.user_id;
                
                 $scope.Task.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
@@ -255,12 +261,14 @@
                 });
             } else {
                 // $scope.Task.last_entry_on = $rootScope.date;
-                if($rootScope.team_count > 1) {
-                    $scope.Task.team_id = $scope.team.selected;
-                }
-                else {
-                    $scope.Task.team_id =  $scope.temp_team;
-                } 
+                $scope.Task.team_id = $scope.team.selected;
+
+                // if($rootScope.team_count > 1) {
+                //     $scope.Task.team_id = $scope.team.selected;
+                // }
+                // else {
+                //     $scope.Task.team_id =  $scope.temp_team;
+                // } 
                 $scope.Task.last_modified_by = $rootScope.user_id;
                 $scope.Task.added_by = $rootScope.user_id;
                
@@ -315,16 +323,19 @@
             promiseGet.then(function (pl) {
                  $scope.TeamList = pl.data; 
                 if(pl.data.length > 1) {
-                   if ($scope.isEditing) { 
+                   if (items.isEditing) { 
                                    for (var team in $scope.TeamList) {
                                     if ($scope.TeamList[team].team_id == $scope.Task.team_id) {
-                                       $scope.team.selected = $scope.TeamList[team];
+                                        $scope.team.selected = $scope.TeamList[team].team_id;
                                  }
                             }
                          }
+                         else{
+                       $scope.team.selected = $scope.TeamList[0].team_id;
+                         }
                         }
                 else {
-                    $scope.temp_team = $scope.TeamList[0].team_id;
+                    $scope.team.selected = $scope.TeamList[0].team_id;
                 }
                     
                 $scope.loadGrid();
@@ -335,12 +346,15 @@
         }
 
         $scope.loadGrid = function() {
-            if($rootScope.team_count > 1) {
-                var id = $scope.team.selected;
-            }
-            else {
-                  var id =  $scope.temp_team;
-            }
+
+            var id = $scope.team.selected;
+
+            // if($rootScope.team_count > 1) {
+            //     var id = $scope.team.selected;
+            // }
+            // else {
+            //       var id =  $scope.temp_team;
+            // }
             var self = this;
             TaskService.getAllTaskbyID($scope, $rootScope, $http , id).then(function (responce) {
                 $scope.tableParams = new NgTableParams({}, { dataset: responce.data });

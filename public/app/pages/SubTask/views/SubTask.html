@@ -24,7 +24,14 @@
             <div class="box-header">
                 SubTask
             </div>
-            <div class="box-body">
+                <div class="row">
+                    <div data-ng-show="showLoader">
+                        <div class="col-xs-12 text-center">
+                            <img src="../../../../vendor/image_1.gif"> Loading Subtasks please wait...
+                        </div>
+                    </div>
+                </div>
+            <div class="box-body" ng-hide="showLoader">
                 <button SubTask="button" ng-click="addSubTaskModel()" class="btn btn-sm btn-success">
                     <i class="glyphicon glyphicon-plus">
                     </i> Add New

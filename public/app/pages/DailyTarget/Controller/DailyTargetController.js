@@ -108,11 +108,11 @@
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
                 $scope.TeamList = pl.data;
-                if (pl.data.length > 1) {
+                if ($rootScope.team_count > 1) {
                     if ($scope.isEditing) {
                         for (var team in $scope.TeamList) {
                             if ($scope.TeamList[team].team_id == $scope.DailyTarget.team_id) {
-                                $scope.team.selected = $scope.TeamList[team];
+                                $scope.team.selected = $scope.TeamList[team].team_id;
                                 $scope.loadGrid();
                                 $scope.selectTask();
                             }
@@ -126,7 +126,7 @@
                     }
                 }
                 else {
-                    $scope.temp_team = $scope.TeamList[0].team_id;
+                    $scope.team.selected = $scope.TeamList[0].team_id;
                     $scope.loadGrid();
                     $scope.selectTask();
                 }
@@ -185,22 +185,22 @@
 
         function setTargets() {
             var obj = {};
-            if ($rootScope.team_count > 1) {
+            // if ($rootScope.team_count > 1) {
                 obj = {
                     team_id: $scope.team.selected,
                     month: $scope.myMonth.name + " " + $scope.myYear,
                     user_id: $rootScope.user_id,
                 };
-            }
-            else {
-                $scope.temp_team = $scope.TeamList[0].team_id;
+            // }
+            // else {
+            //     $scope.temp_team = $scope.TeamList[0].team_id;
 
-                obj = {
-                    team_id: $scope.temp_team,
-                    month: $scope.myMonth.name + " " + $scope.myYear,
-                    user_id: $rootScope.user_id,
-                };
-            }
+            //     obj = {
+            //         team_id: $scope.temp_team,
+            //         month: $scope.myMonth.name + " " + $scope.myYear,
+            //         user_id: $rootScope.user_id,
+            //     };
+            // }
             if (window.confirm("***Note*** : You are about to calcute monthly targets \n Click Ok to continue")) {
                 DailyTargetService.setTargets($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code === 200) {
@@ -221,22 +221,22 @@
 
         function setAutoTarget(){
             var obj = {};
-            if ($rootScope.team_count > 1) {
+            // if ($rootScope.team_count > 1) {
                  obj = {
                     team_id: $scope.team.selected,
                     month: $scope.myMonth.name + " " + $scope.myYear,
                     user_id : $rootScope.user_id,
                 };
-            }
-            else {
-                $scope.temp_team = $scope.TeamList[0].team_id;
+            // }
+            // else {
+            //     $scope.temp_team = $scope.TeamList[0].team_id;
 
-                 obj = {
-                    team_id: $scope.temp_team,
-                    month: $scope.myMonth.name + " " + $scope.myYear,
-                    user_id: $rootScope.user_id,
-                };
-            }
+            //      obj = {
+            //         team_id: $scope.temp_team,
+            //         month: $scope.myMonth.name + " " + $scope.myYear,
+            //         user_id: $rootScope.user_id,
+            //     };
+            // }
             if (window.confirm("***Note*** :  Auto Targets cannot be modified Once set! \n If you want change Auto to manual you have to first change the task or subtask before you set Auto target \n Click OK to contiune ")) {
             DailyTargetService.setAutoTarget($scope, $rootScope, $http, obj).then(function (res) {
                 if (res.data.code === 200) {
@@ -259,22 +259,22 @@
 
         function setManualTarget() {
             var obj = {};
-            if ($rootScope.team_count > 1) {
+            // if ($rootScope.team_count > 1) {
                 obj = {
                     team_id: $scope.team.selected,
                     month: $scope.myMonth.name + " " + $scope.myYear,
                     user_id: $rootScope.user_id,
                 };
-            }
-            else {
-                $scope.temp_team = $scope.TeamList[0].team_id;
+            // }
+            // else {
+            //     $scope.temp_team = $scope.TeamList[0].team_id;
 
-                obj = {
-                    team_id: $scope.temp_team,
-                    month: $scope.myMonth.name + " " + $scope.myYear,
-                    user_id: $rootScope.user_id,
-                };
-            }
+            //     obj = {
+            //         team_id: $scope.temp_team,
+            //         month: $scope.myMonth.name + " " + $scope.myYear,
+            //         user_id: $rootScope.user_id,
+            //     };
+            // }
             if (window.confirm("***Note*** : Use this feature only if you are unsure of how many tasks and subtasks the team have.. \nLoad this Only before adding Manual count by yourself \nClick OK to contiune ")) {
                 DailyTargetService.setManualTarget($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code === 200) {
@@ -298,22 +298,22 @@
 
         function setManualTargetByPrev() {
             var obj = {};
-            if ($rootScope.team_count > 1) {
+            // if ($rootScope.team_count > 1) {
                 obj = {
                     team_id: $scope.team.selected,
                     month: $scope.myMonth.name + " " + $scope.myYear,
                     user_id: $rootScope.user_id,
                 };
-            }
-            else {
-                $scope.temp_team = $scope.TeamList[0].team_id;
+            // }
+            // else {
+            //     $scope.temp_team = $scope.TeamList[0].team_id;
 
-                obj = {
-                    team_id: $scope.temp_team,
-                    month: $scope.myMonth.name + " " + $scope.myYear,
-                    user_id: $rootScope.user_id,
-                };
-            }
+            //     obj = {
+            //         team_id: $scope.temp_team,
+            //         month: $scope.myMonth.name + " " + $scope.myYear,
+            //         user_id: $rootScope.user_id,
+            //     };
+            // }
             if (window.confirm("***Note*** : This will set daily target same as previous month's target \nUse this feature only if maximum number of counts are same \nClick OK to contiune ")) {
                 DailyTargetService.setManualTargetByPrev($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code === 200) {
@@ -340,22 +340,22 @@
 
         function setNonTarget() {
             var obj = {};
-            if ($rootScope.team_count > 1) {
+            // if ($rootScope.team_count > 1) {
                 obj = {
                     team_id: $scope.team.selected,
                     month: $scope.myMonth.name + " " + $scope.myYear,
                     user_id: $rootScope.user_id,
                 };
-            }
-            else {
-                $scope.temp_team = $scope.TeamList[0].team_id;
+            // }
+            // else {
+            //     $scope.temp_team = $scope.TeamList[0].team_id;
 
-                obj = {
-                    team_id: $scope.temp_team,
-                    month: $scope.myMonth.name + " " + $scope.myYear,
-                    user_id: $rootScope.user_id,
-                };
-            }
+            //     obj = {
+            //         team_id: $scope.temp_team,
+            //         month: $scope.myMonth.name + " " + $scope.myYear,
+            //         user_id: $rootScope.user_id,
+            //     };
+            // }
             if (window.confirm("***Note*** :  Non Targets cannot be modified Once set! \n If you want change  to manual you have to first change the task or subtask before you set Auto target \n Click OK to contiune ")) {
                 DailyTargetService.setNonTarget($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code === 200) {
@@ -378,20 +378,20 @@
 
         $scope.loadGrid = function () {
             var obj = {};
-            if ($rootScope.team_count > 1) {
+            // if ($rootScope.team_count > 1) {
                  obj = {
                     team_id : $scope.team.selected , 
                     month: $scope.myMonth.name + " " + $scope.myYear,
                 };
-            }
-            else {
-                $scope.temp_team = $scope.TeamList[0].team_id;
+            // }
+            // else {
+            //     $scope.temp_team = $scope.TeamList[0].team_id;
                 
-                 obj = {
-                    team_id: $scope.temp_team,
-                   month: $scope.myMonth.name + " " + $scope.myYear,
-                };
-            }
+            //      obj = {
+            //         team_id: $scope.temp_team,
+            //        month: $scope.myMonth.name + " " + $scope.myYear,
+            //     };
+            // }
             var self = this;
             DailyTargetService.getAllDailyTargetbyID($scope, $rootScope, $http, obj).then(function (responce) {
                 $scope.resultList = responce.data;
@@ -403,12 +403,15 @@
 
 
         function saveDailyTarget(DailyTarget) {
-            if ($rootScope.team_count > 1) {
-                $scope.DailyTarget.team_id = $scope.team.selected;
-            }
-            else {
-                $scope.DailyTarget.team_id = $scope.temp_team;
-            }
+
+            $scope.DailyTarget.team_id = $scope.team.selected;
+
+            // if ($rootScope.team_count > 1) {
+            //     $scope.DailyTarget.team_id = $scope.team.selected;
+            // }
+            // else {
+            //     $scope.DailyTarget.team_id = $scope.temp_team;
+            // }
              $scope.DailyTarget.month = $scope.myMonth.name + " " + $scope.myYear;
             $scope.DailyTarget.task_id = $scope.task.selected;
             $scope.DailyTarget.sub_task_id = $scope.subtask.selected;
@@ -465,12 +468,14 @@
         $scope.saveDailyTarget = function (DailyTarget) {
             if (items.isEditing) {
 
-                if ($rootScope.team_count > 1) {
-                    $scope.DailyTarget.team_id = $scope.team.selected;
-                }
-                else {
-                    $scope.DailyTarget.team_id = $scope.temp_team;
-                }
+                $scope.DailyTarget.team_id = $scope.team.selected;
+
+                // if ($rootScope.team_count > 1) {
+                //     $scope.DailyTarget.team_id = $scope.team.selected;
+                // }
+                // else {
+                //     $scope.DailyTarget.team_id = $scope.temp_team;
+                // }
                 //var id = DailyTarget.s_no;
                 $scope.DailyTarget.task_id = $scope.task.selected;
                 $scope.DailyTarget.sub_task_id = $scope.subtask.selected;
@@ -491,12 +496,15 @@
             } else {
                 $scope.DailyTarget.task_id = $scope.task.selected;
                 // $scope.DailyTarget.last_entry_on = $rootScope.date;
-                if ($rootScope.team_count > 1) {
-                    $scope.DailyTarget.team_id = $scope.team.selected;
-                }
-                else {
-                    $scope.DailyTarget.team_id = $scope.temp_team;
-                }
+
+                $scope.DailyTarget.team_id = $scope.team.selected;
+
+                // if ($rootScope.team_count > 1) {
+                //     $scope.DailyTarget.team_id = $scope.team.selected;
+                // }
+                // else {
+                //     $scope.DailyTarget.team_id = $scope.temp_team;
+                // }
                 $scope.DailyTarget.last_modified_by = $rootScope.user_id;
                 //  $scope.DailyTarget.added_by = $rootScope.user_id;
 
@@ -521,11 +529,11 @@
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
                 $scope.TeamList = pl.data;
-                if (pl.data.length > 1) {
-                    if ($scope.isEditing) {
+                if ($rootScope.team_count > 1) {
+                    if (items.isEditing) {
                         for (var team in $scope.TeamList) {
                             if ($scope.TeamList[team].team_id == $scope.DailyTarget.team_id) {
-                                $scope.team.selected = $scope.TeamList[team];
+                                $scope.team.selected = $scope.TeamList[team].team_id;
                                
                                 $scope.selectTask();
                             }
@@ -539,7 +547,7 @@
                     }
                 }
                 else {
-                    $scope.temp_team = $scope.TeamList[0].team_id;
+                    $scope.team.selected = $scope.TeamList[0].team_id;
                     
                     $scope.selectTask();
                 }
@@ -558,10 +566,10 @@
             var promiseGet = DailyTargetService.getTaskswithManualCF($scope, $rootScope, $http, team_id);
             promiseGet.then(function (pl) {
                 $scope.TaskList = pl.data;
-                if ($scope.isEditing) {
+                if (items.isEditing) {
                     for (var task in $scope.TaskList) {
                         if ($scope.TaskList[task].task_id == $scope.DailyTarget.task) {
-                            $scope.task.selected = $scope.TaskList[task];
+                            $scope.task.selected = $scope.TaskList[task].task_id;
                             $scope.selectsubTask();
                         }
                     }
@@ -579,10 +587,10 @@
             var promiseGet = DailyTargetService.getSubTaskswithManualCF($scope, $rootScope, $http, task_id);
             promiseGet.then(function (pl) {
                 $scope.subTaskList = pl.data;
-                if ($scope.isEditing) {
+                if (items.isEditing) {
                     for (var subtask in $scope.subTaskList) {
                         if ($scope.subTaskList[subtask].sub_task_id == $scope.DailyTarget.sub_task) {
-                            $scope.subtask.selected = $scope.subTaskList[subtask];
+                            $scope.subtask.selected = $scope.subTaskList[subtask].sub_task_id;
 
                         }
 

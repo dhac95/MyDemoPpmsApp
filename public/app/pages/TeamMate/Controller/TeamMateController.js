@@ -104,6 +104,7 @@
 
        
         $scope.loadGrid = function() {
+            $scope.showLoader = true;
             if($rootScope.team_count > 1) {
                 var obj = {
                    team_id : $scope.team.selected , 
@@ -128,6 +129,7 @@
                 $scope.tableParams = new NgTableParams({}, { 
                     dataset: $scope.TeamMateList
                  });
+                $scope.showLoader = false;
 
             });
 

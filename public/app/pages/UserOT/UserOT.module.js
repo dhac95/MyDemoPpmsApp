@@ -18,6 +18,6 @@
                 controller: 'UserOTController',
                 templateUrl: 'app/pages/UserOT/views/UserOT.html',
                 title: 'UserOT Master',
-            })
+            });
     }
 })();

@@ -55,6 +55,8 @@ var mcf = require('./routes/ManualCFLoad');
 var WorkUnit = require('./routes/LoadWorkUnit');
 var TeamMates = require('./routes/TeamMates');
 var checkDE = require('./routes/CheckDEStatus');
+var mapbuild = require('./routes/MapBuilds');
+// var team = require('./routes/team');
 // Express init
 var app = express();  
 
@@ -118,6 +120,7 @@ app.use('/mcf' , mcf);
 app.use('/WorkUnit', WorkUnit);
 app.use('/TeamMates', TeamMates);
 app.use('/checkDE', checkDE);
+app.use('/mapbuild', mapbuild);
 
 //process.env.NODE_ENV = 'production';
 

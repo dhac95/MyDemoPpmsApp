@@ -2,6 +2,7 @@ var express = require('express');
 var md5 = require('md5');  
 var router = express.Router();  
 // var uLogin = require('../models/uLogin');
+var moment = require('moment');
 var AllUserInfo = require('../models/AllUserInfo');
 
 var db = require('../dbconnections'); //reference of dbconnection.js  
@@ -13,6 +14,7 @@ router.post('/', function(req, res, next) {
   var username= req.body.user_name;
   var email = req.body.user_mail;
   var password = md5(req.body.password);
+  var now = moment().format('LLLL');
   var IsAuth ;
   db.query('SELECT * FROM amz_login WHERE (user_name = ? OR user_mail = ?) AND user_deletion=0 AND user_activation=1', [username, email], function (error, results, fields) {
   if (error) {
@@ -46,7 +48,8 @@ router.post('/', function(req, res, next) {
             "IsAuth" : true, 
             data : results
             }
-          );          
+          ); 
+          console.log('New login by user : ' + username + ' at ' + now);
       }
       else{
        IsAuth = false;

@@ -181,6 +181,8 @@
         }
         today = yyyy + '-' + mm + '-' + dd;
         document.getElementById("datefield").setAttribute("max", today);
+        document.getElementById("from").setAttribute("max", today);
+        
 
 
         var Create = new Date($rootScope.create_date);
@@ -195,6 +197,11 @@
         }
         Create = yyy + '-' + mmm + '-' + ddd;
         document.getElementById("from").setAttribute("min", Create);
+        document.getElementById("datefield").setAttribute("min", Create);
+
+        // webshims.setOptions('waitReady', false);
+        // webshims.setOptions('forms-ext', { types: 'date' });
+        // webshims.polyfill('forms forms-ext');
         
         function showUserReports() {
             var Date1 = $scope.UserReport.From;
@@ -205,6 +212,8 @@
             var taskDesc = $scope.UserReport.task_desc;
             var task = $scope.task.selected;
             var subtask = $scope.subtask.selected;
+            $scope.showLoader = true;
+
             var obj = {
                 From : formatDate1,
                 To : formatDate2,
@@ -216,15 +225,19 @@
             };
             if (formatDate1 > formatDate2) {
                     Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
+                     $scope.showLoader = false;
+                     $scope.ReportList = "";
             } 
             else {
             var promiseGet = UserReportService.getUserReports($scope, $rootScope, $http ,obj );
             promiseGet.then(function (pl) {
                  $scope.ReportList = pl.data;
                  $scope.getTotalTime(); 
+                $scope.showLoader = false;
             },
                   function (errorPl) {
                       Notification('Some Error in Getting Records.');
+                      $scope.showLoader = false;
                 });
             }
 

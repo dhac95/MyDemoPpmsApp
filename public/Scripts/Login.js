@@ -55,9 +55,10 @@
                 localStorage.removeItem('token');
                 alert("User name or password is wrong");
                $scope.LoginBanner = { 'display': 'inline' };
+              window.location.replace("/index.html");
           }
           else if ((localStorage.getItem('user_id')&&localStorage.getItem('user_name')&&localStorage.getItem('user_type')&&localStorage.getItem('user_mail')&&(localStorage.getItem('IsAuth') == "true")) || (sessionStorage.getItem('user_id')&&sessionStorage.getItem('user_name')&&sessionStorage.getItem('user_type')&&sessionStorage.getItem('user_mail')&&(sessionStorage.getItem('IsAuth') == "true"))) {
-              window.location.replace("/index.html");
+              window.location.replace("/main.html");
           }
 
           else {
@@ -91,6 +92,7 @@
             //   localStorage.removeItem('user_status');
              //   alert('UserName or password mismatch');
                $scope.LoginBanner = { 'display': 'inline' };
+               
           }
           $scope.subBtn = "Log In";
 
@@ -134,11 +136,11 @@
                         sessionStorage.setItem('below_on', response.data[0].below_on);
                         sessionStorage.setItem('manager', response.data[0].manager);
                         sessionStorage.setItem('user_status', response.data[0].user_status);
-                          sessionStorage.setItem('user_activation', response.data[0].user_activation);
-                          sessionStorage.setItem('user_deletion', response.data[0].user_deletion);
-                          sessionStorage.setItem('last_entry_on', response.data[0].last_entry_on);
-                          sessionStorage.setItem('create_date', response.data[0].create_date);
-                          sessionStorage.setItem('maintain_date', response.data[0].maintain_date);
+                        sessionStorage.setItem('user_activation', response.data[0].user_activation);
+                        sessionStorage.setItem('user_deletion', response.data[0].user_deletion);
+                        sessionStorage.setItem('last_entry_on', response.data[0].last_entry_on);
+                        sessionStorage.setItem('create_date', response.data[0].create_date);
+                        sessionStorage.setItem('maintain_date', response.data[0].maintain_date);
 
                           window.location.replace("/main.html");
                       }
@@ -240,8 +242,8 @@
 
           $scope.Reset = function(Reset) {
               $scope.resetBtn = "Sending.........";
-            var obj = { name : $scope.Reset.user_name };
-          $http.post(forgot, obj).then(function(response) { 
+              var obj = { name : $scope.Reset.user_name };
+              $http.post(forgot, obj).then(function(response) { 
                   if(response.data.code === 200) {
                       Notification.success('Success password updated! Check the mail <iframe src="https://giphy.com/embed/6brH8dM3zeMyA" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>' );
                       $timeout(function () {

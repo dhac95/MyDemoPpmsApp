@@ -63,11 +63,17 @@
 </div>
 
 <div class="row">
-    <div ng-show='ReportList ==""'>
+    <div data-ng-show="showLoader">
+        <div class="col-xs-12 text-center">
+            <img src="../../../../vendor/ajax-loader.gif"> Getting data please wait...
+        </div>
+    </div>
+
+    <div ng-if='ReportList ==""' ng-hide="showLoader">
         <h3 class="text-muted">No Data avaialble for the selected date From <strong>{{UserReport.From | date : 'MM/dd/yyyy' }}</strong> to <strong>{{UserReport.To | date : 'MM/dd/yyyy' }}</strong> for user <strong>{{$root.user_name}}</strong>
 
     </div> 
-    <div ng-if='ReportList !="" && ReportList != null'>
+    <div ng-if='ReportList !="" && ReportList != null' ng-hide="showLoader">
         <button class="btn btn-link" ng-click="exportToExcel('#userData')">
                 <span class="glyphicon glyphicon-share"></span>
                             Export to Excel

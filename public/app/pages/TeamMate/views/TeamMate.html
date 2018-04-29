@@ -25,7 +25,16 @@
     <div class="box-header">
         Your Team Users
     </div>
-    <div class="box-body">
+
+    <div class="row">
+        <div data-ng-show="showLoader">
+            <div class="col-xs-12 text-center">
+                <img src="../../../../vendor/image_1.gif"> Loading builds please wait...
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body" ng-hide="showLoader">
         <!-- <button TeamMate="button" ng-click="addTeamMateModel()" class="btn btn-sm btn-success">
             <i class="glyphicon glyphicon-plus">
             </i> Add New

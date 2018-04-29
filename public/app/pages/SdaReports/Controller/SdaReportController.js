@@ -42,6 +42,7 @@
         $scope.isTask = false;
         $scope.isSubTask = false;
         $scope.isUser = false;
+       
       
       //  loadGrid();
 
@@ -75,6 +76,36 @@
             { "id": 2, "Name": "Manager Not Approved" },
             { "id": 3, "Name": "Unexpected" }
         ];
+
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("from").setAttribute("max", today);
+        document.getElementById("to").setAttribute("max", today);
+
+
+        // var Create = new Date($rootScope.create_date);
+        // var ddd = Create.getDate();
+        // var mmm = Create.getMonth() + 1; //January is 0!
+        // var yyy = Create.getFullYear();
+        // if (ddd < 10) {
+        //     ddd = '0' + ddd;
+        // }
+        // if (mmm < 10) {
+        //     mmm = '0' + mmm;
+        // }
+        // Create = yyy + '-' + mmm + '-' + ddd;
+        // document.getElementById("from").setAttribute("min", Create);
+        // document.getElementById("to").setAttribute("min", Create);
 
             // getTeamList();
 
@@ -243,6 +274,7 @@
             var userOtTasks = $scope.SdaReport.Ot;
             $scope.isProd = true;
             $scope.hideProd = true;
+            $scope.showLoader = true;
 
             var obj = {
                 From: formatDate1,
@@ -257,15 +289,20 @@
             };
             if (formatDate1 > formatDate2) {
                 Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
+                $scope.showLoader = false;
+                $scope.ReportList = "";
+                $scope.isProd = false;
             }
             else {
                 var promiseGet = SdaReportService.getProductiviy($scope, $rootScope, $http, obj);
                 promiseGet.then(function (pl) {
                     $scope.ProdList = pl.data;
+                    $scope.showLoader = false;
                     $scope.reportTitle = "Overall Productivity";
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
+                        $scope.showLoader = false;
                     });
             }
         }
@@ -286,6 +323,8 @@
             $scope.isTask = false;
             $scope.isSubTask = false;
             $scope.hideProd = false;
+             $scope.showLoader = true;
+           
 
             var obj = {
                 From: formatDate1,
@@ -300,16 +339,22 @@
             };
             if (formatDate1 > formatDate2) {
                 Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
+                $scope.showLoader = false;
+                $scope.ReportList = "";
+                $scope.isProd = false;
+
             }
             else {
                 var promiseGet = SdaReportService.getProductiviyByUser($scope, $rootScope, $http, obj);
                 promiseGet.then(function (pl) {
                     $scope.ProdList = "";
                     $scope.ProdList = pl.data;
+                     $scope.showLoader = false;
                     $scope.reportTitle = "Userwise Productivity";
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
+                           $scope.showLoader = false;
                     });
             }
         }
@@ -330,6 +375,7 @@
             $scope.isTask = true;
             $scope.isSubTask = false;
             $scope.hideProd = false;
+               $scope.showLoader = true;
 
             var obj = {
                 From: formatDate1,
@@ -344,6 +390,9 @@
             };
             if (formatDate1 > formatDate2) {
                 Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
+                $scope.showLoader = false;
+                $scope.ReportList = "";
+                $scope.isProd = false;
             }
             else {
                 var promiseGet = SdaReportService.getProductiviyByTask($scope, $rootScope, $http, obj);
@@ -351,9 +400,11 @@
                     $scope.ProdList = "";
                     $scope.ProdList = pl.data;
                     $scope.reportTitle = "Taskwise Productivity";
+                       $scope.showLoader = false;
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
+                           $scope.showLoader = false;
                     });
             }
         }
@@ -374,6 +425,7 @@
             $scope.isTask = false;
             $scope.isSubTask = true;
             $scope.hideProd = false;
+               $scope.showLoader = true;
 
             var obj = {
                 From: formatDate1,
@@ -388,6 +440,9 @@
             };
             if (formatDate1 > formatDate2) {
                 Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
+                $scope.showLoader = false;
+                $scope.ReportList = "";
+                $scope.isProd = false;
             }
             else {
                 var promiseGet = SdaReportService.getProductiviyBySubTask($scope, $rootScope, $http, obj);
@@ -395,9 +450,11 @@
                     $scope.ProdList = "";
                     $scope.ProdList = pl.data;
                     $scope.reportTitle = "Subtaskwise Productivity";
+                       $scope.showLoader = false;
                 },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
+                           $scope.showLoader = false;
                     });
             }
         }
@@ -415,6 +472,7 @@
             var subtask = $scope.subtask.selected;
             var userOtTasks = $scope.SdaReport.Ot;
             $scope.isProd = false;
+            $scope.showLoader = true;
 
             var obj = {
                 From : formatDate1,
@@ -429,15 +487,20 @@
             };
             if (formatDate1 > formatDate2 ) {
                 Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>"} , 'warning');
+                $scope.showLoader = false;
+                $scope.ReportList = "";
+                $scope.isProd = false;
             }
             else {
             var promiseGet = SdaReportService.getSdaReports($scope, $rootScope, $http ,obj );
             promiseGet.then(function (pl) {
                  $scope.ReportList = pl.data;
+                 $scope.showLoader = false;
                  $scope.getTotalTime(); 
             },
                   function (errorPl) {
                       Notification('Some Error in Getting Records.');
+                      $scope.showLoader = false;
                 });
         }
     }
@@ -469,7 +532,7 @@
                  $scope.remTime = pl.data; 
             },
                   function (errorPl) {
-                      Notification('Some Error in Getting Records.');
+                      Notification('Some Error in Getting Total Time.');
                 });
         };
 

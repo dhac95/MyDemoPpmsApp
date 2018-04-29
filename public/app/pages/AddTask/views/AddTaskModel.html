@@ -14,7 +14,7 @@
                 <div class="form-group col-md-3 col-lg-3">
                     <label for="team">Team Name</label>
                     <div class="dropdown">
-                        <select class="form-control" id="team" name="team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList track by Team.id" data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected" data-ng-init="team.selected = AddTask.team_id" required>
+                        <select class="form-control" id="team" name="team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected" data-ng-init="team.selected = AddTask.team_id" required>
                             <option value="">Select the Team</option>
                         </select>               
                     </div>

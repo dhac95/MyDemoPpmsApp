@@ -101,7 +101,7 @@
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
                 $scope.TeamList = pl.data;
-                if (pl.data.length > 1) {
+                if ($rootScope.team_count  > 1) {
                     if ($scope.isEditing) {
                         for (var team in $scope.TeamList) {
                             if ($scope.TeamList[team].team_id == $scope.Release.team_id) {
@@ -118,7 +118,7 @@
                     }
                 }
                 else {
-                    $scope.temp_team = $scope.TeamList[0].team_id;
+                    $scope.team.selected = $scope.TeamList[0].team_id;
                     $scope.loadGrid();
                 }
 
@@ -129,16 +129,19 @@
         }
 
         $scope.loadGrid = function () {
-            if ($rootScope.team_count > 1) {
-                var id = $scope.team.selected;
-            }
-            else {
-                var id = $scope.temp_team;
-            }
+            $scope.showLoader = true;
+            // if ($rootScope.team_count > 1) {
+            //     var id = $scope.team.selected;
+            // }
+            // else {
+            //     var id = $scope.temp_team;
+            // }
+
+            var id = $scope.team.selected;
             var self = this;
             ReleaseService.getAllReleasebyID($scope, $rootScope, $http, id).then(function (responce) {
                 $scope.tableParams = new NgTableParams({}, { dataset: responce.data });
-
+                $scope.showLoader = false;
             });
 
         };
@@ -196,12 +199,14 @@
         $scope.saveRelease = function (Release) {
             if (items.isEditing) {
                 var id = Release.s_no;
-                if ($rootScope.team_count > 1) {
-                    $scope.Release.team_id = $scope.team.selected;
-                }
-                else {
-                    $scope.Release.team_id = $scope.temp_team;
-                }
+                $scope.Release.team_id = $scope.team.selected;
+
+                // if ($rootScope.team_count > 1) {
+                //     $scope.Release.team_id = $scope.team.selected;
+                // }
+                // else {
+                //     $scope.Release.team_id = $scope.temp_team;
+                // }
 
                 $scope.Release.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                
@@ -225,12 +230,14 @@
                 });
             } else {
                 // $scope.Release.last_entry_on = $rootScope.date;
-                if ($rootScope.team_count > 1) {
-                    $scope.Release.team_id = $scope.team.selected;
-                }
-                else {
-                    $scope.Release.team_id = $scope.temp_team;
-                }
+                // if ($rootScope.team_count > 1) {
+                //     $scope.Release.team_id = $scope.team.selected;
+                // }
+                // else {
+                //     $scope.Release.team_id = $scope.temp_team;
+                // }
+                $scope.Release.team_id = $scope.team.selected;
+
                 $scope.Release.added_by = $rootScope.user_id;
 
                 $scope.Release.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
@@ -260,17 +267,20 @@
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
                 $scope.TeamList = pl.data;
-                if (pl.data.length > 1) {
-                    if ($scope.isEditing) {
+                if ($rootScope.team_count > 1) {
+                    if (items.isEditing) {
                         for (var team in $scope.TeamList) {
                             if ($scope.TeamList[team].team_id == $scope.Release.team_id) {
-                                $scope.team.selected = $scope.TeamList[team];
+                                $scope.team.selected = $scope.TeamList[team].team_id;
                             }
                         }
                     }
+                    else {
+                        $scope.team.selected = $scope.TeamList[0].team_id;
+                    }
                 }
                 else {
-                    $scope.temp_team = $scope.TeamList[0].team_id;
+                    $scope.team.selected = $scope.TeamList[0].team_id;
                 }
 
                 $scope.loadGrid();
@@ -281,12 +291,15 @@
         }
 
         $scope.loadGrid = function () {
-            if ($rootScope.team_count > 1) {
-                var id = $scope.team.selected;
-            }
-            else {
-                var id = $scope.temp_team;
-            }
+            // if ($rootScope.team_count > 1) {
+            //     var id = $scope.team.selected;
+            // }
+            // else {
+            //     var id = $scope.temp_team;
+            // }
+
+            var id = $scope.team.selected;
+
             var self = this;
             ReleaseService.getAllReleasebyID($scope, $rootScope, $http, id).then(function (responce) {
                 $scope.tableParams = new NgTableParams({}, { dataset: responce.data });

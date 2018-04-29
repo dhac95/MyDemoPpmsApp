@@ -34,31 +34,59 @@ router.get('/:id?', function (req, res, next) {
     });  
 
 router.post('/', function(req, res, next) {  
-    Team.addTeam(req.body, function(err, count) {  
-        if (err) {  
-            res.json(err);  
-        } else {  
-           /*  db.query('SELECT team_id from amz_teams ORDER BY team_id DESC' , function(e , r , f){
-                if(e) {
-                    res.send(e);
-                } else {
-               var team = r[0].team_id;
-               var added = req.body.added_by;
-                var today = moment().format('YYYY-MM-DD');
-                    db.query('INSERT into amz_tasks(team_id , task_name , added_by , status , about_cf , device_count , op_type , about_chart , deletion , last_modified_by , create_date , maintain_date) VALUES ? ',
-                     [[
-                                                    [team, 'Absence', added, 1, 0, 0, 0, 0, 0, added, today, today], 
-                                                    [team, 'Adhoc task', added, 1, 1, 0, 1 , 1 , 0 , added, today, today], 
-                                                    [team, 'Audit' , added, 1, 1, 0 , 1, 1, 0, added, today, today],
-                    ]] , function(e1 , r1 , f1){
+    db.query('SELECT team_name from amz_teams where team_name = ? and team_deletion = 0', [req.body.team_name] , function(e , r , f) {
+        if(e) {
+            res.send(e);
+        } else if(r.length > 0 ) {
+            res.send({
+                    "code" : 401 , 
+                    "message" : "Team Already exists"
+            });
+        } else {
+             Team.addTeam(req.body, function (err, count) {
+                 if (err) {
+                     res.json(err);
+                 } else {
+                     db.query('SELECT team_id from amz_teams where team_name = ?' , [req.body.team_name] , function(e2 , r2 , f2){
+                         if(e2){
+                             res.send({
+                                 'code' : 402,
+                                 'message' : e2
+                             });
+                         } else {
+                             var team = r2[0].team_id;
+                             var now = moment(new Date()).format('YYYY-MM-DD');
+                             db.query('INSERT INTO amz_user_info(user_id , team_id , status , create_date , maintain_date) VALUES (? , ? , ? , ? , ?) ' , [303 , team , 1 , now , now] , function(e3 , r3 , f3){
+                                 if(e3){
+                                     res.send({
+                                         'code': 403,
+                                         'message': e3
+                                     });
+                                 } else {
+                                     db.query('UPDATE amz_login set team_count = team_count + 1 where user_id = ?' , [303] , function(e4 , r4 , f4) {
+                                         if(e4) {
+                                             res.send({
+                                                 'code': 405,
+                                                 'message': e4
+                                             });
+                                         } else {
+                                             res.json({
+                                                 'code': 200,
+                                                 'Message': 'success'
+                                             });
+                                         }
+                                     });
+                                 }
+                             });
+                         }
+                     });
 
-                    });
-                }
-
-            }); */
-            res.json(req.body);  
-        }  
-    });  
+                    
+                 }
+             });
+        }
+    });
+   
 });  
 
 router.post('/remove', function(req, res, next) {  
@@ -74,12 +102,28 @@ router.post('/remove', function(req, res, next) {
     });  
 });  
 router.put('/:id', function(req, res, next) {  
-    Team.updateTeam(req.params.id, req.body, function(err, rows) {  
-        if (err) {  
-            res.json(err);  
-        } else {  
-            res.json(rows);  
-        }  
-    });  
+    // db.query('SELECT team_id from amz_teams where team_name = ?', [req.body.team_name], function (e, r, f) { 
+    //     if (e) {
+    //         res.send(e);
+    //     } else if (r.length > 0) {
+    //         res.send({
+    //             "code" : 401,
+    //             "message" : "Team Already exists"
+    //         });
+    //     } else {
+            Team.updateTeam(req.params.id, req.body, function (err, rows) {
+                if (err) {
+                    res.json(err);
+                } else {
+                    res.json({
+                        "code" : 200,
+                        "message" : "success"
+                    });
+                }
+            });  
+      //  }
+    // });
+   
 });  
+
 module.exports = router;  

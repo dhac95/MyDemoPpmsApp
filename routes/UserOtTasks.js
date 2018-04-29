@@ -48,7 +48,7 @@ router.post('/', function(req, res, next) {
         var remainHours = secondsToHms(remainSecs);
     }
     else{
-       var remainHours = '16:00:00' ; 
+       var remainHours = '16:00' ; 
        var remainSecs = '57600';
     }
 
@@ -111,7 +111,7 @@ router.put('/:id', function(req, res, next) {
         var remainHours = secondsToHms(remainSecs);
     }
     else{
-       var remainHours = '16:00:00' ; 
+       var remainHours = '16:00' ; 
        var remainSecs = '57600';
     }
 

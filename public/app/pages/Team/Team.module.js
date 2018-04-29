@@ -21,7 +21,7 @@
                 templateUrl: 'app/pages/Team/views/Team.html',
                 title: 'Team Master',
                 data : {
-                        needSda : true
+                        needAdmin : true
                 }
             });
     }

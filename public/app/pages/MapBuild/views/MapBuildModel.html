@@ -1,0 +1,106 @@
+<div class="jumbotron modal-header">
+    <h3 class="modal-title" id="modal-title">MapBuild</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <form name="myForm" role="form" class="well well-sm">
+        <div class="row">
+            <!-- <div class="form-group col-md-3 col-lg-3">
+                <label for="status">Status</label>
+
+                <switch id="status" name="status" ng-model="MapBuild.MapBuild_status" class="switch small green " data-ng-value="MapBuild.MapBuild_status"></switch>
+            </div> -->
+
+            <div class="form-group col-md-3 col-lg-3">
+                <label for="date">Date</label>
+                <input type="date" class="form-control" id="date" name="date" data-ng-model="MapBuild.date" required />
+                <div ng-show="myForm.date.$touched && myForm.date.$invalid" class="text-danger">*required Date</div>
+            </div>
+
+            <div ng-show="$root.team_count > 1">
+                <div class="form-group col-md-3 col-lg-3">
+                    <label for="team">Team Name</label>
+                    <div class="dropdown">
+                        <select class="form-control" id="team" name="team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList"
+                             data-ng-change="selectBuild();selectRelease();" data-ng-model="team.selected" data-ng-init="team.selected = MapBuild.team"
+                            data-ng-required="$root.team_count > 1">
+                            <option value="">Select the Team</option>
+                        </select>
+                    </div>
+                    <div ng-show="myForm.team.$touched && myForm.team.$invalid" class="text-danger">*required team</div>
+                </div>
+            </div>
+
+            <!-- <div class="form-group col-md-3 col-lg-3">
+                <label for="build_no">Build Name</label>
+                <div class="dropdown">
+                    <select class="form-control" id="build_no" name="build_no" data-ng-options="Build.build_no as Build.build_name for Build in BuildList"
+                        data-ng-model="build.selected" data-ng-init="build.selected = MapBuild.build_no" required>
+                        <option value="">Select the Build</option>
+                    </select>
+            
+                </div>
+                <span ng-show="myForm.build_no.$touched && myForm.build_no.$invalid" class="text-danger">*required Build</span>
+            </div> -->
+
+            <div class="form-group col-md-3 col-lg-3">
+                <label for="build_no">Build Name</label>
+                <div class="dropdown">
+            
+                    <select class="form-control" id="build_no" name="build_no" data-ng-options="Build.build_no as Build.build_name for Build in BuildList"
+                        data-ng-model="build.selected" data-ng-init="build.selected = MapBuild.build_no" required>
+                        <option value="">Select the Build</option>
+                    </select>
+            
+                </div>
+                <div ng-show="myForm.build_no.$touched && myForm.build_no.$invalid" class="text-danger">*required Build</div>
+            </div>
+
+            <div class="form-group col-md-3 col-lg-3">
+                <label for="Build">Release Name</label>
+                <div class="dropdown">
+            
+                    <select class="form-control" id="Release" name="Release" data-ng-options="Release.s_no as Release.release_name for Release in ReleaseList"
+                        data-ng-model="release.selected" data-ng-init="release.selected = MapBuild.release_no" required>
+                        <option value="">Select the Release</option>
+                    </select>
+            
+                </div>
+                <div ng-show="myForm.Release.$touched && myForm.Release.$invalid" class="text-danger">*required Release</div>
+            </div>
+
+            <div class="form-group col-md-3 col-lg-3">
+                <label for="run_status">Run Status</label>
+                <div class="dropdown">
+            
+                    <select class="form-control" id="run_status" name="run_status" data-ng-options="run_status.id as run_status.Name for run_status in runStatus"
+                        data-ng-model="MapBuild.run_status" data-ng-value="MapBuild.run_status" required>
+                        <option value="">Select the Run Status</option>
+                    </select>
+            
+                </div>
+                <div ng-show="myForm.run_status.$touched && myForm.run_status.$invalid" class="text-danger">*required Run Status</div>
+            </div>
+
+            <div class="form-group col-md-3 col-lg-3">
+                <label for="build_info">Build Info</label>
+                <div class="dropdown">
+            
+                    <select class="form-control" id="build_info" name="build_info" data-ng-options="build_info.id as build_info.Name for build_info in buildInfo"
+                        data-ng-model="MapBuild.build_info" data-ng-value="MapBuild.build_info" required>
+                        <option value="">Select the Build Info</option>
+                    </select>
+            
+                </div>
+                <div ng-show="myForm.build_info.$touched && myForm.build_info.$invalid" class="text-danger">*required Build Info</div>
+            </div>
+
+            
+
+        </div>
+</div>
+</form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveMapBuild(MapBuild)">Save</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

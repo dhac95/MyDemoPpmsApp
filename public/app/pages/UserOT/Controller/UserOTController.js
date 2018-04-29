@@ -109,20 +109,25 @@
                 UserOT.build = $scope.build.selected;
                 UserOT.date = $scope.date.selected;
                 UserOT.user_type = $rootScope.user_type;
+                $scope.showLoader = true;
 
                 UserOTService.addUserOT($scope, $rootScope, $http, $scope.UserOT).then(function (res) {
                     if (res.data.code == 200) {
                         Notification.success("Added Successful");
                         getTaskbyDate();
                         getTotalTime();
+                        $scope.showLoader = false;
                     } else if(res.data.results){
                         Notification({ message: "Time must be total of 16 hours", title: "Error! Check entered time" }, 'error');
+                        $scope.showLoader = false;
                     }
                     else {
                         Notification.error("Error occoured !! Please try again");
+                        $scope.showLoader = false;
                     }
                 }, function (err) {
                     Notification("Error in processing sever error 500! Try Again.");
+                    $scope.showLoader = false;
                 });
             }
 
@@ -328,6 +333,20 @@
         }
         today = yyyy + '-' + mm + '-' + dd;
         document.getElementById("date").setAttribute("max", today);
+
+
+        var Create = new Date($rootScope.create_date);
+        var ddd = Create.getDate();
+        var mmm = Create.getMonth() + 1; //January is 0!
+        var yyy = Create.getFullYear();
+        if (ddd < 10) {
+            ddd = '0' + ddd;
+        }
+        if (mmm < 10) {
+            mmm = '0' + mmm;
+        }
+        Create = yyy + '-' + mmm + '-' + ddd;
+        document.getElementById("date").setAttribute("min", Create);
 
         function removeUserOT(UserOT) {
             //if (UserOT.Active === 0) {

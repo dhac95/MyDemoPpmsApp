@@ -90,10 +90,7 @@
         function removeTeam(Team) {
             if (Team.status == 0) {
                 var obj = { team_id: Team.team_id, last_modify : $filter('date')(new Date(), "yyyy-MM-dd") };
-            //    id :  Team.team_id
-            // //     //Active: Team.Active,
-            // //     //ActionBy: $rootScope.loggedUserId
-           //   };
+    
             if (window.confirm("Do you really want to delete this Team")) {
                 TeamService.deleteTeam($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code == 200) {
@@ -103,7 +100,7 @@
                         Notification.error('Error !! Try again');
                     }
                 }, function (err) {
-                    Notification("Error while processing! Try Again.");
+                    Notification.error("Error while processing! Try Again.");
                 });
             }
             } else {
@@ -112,8 +109,8 @@
         }
     }
 
-    TeamModelController.$inject = ['$scope', '$rootScope', '$http', 'items', '$uibModalInstance', 'TeamService'];
-    function TeamModelController($scope, $rootScope, $http, items, $uibModalInstance, TeamService) {
+    TeamModelController.$inject = ['$scope', '$rootScope', '$http', 'items', '$uibModalInstance', 'TeamService', 'Notification' ];
+    function TeamModelController($scope, $rootScope, $http, items, $uibModalInstance, TeamService, Notification) {
         $scope.items = items;
         if (items.isEditing)
             $scope.Team = angular.copy(items.Team);
@@ -124,36 +121,59 @@
             if (items.isEditing) {
                 //$scope.Team.ModifiedBy = "1";
                 var id = Team.team_id;
-                $scope.Team.create_date = $rootScope.date;
-                $scope.Team.last_modify = $rootScope.date;
+                
+               // $scope.Team.create_date = $rootScope.date;
+                $scope.Team.added_by = $rootScope.user_id;
                 $scope.Team.maintain_date = $rootScope.date;
-                TeamService.updateTeam($scope, $rootScope, $http, $scope.Team,id).then(function (res) {
-                    if (res.data.code == 200) {
-                        alert("Update Successful");
+
+                if ($scope.Team.status == true) {
+                    $scope.Team.status = 1;
+                }
+                else {
+                    $scope.Team.status = 0;
+                }
+
+                TeamService.updateTeam($scope, $rootScope, $http, $scope.Team, id).then(function (res) {
+                    if (res.data.code === 200) {
+                        Notification.success("Updated Successful");
                         $uibModalInstance.close();
-                    } else {
-                        alert("Team Updated");
-                        $uibModalInstance.close();
+                    } else if (res.data.code === 401) {
+                        Notification.warning("Team already exists!!! Try Different Name");
+                    }
+                    
+                    else {
+                        Notification.error("Error Occurred while updating");
                     }
                 }, function (err) {
-                    alert("Error while processing! Try Again.");
+                    Notification.error("Error while processing! Try Again.");
                 });
             } else {
-                $scope.Team.last_modify = $rootScope.date;
+                //$scope.Team.last_modify = $rootScope.user_id;
+
+                if ($scope.Team.status == true) {
+                    $scope.Team.status = 1;
+                }
+                else {
+                    $scope.Team.status = 0;
+                }
+
+
                 $scope.Team.create_date = $rootScope.date;
                 $scope.Team.maintain_date = $rootScope.date;
-                //$scope.Team.CreatedBy = "1";
-               // $scope.Team.ModifiedBy = "1";
+                $scope.Team.added_by = $rootScope.user_id;
+               
+               
                 TeamService.addTeam($scope, $rootScope, $http, $scope.Team).then(function (res) {
-                    if (res.data.result) {
-                        alert("Added Successful");
+                    if (res.data.code == 200) {
+                        Notification.success("Added Successful");
                         $uibModalInstance.close();
+                    } else if (res.data.code == 401) {
+                        Notification.warning("Team already exists!!! Try Different Name");
                     } else {
-                        alert("Team Added");
-                        $uibModalInstance.close();
+                        Notification.error("Error Occurred");
                     }
                 }, function (err) {
-                    alert("Error in processing sever error 500! Try Again.");
+                    Notification.error("Error in processing sever error 500! Try Again.");
                 });
             }
         };

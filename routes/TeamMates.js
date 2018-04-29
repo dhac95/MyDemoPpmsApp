@@ -84,6 +84,9 @@ router.post('/remove' , function(req , res , next) {
 
     router.post('/user' , function(req , res ,next) {
         var userID = req.body.user_id, firstName = req.body.first_name, lastName = req.body.last_name, lastEntry = req.body.last_entry_on, userType = req.body.user_type ;
+        if (lastEntry != null) {
+            lastEntry = moment(lastEntry).format('YYYY-MM-DD');
+        }
         db.query('UPDATE amz_login set first_name = ? , last_name = ? , last_entry_on = ? , user_type = ? WHERE user_id = ? ' , [firstName , lastName , lastEntry , userType , userID] , function(e , r, f) {
             if(e) {
                 res.send({

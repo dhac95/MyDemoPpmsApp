@@ -74,6 +74,7 @@ app.run(['$rootScope', 'toastr', '$http', '$location', 'Idle', 'Notification', f
 	$rootScope.$on('IdleStart', function () { Notification({ message: 'Do something to keep it alive <iframe src="https://giphy.com/embed/d3yxg15kJppJilnW" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>', title: 'Sessions is about to expire'} , 'warning' ); });
 	$rootScope.$on('IdleTimeout', function () { $rootScope.logout(); });
 
+	
   
 	$rootScope.year = (new Date()).getFullYear();
 	$rootScope.date = today;

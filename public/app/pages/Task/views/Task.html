@@ -24,7 +24,16 @@
 		<div class="box-header">
 			Task
 		</div>
-		<div class="box-body">
+
+		<div class="row">
+			<div data-ng-show="showLoader">
+				<div class="col-xs-12 text-center">
+					<img src="../../../../vendor/image_1.gif"> Loading Tasks please wait...
+				</div>
+			</div>
+		</div>
+		
+		<div class="box-body" ng-hide="showLoader">
 			<button Task="button" ng-click="addTaskModel()" class="btn btn-sm btn-success">
 				<i class="glyphicon glyphicon-plus">
 				</i> Add New

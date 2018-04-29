@@ -78,6 +78,12 @@
     <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-Click="showProductivity()">Show Productive Data</button>
 </div>
 
+<div data-ng-show="showLoader">
+    <div class="col-xs-12 text-center">
+    <img src="../../../../vendor/ajax-loader.gif">  Getting Content please wait
+    </div>
+</div>
+
 <div class="row">  
 
 <div class="nav-tabs-custom" ng-if="isProd">
@@ -101,11 +107,13 @@
         </li> -->
     </ul>
 </div>
-    <div ng-if='!isProd && ReportList ==""'>
+    <div ng-if='!isProd && ReportList ==""' ng-hide="showLoader">
         <h3 class="text-muted">No Data avaialble for the selected date From <strong>{{SdaReport.From | date : 'MM/dd/yyyy' }}</strong> to <strong>{{SdaReport.To | date : 'MM/dd/yyyy' }}</strong> for <span ng-if="user.selected == null "> the team</span> <span ng-repeat="u in UserList" ng-if="u.user_id == user.selected"><strong>{{u.user_name}}</strong> </span>       
     </div> 
-    <div ng-if='!isProd && ReportList !=null && ReportList !=""'>
+    <div ng-if='!isProd && ReportList !=null && ReportList !=""' ng-hide="showLoader">
     <div class="row">
+
+       
        
         <div class="model-header"> 
             <button class="btn btn-success btn-default-focus" ng-click="exportToExcel('#userData')">
@@ -113,10 +121,13 @@
                                 Export to Excel
             </button>
         </div>
-    <div class="panel panel-default" id="userData">
-        <div class="jumbotron modal-header model-title" >
-         <strong>Reports  for <span ng-if="user.selected == null "> the team</span> <span ng-repeat="u in UserList" ng-if="u.user_id == user.selected"><strong>{{u.user_name}}</strong> </span> from {{SdaReport.From | date : 'MM/dd/yyyy' }}  to {{SdaReport.To | date : 'MM/dd/yyyy' }} </strong> 
-        </div>
+        
+       
+
+            <div class="panel panel-default" id="userData">
+            <div class="jumbotron modal-header model-title" >
+            <strong>Reports  for <span ng-if="user.selected == null "> the team</span> <span ng-repeat="u in UserList" ng-if="u.user_id == user.selected"><strong>{{u.user_name}}</strong> </span> from {{SdaReport.From | date : 'MM/dd/yyyy' }}  to {{SdaReport.To | date : 'MM/dd/yyyy' }} </strong> 
+            </div>
 
         <div class="panel-body">
             <div style="overflow-x:auto;">
@@ -207,7 +218,7 @@
 
 
 <!-- Producive data -->
-<div ng-if='isProd'>
+<div ng-if='isProd' ng-hide="showLoader">
     <div class="row">
         <div class="model-header">
             <!-- <div class="model-title"></div> -->
