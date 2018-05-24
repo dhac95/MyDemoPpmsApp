@@ -14,7 +14,7 @@
                 <div class="form-group col-md-3 col-lg-3">
                     <label for="team">Team Name</label>
                     <div class="dropdown">
-                        <select class="form-control" id="team" name="team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList track by Team.id" data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected" data-ng-init="team.selected = UserReport.team_id">
+                        <select class="form-control" id="team" name="team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="selectTask();selectBuild();" data-ng-model="team.selected" data-ng-init="team.selected = UserReport.team_id">
                             <option value="">Select the Team</option>
                         </select>               
                     </div>
@@ -37,7 +37,7 @@
                     <label for="task">Task Name</label>
                     <div class="dropdown">
 
-                        <select class="form-control" id="task" name="task" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask()" data-ng-init="task.selected = UserReport.tasks_id">
+                        <select class="form-control" id="task" name="task" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected" data-ng-change="selectsubTask(); EnableDeviceCount();" data-ng-init="task.selected = UserReport.tasks_id">
                             <option value="">Select the Task</option>
                
                         </select>
@@ -58,7 +58,7 @@
                     <div ng-show="myForm.subTask.$touched && myForm.subTask.$invalid" class="text-danger">*required Sub Task</div>
                 </div>
 
-                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <div class="form-group col-md-3 col-lg-3">
                     <label for="task_desc">Leave Type</label>
                     <select type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="UserReport.task_desc" data-ng-options="Leave.id as Leave.Name for Leave in LeaveTypes" data-ng-value="UserReport.task_desc">
                     </select>
@@ -70,10 +70,15 @@
                     <div ng-show="myForm.count.$invalid" class="text-danger">*Count cannot be in negative value</div>
                 </div>
 
-                <div class="form-group col-md-3 col-lg-3">
-					<label for="noofdevice">Devices</label>
-					<input type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="UserReport.noofdevice"  disabled/>
-                </div>
+               <div class="form-group col-md-3 col-lg-3" ng-if="deviceFlag">
+                    <label for="noofdevice">Device Count</label>
+                    <select type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="UserReport.noofdevice" data-ng-options="DeviceCount.id as DeviceCount.Value for DeviceCount in DeviceCounts" ng-required = "deviceFlag">
+                           <option value="">Select Device Count</option>
+                    </select>
+                     <div ng-show="myForm.noofdevice.$touched && myForm.noofdevice.$invalid && deviceFlag" class="text-danger">*required Device Count</div>
+                    <!-- <input type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="AddTask.noofdevice"  disabled/> -->
+                    <!-- <div ng-show="myForm.count.$touched && myForm.count.$invalid" class="text-danger">*required Count</div> -->
+                    </div>
 
                 <div class="form-group col-md-3 col-lg-3">
 					<label for="time">Time</label>

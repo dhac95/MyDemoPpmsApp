@@ -1,7 +1,7 @@
 ﻿<html data-ng-app="ERP">
 <head>
     <meta charset="UTF-8">
-    <title>P2R Dashboard | {{$root.title}}</title>
+    <title>PPMS Dashboard | {{$root.title}}</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +18,17 @@
     <link href="AdminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css" rel="stylesheet" />
 
     
-    <link href="Content/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <!-- <link href="Content/bootstrap/bootstrap.min.css" rel="stylesheet" /> -->
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Bootstrap 4 update -->
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" /> -->
+
     <link href="Content/ui-bootstrap-csp.css" rel="stylesheet" />
  
     <!-- Font Awesome Icons -->
@@ -33,7 +43,7 @@
     <link href="AdminLTE/dist/css/skins/_all-skins.css" rel="stylesheet" />
     <link href="AdminLTE/dist/css/AdminLTE.css" rel="stylesheet" />
     <!--<link href="AdminLTE/css/AdminLTE.min.css" rel="stylesheet" />--> 
-    <link href="AdminLTE/bootstrap/css/bootstrap-theme.css" rel="stylesheet" />
+    <!-- <link href="AdminLTE/bootstrap/css/bootstrap-theme.css" rel="stylesheet" /> -->
     <link href="AdminLTE/css/skins/_all-skins.css" rel="stylesheet" />
     <!--<link href="AdminLTE/css/skins/_all-skins.min.css" rel="stylesheet" />-->
     <link href="AdminLTE/ng-table.css" rel="stylesheet" />
@@ -82,10 +92,16 @@
     </script> -->
         <!-- Angualr Datepicker -->
 
-        <link href="Content/angularjs-datepicker/dist/angular-datepicker.css" />
+    <link href="Content/angularjs-datepicker/dist/angular-datepicker.css" />
     <link href="vendor/Loader/Loader.css" rel="stylesheet" />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
 
+<!-- Latest compiled and minified CSS -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css"> -->
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet" />
+
+   
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -139,7 +155,7 @@ desired effect
              Powerd by<strong> M*EAN 🔁 </strong> 
             </div>
             <!-- Default to the left -->
-            <strong>Version<a href="https://tiny.amazon.com/2siyuo50/P2RDashboardBugs"> Beta 0.8.8 Build(p2r042918)</a>.</strong>.
+            <strong>Version<a href="https://tiny.amazon.com/2siyuo50/P2RDashboardBugs"> Beta 0.8.9 Build(ppms052018)</a>.</strong>.
         </footer>
     </div><!-- ./wrapper -->
 </div> <!-- ./Contents -->
@@ -167,9 +183,19 @@ desired effect
     
      <!--<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>-->
     <!-- <script src="Scripts/jquery-3.1.1.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap 4 update -->
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
+
     <script src="Scripts/vendors/jquery.slimscroll.min.js"></script>
     <script src="Scripts/vendors/fastclick.js"></script>
     <script src="Scripts/vendors/select.js"></script>  
@@ -228,7 +254,25 @@ desired effect
     <script src="Scripts/Angular-Screenshot-build/angular-screenshot.min.js"></script>
     <script src="vendor/Loader/Loader.js"></script>
 
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+
+    <!-- HiCharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+
+
+    <!-- Bootstrap multiselect -->
+    <!-- <script src="vendor/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js"></script>
+     
+    <link rel="stylesheet" href="vendor/bootstrap-multiselect-master/dist/css/bootstrap-multiselect.css" /> -->
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script> -->
+
+        
+
 
     <!-- TS App -->
     <!-- Modules -->
@@ -296,6 +340,8 @@ desired effect
 
     <!-- ANGUALR DATEPICKER -->
     <script src="Content/angularjs-datepicker/dist/angular-datepicker.js"></script>  
+
+    
     
     
       
@@ -353,10 +399,18 @@ desired effect
             webshims.polyfill('forms forms-ext');
         </script> -->
 
-        <script>
+        <!-- <script>
             $(function () {
                 $("#date").datepicker();
             });
-        </script>
+        </script> -->
+
+        <!-- <script>
+          $(document).ready(function () {
+              $('#user').multiselect({
+                  includeSelectAllOption: true
+              });
+          });
+          </script> -->
 </body>
 </html>

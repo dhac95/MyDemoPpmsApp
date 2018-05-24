@@ -149,7 +149,7 @@
                       $scope.loginSts = response.Message;
                       $scope.subBtn = "Log In";
                       //$scope.loginSts = "User name or password is wrong!!! ";
-                      Notification({ message: 'User Name or password is wrong!!! <iframe src="https://giphy.com/embed/11SJ52YouBaDFS" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'} , 'error');
+                      Notification({ message: 'User Name or password is wrong!!! <div style="width:100%;height:0;padding-bottom:50%;position:relative;"><iframe src="https://giphy.com/embed/26BROFLJSFhP0cMGk" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/art-illustration-liannedias-26BROFLJSFhP0cMGk"></a></p>'} , 'error');
                       sessionStorage.removeItem('user_id');
                       sessionStorage.removeItem('first_name');
                       sessionStorage.removeItem('last_name');

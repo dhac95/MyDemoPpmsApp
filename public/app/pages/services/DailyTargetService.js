@@ -22,7 +22,9 @@
         this.setManualTarget = setManualTarget;
         this.setManualTargetByPrev = setManualTargetByPrev;
         this.setTargets = setTargets;
-
+        this.getDeviceCountList = getDeviceCountList;
+        this.saveDeviceCountList = saveDeviceCountList;
+        this.deleteDeviceCountList = deleteDeviceCountList;
         //////////////////
         function setTargets($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'mwu/', obj);
@@ -67,6 +69,15 @@
         }
         function setManualTargetByPrev($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'mcf/prev/', obj);
+        }
+        function getDeviceCountList($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'dccheck/Get/', obj);
+        }
+        function saveDeviceCountList($scope, $rootScope, $http, DailyTarget) {
+             return $http.post($rootScope.endPoint + 'dccheck/', DailyTarget);
+        }
+        function deleteDeviceCountList($scope, $rootScope, $http, DailyTarget) {
+              return $http.post($rootScope.endPoint + 'dccheck/delete/', DailyTarget);
         }
     }
 

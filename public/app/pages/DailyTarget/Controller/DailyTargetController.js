@@ -24,6 +24,9 @@
         $scope.isEditing = false;
         $scope.items.isEditing = $scope.isEditing;
         //$scope.date.selected = $filter('date')(new Date(), "MMMM YYYY");
+        $scope.deviceFlag = false;
+        $scope.DailyTarget = {};
+        $scope.switchFlag = true;
 
         $scope.removeDailyTarget = removeDailyTarget;
         $scope.getTeamList = getTeamList;
@@ -34,6 +37,47 @@
         $scope.setManualTargetByPrev = setManualTargetByPrev;
         $scope.setTargets = setTargets;
         // $scope.selectTask = selectTask;
+         $scope.DailyTarget.noofdevice = 1;
+         $scope.DeviceCounts = [
+             
+            { "id": 1, "Value": 1 },
+            { "id": 2, "Value": 2 },
+            { "id": 3, "Value": 3 },
+            { "id": 4, "Value": 4 },
+            { "id": 5, "Value": 5 },
+            { "id": 6, "Value": 6 }
+        ];
+
+         $scope.EnableDeviceCount = function () {
+              $scope.deviceFlag = false;
+             var task = $scope.task.selected;
+             for (var i in $scope.TaskList) {
+                 if ($scope.TaskList[i].task_id == task) {
+                     var tmpList = $scope.TaskList[i];
+                     if (tmpList.device_count == 1) {
+                         $scope.deviceFlag = true;
+                         $scope.loadDeviceCounts();
+                     } else {
+                          $scope.deviceFlag = false;
+                     }
+                 }
+             }
+             
+         };
+
+         $scope.EnableSwitch = function() {
+            if($scope.switchFlag) {
+                $scope.DailyTarget.noofdevice = 2;
+                $scope.loadDeviceCounts();
+                $scope.switchFlag = false;
+                $scope.deviceFlag = true;
+            } else {
+                $scope.DailyTarget.noofdevice = 1;
+                $scope.loadGrid();
+                $scope.switchFlag = true;
+                $scope.deviceFlag = false;
+            }
+         };
 
         $scope.months = [{"name" : "January" }, { "name" : "February" }, { "name" : "March" }, { "name" : "April" }, { "name" : "May" }, { "name" : "June" }, { "name" : "July" }, { "name" : "August" }, { "name" : "September" }, { "name" : "October" }, { "name" : "November" }, { "name" : "December" }];
        
@@ -59,13 +103,14 @@
 
             var tempDate = new Date();
 
-        $scope.addDailyTargetModel = function () {
-            $scope.items.isEditing = false;
+        $scope.editDeviceCountModel = function (DailyTarget) {
+            $scope.items.isEditing = true;
+            $scope.items.DailyTarget = DailyTarget;
             var modalInstance = $uibModal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
-                templateUrl: 'app/pages/DailyTarget/views/DailyTargetModel.html',
+                templateUrl: 'app/pages/DailyTarget/views/DeviceCountModel.html',
                 controller: 'DailyTargetModelController',
                 size: 'lg',
                 resolve: {
@@ -77,6 +122,7 @@
 
             modalInstance.result.then(function () {
                 $scope.loadGrid();
+                $scope.loadDeviceCounts();
             }, function () {
             });
         };
@@ -99,6 +145,7 @@
             });
             modalInstance.result.then(function () {
                 $scope.loadGrid();
+                $scope.loadDeviceCounts();
             }, function () {
             });
         };
@@ -114,6 +161,7 @@
                             if ($scope.TeamList[team].team_id == $scope.DailyTarget.team_id) {
                                 $scope.team.selected = $scope.TeamList[team].team_id;
                                 $scope.loadGrid();
+                                $scope.loadDeviceCounts();
                                 $scope.selectTask();
                             }
                             
@@ -122,12 +170,14 @@
                     else {
                         $scope.team.selected = $scope.TeamList[0].team_id;
                         $scope.loadGrid();
+                        $scope.loadDeviceCounts();
                         $scope.selectTask();
                     }
                 }
                 else {
                     $scope.team.selected = $scope.TeamList[0].team_id;
                     $scope.loadGrid();
+                    $scope.loadDeviceCounts();
                     $scope.selectTask();
                 }
 
@@ -149,11 +199,12 @@
                     for (var task in $scope.TaskList) {
                         if ($scope.TaskList[task].task_id == $scope.DailyTarget.task) {
                             $scope.task.selected = $scope.TaskList[task];
-                            $scope.selectsubTask();
+                            
                         }
                     }
                 }
-                
+                $scope.selectsubTask();
+                $scope.EnableDeviceCount();
             },
                 function (errorPl) {
                     Notification({ message: 'Some Error in Getting Records.' }, 'error');
@@ -191,16 +242,7 @@
                     month: $scope.myMonth.name + " " + $scope.myYear,
                     user_id: $rootScope.user_id,
                 };
-            // }
-            // else {
-            //     $scope.temp_team = $scope.TeamList[0].team_id;
-
-            //     obj = {
-            //         team_id: $scope.temp_team,
-            //         month: $scope.myMonth.name + " " + $scope.myYear,
-            //         user_id: $rootScope.user_id,
-            //     };
-            // }
+           
             if (window.confirm("***Note*** : You are about to calcute monthly targets \n Click Ok to continue")) {
                 DailyTargetService.setTargets($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code === 200) {
@@ -243,6 +285,7 @@
                     Notification.success("Added Successful");
                     $timeout(function () {
                         $scope.loadGrid();
+                        $scope.loadDeviceCounts();
                     }, 50);
                 }
                 else if (res.data.code === 300) {
@@ -265,22 +308,14 @@
                     month: $scope.myMonth.name + " " + $scope.myYear,
                     user_id: $rootScope.user_id,
                 };
-            // }
-            // else {
-            //     $scope.temp_team = $scope.TeamList[0].team_id;
-
-            //     obj = {
-            //         team_id: $scope.temp_team,
-            //         month: $scope.myMonth.name + " " + $scope.myYear,
-            //         user_id: $rootScope.user_id,
-            //     };
-            // }
+           
             if (window.confirm("***Note*** : Use this feature only if you are unsure of how many tasks and subtasks the team have.. \nLoad this Only before adding Manual count by yourself \nClick OK to contiune ")) {
                 DailyTargetService.setManualTarget($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code === 200) {
                         Notification.success("Loaded Successful");
                         $timeout(function () {
                         $scope.loadGrid();
+                        $scope.loadDeviceCounts();
                         } , 250);
                         
                     }
@@ -304,22 +339,14 @@
                     month: $scope.myMonth.name + " " + $scope.myYear,
                     user_id: $rootScope.user_id,
                 };
-            // }
-            // else {
-            //     $scope.temp_team = $scope.TeamList[0].team_id;
-
-            //     obj = {
-            //         team_id: $scope.temp_team,
-            //         month: $scope.myMonth.name + " " + $scope.myYear,
-            //         user_id: $rootScope.user_id,
-            //     };
-            // }
+           
             if (window.confirm("***Note*** : This will set daily target same as previous month's target \nUse this feature only if maximum number of counts are same \nClick OK to contiune ")) {
                 DailyTargetService.setManualTargetByPrev($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code === 200) {
                         Notification.success("Loaded Successful");
                         $timeout(function () {
                             $scope.loadGrid();
+                            $scope.loadDeviceCounts();
                         }, 250);
 
                     }
@@ -346,22 +373,14 @@
                     month: $scope.myMonth.name + " " + $scope.myYear,
                     user_id: $rootScope.user_id,
                 };
-            // }
-            // else {
-            //     $scope.temp_team = $scope.TeamList[0].team_id;
-
-            //     obj = {
-            //         team_id: $scope.temp_team,
-            //         month: $scope.myMonth.name + " " + $scope.myYear,
-            //         user_id: $rootScope.user_id,
-            //     };
-            // }
+        
             if (window.confirm("***Note*** :  Non Targets cannot be modified Once set! \n If you want change  to manual you have to first change the task or subtask before you set Auto target \n Click OK to contiune ")) {
                 DailyTargetService.setNonTarget($scope, $rootScope, $http, obj).then(function (res) {
                     if (res.data.code === 200) {
                         Notification.success("Added Successful");
                         $timeout(function () {
                             $scope.loadGrid();
+                            $scope.loadDeviceCounts();
                         }, 50);
                     }
                     else if (res.data.code === 300) {
@@ -377,21 +396,11 @@
         }
 
         $scope.loadGrid = function () {
-            var obj = {};
-            // if ($rootScope.team_count > 1) {
-                 obj = {
+            var  obj = {
                     team_id : $scope.team.selected , 
                     month: $scope.myMonth.name + " " + $scope.myYear,
                 };
-            // }
-            // else {
-            //     $scope.temp_team = $scope.TeamList[0].team_id;
-                
-            //      obj = {
-            //         team_id: $scope.temp_team,
-            //        month: $scope.myMonth.name + " " + $scope.myYear,
-            //     };
-            // }
+          
             var self = this;
             DailyTargetService.getAllDailyTargetbyID($scope, $rootScope, $http, obj).then(function (responce) {
                 $scope.resultList = responce.data;
@@ -401,23 +410,51 @@
 
         };
 
+        $scope.loadDeviceCounts = function () {
+         
+            var obj = {
+                team_id: $scope.team.selected,
+                month: $scope.myMonth.name + " " + $scope.myYear,
+            };
+           
+            var self = this;
+            DailyTargetService.getDeviceCountList($scope, $rootScope, $http, obj).then(function (responce) {
+                $scope.countList = responce.data;
+                $scope.tableParamsForDC = new NgTableParams({}, {
+                    dataset: responce.data
+                });
+
+            });
+
+        };
 
         function saveDailyTarget(DailyTarget) {
 
             $scope.DailyTarget.team_id = $scope.team.selected;
 
-            // if ($rootScope.team_count > 1) {
-            //     $scope.DailyTarget.team_id = $scope.team.selected;
-            // }
-            // else {
-            //     $scope.DailyTarget.team_id = $scope.temp_team;
-            // }
-             $scope.DailyTarget.month = $scope.myMonth.name + " " + $scope.myYear;
+           
+            $scope.DailyTarget.month = $scope.myMonth.name + " " + $scope.myYear;
             $scope.DailyTarget.task_id = $scope.task.selected;
             $scope.DailyTarget.sub_task_id = $scope.subtask.selected;
             $scope.DailyTarget.action = $rootScope.user_id;
             $scope.DailyTarget.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
             $scope.DailyTarget.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+
+             if ($scope.deviceFlag && $scope.DailyTarget.noofdevice > 1) {
+                 $scope.DailyTarget.noofdevice = $scope.DailyTarget.noofdevice;
+                 $scope.DailyTarget.percentage = $scope.DailyTarget.percentage;
+                 DailyTargetService.saveDeviceCountList($scope, $rootScope, $http, $scope.DailyTarget).then(function (res) {
+                     if (res.data.code === 200) {
+                         Notification.success("Added Successful");
+                         $scope.loadDeviceCounts();
+                         $scope.loadGrid();
+                     } else {
+                         Notification.error("Error while saving! Try Again.");
+                     }
+                 }, function (err) {
+                     Notification("Error in processing sever error 500! Try Again.");
+                 });
+             }
 
             DailyTargetService.addDailyTarget($scope, $rootScope, $http, $scope.DailyTarget).then(function (res) {
                 if (res.data.code === 200) {
@@ -456,6 +493,27 @@
         }
     }
 
+    function removeDailyCount(DailyTarget) {
+           // if (DailyTarget.deletion === 1) {
+                var obj ={ 
+                         s_no : DailyTarget.s_no
+                     };
+                if (window.confirm("Do you really want to delete this DailyTarget")) {
+                    DailyTargetService.deleteDeviceCountList($scope, $rootScope, $http, obj).then(function (res) {
+                        if (res.data.code === 200) {
+                            Notification.success("Deleted Successful");
+                            $scope.loadGrid();
+                        } else {
+                            Notification.error("Error Occurred");
+                            
+                        }
+                    }, function (err) {
+                        Notification("Error while processing! Try Again.");
+                    });
+                }
+        }
+    
+
 
     DailyTargetModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance', 'DailyTargetService', 'AddTaskService', 'NgTableParams', 'Notification'];
     function DailyTargetModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, DailyTargetService, AddTaskService, NgTableParams, Notification) {
@@ -483,9 +541,23 @@
                 $scope.DailyTarget.month = $scope.DailyTarget.month_from;
                 $scope.DailyTarget.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
 
+                if ($scope.deviceFlag && $scope.DailyTarget.noofdevice > 1) {
+                    $scope.DailyTarget.noofdevice = $scope.DailyTarget.noofdevice;
+                    $scope.DailyTarget.percentage = $scope.DailyTarget.percentage;
+                    DailyTargetService.saveDeviceCountList($scope, $rootScope, $http, $scope.DailyTarget).then(function (res) {
+                        if (res.data.code === 200) {
+                            Notification.success("Updated Successfully");
+                            $uibModalInstance.close();
+                        } else {
+                            Notification.error("Error while saving! Try Again.");
+                        }
+                    }, function (err) {
+                        Notification("Error in processing sever error 500! Try Again.");
+                    });
+                }
                 DailyTargetService.addDailyTarget($scope, $rootScope, $http, $scope.DailyTarget).then(function (res) {
                     if (res.data.code === 200) {
-                        Notification.success("Update Successful");
+                        Notification.success("Updated Successfully");
                         $uibModalInstance.close();
                     } else {
                         Notification.error("Error while updating! Try Again.");
@@ -511,6 +583,22 @@
                 $scope.DailyTarget.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 $scope.DailyTarget.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
                 $scope.DailyTarget.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+
+                if ($scope.deviceFlag && $scope.DailyTarget.noofdevice > 1) {
+                    $scope.DailyTarget.noofdevice = $scope.DailyTarget.noofdevice;
+                    $scope.DailyTarget.percentage = $scope.DailyTarget.percentage;
+                    DailyTargetService.saveDeviceCountList($scope, $rootScope, $http, $scope.DailyTarget).then(function (res) {
+                        if (res.data.code === 200) {
+                            Notification.success("Added Successful");
+                            $uibModalInstance.close();
+                        } else {
+                            Notification.error("Error while saving! Try Again.");
+                        }
+                    }, function (err) {
+                        Notification("Error in processing sever error 500! Try Again.");
+                    });
+                }
+
                 DailyTargetService.addDailyTarget($scope, $rootScope, $http, $scope.DailyTarget).then(function (res) {
                     if (res.data.code === 200) {
                         Notification.success("Added Successful");
@@ -524,6 +612,31 @@
             }
         };
 
+          $scope.saveDeviceCount = function (DailyTarget) {
+              if (items.isEditing) {
+
+                  $scope.DailyTarget.team_id = $scope.team.selected;
+                  $scope.DailyTarget.task_id = $scope.task.selected;
+                  $scope.DailyTarget.sub_task_id = $scope.subtask.selected;
+                  $scope.DailyTarget.action = $rootScope.user_id;
+                  $scope.DailyTarget.month = $scope.DailyTarget.month;
+                  $scope.DailyTarget.maintain_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
+                  $scope.DailyTarget.noofdevice = $scope.DailyTarget.noofdevice;
+                  $scope.DailyTarget.percentage = $scope.DailyTarget.percentage;
+                      DailyTargetService.saveDeviceCountList($scope, $rootScope, $http, $scope.DailyTarget).then(function (res) {
+                          if (res.data.code === 200) {
+                              Notification.success("Updated Successfully");
+                              $uibModalInstance.close();
+                          } else {
+                              Notification.error("Error while saving! Try Again.");
+                          }
+                      }, function (err) {
+                          Notification("Error in processing sever error 500! Try Again.");
+                      });
+                  
+              } 
+          };
+
         getTeamList();
         function getTeamList() {
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
@@ -535,7 +648,7 @@
                             if ($scope.TeamList[team].team_id == $scope.DailyTarget.team_id) {
                                 $scope.team.selected = $scope.TeamList[team].team_id;
                                
-                                $scope.selectTask();
+                                // $scope.selectTask();
                             }
 
                         }
@@ -543,14 +656,16 @@
                     else {
                         $scope.team.selected = $scope.TeamList[0].team_id;
                       
-                        $scope.selectTask();
+                        // $scope.selectTask();
                     }
                 }
                 else {
                     $scope.team.selected = $scope.TeamList[0].team_id;
                     
-                    $scope.selectTask();
+                    // $scope.selectTask();
                 }
+
+                 $scope.selectTask();
 
             },
                 function (errorPl) {
@@ -568,12 +683,13 @@
                 $scope.TaskList = pl.data;
                 if (items.isEditing) {
                     for (var task in $scope.TaskList) {
-                        if ($scope.TaskList[task].task_id == $scope.DailyTarget.task) {
+                        if ($scope.TaskList[task].task_id == $scope.DailyTarget.task_id) {
                             $scope.task.selected = $scope.TaskList[task].task_id;
                             $scope.selectsubTask();
                         }
                     }
                 }
+                $scope.EnableDeviceCount();
                 $scope.selectsubTask();
             },
                 function (errorPl) {
@@ -589,7 +705,7 @@
                 $scope.subTaskList = pl.data;
                 if (items.isEditing) {
                     for (var subtask in $scope.subTaskList) {
-                        if ($scope.subTaskList[subtask].sub_task_id == $scope.DailyTarget.sub_task) {
+                        if ($scope.subTaskList[subtask].sub_task_id == $scope.DailyTarget.sub_task_id) {
                             $scope.subtask.selected = $scope.subTaskList[subtask].sub_task_id;
 
                         }
@@ -604,6 +720,30 @@
                 });
         };
 
+        $scope.DeviceCounts = [
+             
+            { "id": 1, "Value": 1 },
+            { "id": 2, "Value": 2 },
+            { "id": 3, "Value": 3 },
+            { "id": 4, "Value": 4 },
+            { "id": 5, "Value": 5 },
+            { "id": 6, "Value": 6 }
+        ];
+
+         $scope.EnableDeviceCount = function () {
+              $scope.deviceFlag = false;
+             var task = $scope.task.selected;
+             for (var i in $scope.TaskList) {
+                 if ($scope.TaskList[i].task_id == task) {
+                     var tmpList = $scope.TaskList[i];
+                     if (tmpList.device_count == 1) {
+                         $scope.deviceFlag = true;
+                     } else {
+                          $scope.deviceFlag = false;
+                     }
+                 }
+             }
+         };
 
 
         $scope.cancel = function () {

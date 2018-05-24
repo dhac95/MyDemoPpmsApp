@@ -56,6 +56,7 @@ var WorkUnit = require('./routes/LoadWorkUnit');
 var TeamMates = require('./routes/TeamMates');
 var checkDE = require('./routes/CheckDEStatus');
 var mapbuild = require('./routes/MapBuilds');
+var dccheck = require('./routes/DeviceCountCheck');
 // var team = require('./routes/team');
 // Express init
 var app = express();  
@@ -121,6 +122,7 @@ app.use('/WorkUnit', WorkUnit);
 app.use('/TeamMates', TeamMates);
 app.use('/checkDE', checkDE);
 app.use('/mapbuild', mapbuild);
+app.use('/dccheck', dccheck);
 
 //process.env.NODE_ENV = 'production';
 

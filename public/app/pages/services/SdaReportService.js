@@ -17,6 +17,7 @@
         this.getProductiviyByUser = getProductiviyByUser;
         this.getProductiviyByTask = getProductiviyByTask;
         this.getProductiviyBySubTask = getProductiviyBySubTask;
+        this.getSubtaksByMultipleTasks = getSubtaksByMultipleTasks;
 
         /////////////
 
@@ -46,6 +47,9 @@
         function getProductiviyBySubTask($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'WorkUnit/subtask/', obj);
         }
+         function getSubtaksByMultipleTasks($scope, $rootScope, $http, obj) {
+             return $http.post($rootScope.endPoint + 'loadTasks/mulsubtask/', obj);
+         }
 
     }
 

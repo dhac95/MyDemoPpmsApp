@@ -22,7 +22,7 @@
                 <label for="task">Task Name</label>
                 <div class="dropdown">
                     <select class="form-control" id="task" name="task" data-ng-options="Task.task_id as Task.task_name for Task in TaskList"
-                        data-ng-change="selectsubTask();" data-ng-model="task.selected" data-ng-init="task.selected = DailyTarget.task"
+                        data-ng-change="selectsubTask(); EnableDeviceCount();" data-ng-model="task.selected" data-ng-init="task.selected = DailyTarget.task"
                         required>
                         <option value="">Select the Task</option>
                     </select>
@@ -42,10 +42,17 @@
                 <div ng-show="myForm.subtask.$touched && myForm.subtask.$invalid" class="text-danger">*required SubTask</div>
             </div>
 
+            <div class="form-group col-sm-3 col-md-3 col-lg-3" ng-hide="deviceFlag">
+                <label for="">Device Count</label>
+                <input type="number" class="form-control" ng-min = "0" value="1" placeholder="1" disabled/>
+            </div>  
+
+
             <div class="form-group col-sm-3 col-md-3 col-lg-3">
                 <label for="DailyTarget">DailyTarget</label>
-                <input type="number" class="form-control" id="DailyTarget" name="DailyTarget" data-ng-model="DailyTarget.con_fac" required/>
+                <input type="number" class="form-control" id="DailyTarget" name="DailyTarget" data-ng-model="DailyTarget.con_fac" ng-min = "0" required/>
                 <div ng-show="myForm.DailyTarget.$touched && myForm.DailyTarget.$invalid" class="text-danger">*required DailyTarget</div>
+                <div ng-show="myForm.DailyTarget.$invalid" class="text-danger">*DailyTarget cannot be in negative value</div>
             </div>
 
         </div>

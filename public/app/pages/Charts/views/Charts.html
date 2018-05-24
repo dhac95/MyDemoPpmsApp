@@ -33,8 +33,8 @@
                 <label for="user">User Name</label>
                 <div class="dropdown">
                     <select class="form-control" id="user" name="user" data-ng-options="User.user_id as User.user_name for User in UserList "
-                        data-ng-model="user.selected">
-                        <option value="">Select the User</option>
+                        data-ng-model="user.selected" multiple="multiple">
+                        <option value="">None</option>
                     </select>
                 </div>
                 <!-- <span ng-show="myForm.user.$touched && myForm.user.$invalid" class="text-danger">*required user</span> -->
@@ -44,8 +44,8 @@
                 <label for="Task">Task Name</label>
                 <div class="dropdown">
                     <select class="form-control" data-ng-options="Task.task_id as Task.task_name for Task in TaskList" data-ng-model="task.selected"
-                        data-ng-change="selectsubTask()">
-                        <option value="">Select the Task</option>
+                        data-ng-change="selectsubTask()" multiple="multiple">
+                        <option value="">None</option>
                     </select>
 
                 </div>
@@ -54,8 +54,10 @@
                 <label for="subTask">Sub Task Name</label>
                 <div class="dropdown">
 
-                    <select class="form-control" data-ng-options="subTask.sub_task_id as subTask.sub_task_name for subTask in subTaskList" data-ng-model="subtask.selected">
-                        <option value="">Select the subTask</option>
+                    <select class="form-control" data-ng-options="subTask.sub_task_id as subTask.sub_task_name for subTask in subTaskList" 
+                    data-ng-model="subtask.selected" multiple="multiple"
+                    data-ng-disabled='subTaskList == "" || subTaskList == null'>
+                        <option value="">None</option>
 
                     </select>
 

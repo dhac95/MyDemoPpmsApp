@@ -1,6 +1,5 @@
 
 var express = require('express');
-var md5 = require('md5');
 var router = express.Router();
 var nodestrtotime = require('nodestrtotime');
 var in_array = require('in_array');
@@ -139,7 +138,7 @@ router.post('/' , function(req , res , next) {
 });
 
 router.post('/Get' , function(req , res , next){
-    db.query('SELECT amz_daily_target.s_no , amz_daily_target.month_from , amz_daily_target.team , amz_teams.team_name , amz_daily_target.task , amz_tasks.task_name , amz_daily_target.sub_task , amz_sub_tasks.sub_task_name , amz_daily_target.about_cf , amz_daily_target.con_fac , amz_daily_target.added_by , AddedName.user_name as AddedBy , amz_daily_target.modified_by , ModifiedName.user_name as ModifiedBy FROM amz_daily_target LEFT JOIN amz_teams ON amz_daily_target.team = amz_teams.team_id LEFT JOIN amz_tasks ON amz_daily_target.task = amz_tasks.task_id LEFT JOIN amz_sub_tasks ON amz_daily_target.sub_task = amz_sub_tasks.sub_task_id LEFT JOIN amz_login as Added ON amz_daily_target.added_by = Added.user_id LEFT JOIN amz_login as AddedName ON amz_daily_target.added_by = AddedName.user_id LEFT JOIN amz_login as ModifiedName  ON amz_daily_target.modified_by = ModifiedName.user_id WHERE amz_daily_target.month_from = ? AND amz_daily_target.team = ? AND amz_daily_target.status = 1 AND amz_daily_target.deletion = 0' , [req.body.month , req.body.team_id] , function(errors , results , fields)  {
+    db.query('SELECT amz_daily_target.s_no , amz_daily_target.month_from , amz_daily_target.team , amz_teams.team_name , amz_daily_target.task , amz_tasks.task_name , amz_daily_target.sub_task , amz_sub_tasks.sub_task_name , amz_daily_target.about_cf , amz_daily_target.con_fac , amz_daily_target.added_by , AddedName.user_name as AddedBy , amz_daily_target.modified_by , ModifiedName.user_name as ModifiedBy FROM amz_daily_target LEFT JOIN amz_teams ON amz_daily_target.team = amz_teams.team_id LEFT JOIN amz_tasks ON amz_daily_target.task = amz_tasks.task_id LEFT JOIN amz_sub_tasks ON amz_daily_target.sub_task = amz_sub_tasks.sub_task_id LEFT JOIN amz_login as Added ON amz_daily_target.added_by = Added.user_id LEFT JOIN amz_login as AddedName ON amz_daily_target.added_by = AddedName.user_id LEFT JOIN amz_login as ModifiedName  ON amz_daily_target.modified_by = ModifiedName.user_id WHERE amz_daily_target.month_from = ? AND amz_daily_target.team = ? AND amz_daily_target.status = 1 AND amz_daily_target.deletion = 0 ORDER BY amz_daily_target.s_no DESC', [req.body.month, req.body.team_id], function (errors, results, fields) {
         if(errors) {
             res.send(errors);
         } else {

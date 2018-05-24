@@ -6,8 +6,53 @@
         .module('ERP.pages.SdaReport')
         .controller('SdaReportController', SdaReportController)
         .controller('SdaReportModelController', SdaReportModelController);
+        // .directive('multiSelect', function () {
 
+        //     function link(scope, element) {
+        //         var options = {
+        //               enableFiltering: true,
+        //               includeSelectAllOption: true,
+        //             onChange: function () {
+        //                 element.change();
+        //             }
+        //         };
+        //         element.multiselect(options);
+        //     }
 
+        //     return {
+        //         restrict: 'A',
+        //         link: link
+        //     };
+        // })
+        //          .config(['$provide', function ($provide) {
+        //              $provide.decorator('selectDirective', ['$delegate', function ($delegate) {
+        //                  var directive = $delegate[0];
+
+        //                  directive.compile = function () {
+
+        //                      function post(scope, element, attrs, ctrls) {
+        //                          directive.link.post.apply(this, arguments);
+
+        //                          var ngModelController = ctrls[1];
+        //                          if (ngModelController && attrs.multiSelect !== null) {
+        //                              var originalRender = ngModelController.$render;
+        //                              ngModelController.$render = function () {
+        //                                  originalRender();
+        //                                  element.multiselect('refresh');
+        //                              };
+        //                          }
+        //                      }
+
+        //                      return {
+        //                          pre: directive.link.pre,
+        //                          post: post
+        //                      };
+        //                  };
+
+        //                  return $delegate;
+        //              }]);
+        //          }]);
+      
     SdaReportController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'Excel', '$timeout', 'SdaReportService', 'AddTaskService', '$uibModal', 'NgTableParams', 'Notification'];
     function SdaReportController($scope, $rootScope, $http, $filter, Excel, $timeout, SdaReportService, AddTaskService, $uibModal, NgTableParams, Notification) {
 
@@ -28,7 +73,14 @@
         $scope.showProductivityByUser = showProductivityByUser;
         $scope.showProductivityByTask = showProductivityByTask;
         $scope.showProductivityBySubTask = showProductivityBySubTask;
-       
+
+        //   $scope.searchSettings = {
+        //       enableSearch: true , 
+        //       scrollableHeight: '200px', 
+        //       scrollable: true, 
+        //       styleActive: true
+        //   };
+        
 
         $scope.team = {};
         $scope.build = {};
@@ -91,6 +143,8 @@
         today = yyyy + '-' + mm + '-' + dd;
         document.getElementById("from").setAttribute("max", today);
         document.getElementById("to").setAttribute("max", today);
+
+        
 
 
         // var Create = new Date($rootScope.create_date);
@@ -165,7 +219,7 @@
 
 
             $scope.selectUsers = function() {
-                //  $scope.task.selected = {};
+                //   $scope.user.selected = {};
                   var team_id = $scope.team.selected;
                   var promiseGet = SdaReportService.getLoadedUsers($scope, $rootScope, $http ,team_id );
                   promiseGet.then(function (pl) {
@@ -185,7 +239,7 @@
                };
     
             $scope.selectTask = function() {
-                  //  $scope.task.selected = {};
+                    // $scope.task.selected = {};
                     var team_id = $scope.team.selected;
                     var promiseGet = AddTaskService.getLoadedTasks($scope, $rootScope, $http ,team_id );
                     promiseGet.then(function (pl) {
@@ -205,9 +259,15 @@
                  };
     
             $scope.selectsubTask = function() {
-                //  $scope.task.selected = {};
-                  var task_id = $scope.task.selected;
-                  var promiseGet = AddTaskService.getLoadedsubTasks($scope, $rootScope, $http ,task_id );
+                //   $scope.subtask.selected = {};
+               
+
+                  var obj = { 
+                      task_id: $scope.task.selected 
+                    };
+                
+                    if (obj.task_id != undefined) {
+                  var promiseGet = SdaReportService.getSubtaksByMultipleTasks($scope, $rootScope, $http, obj);
                   promiseGet.then(function (pl) {
                        $scope.subTaskList = pl.data; 
                     if ($scope.isEditing) {
@@ -221,15 +281,23 @@
                         function (errorPl) {
                             Notification('Some Error in Getting Records.');
                         });
+                    }
           };
+          
 
-          $scope.exportToExcel=function(tableId){ // ex: '#my-table'
-          for (var i in $scope.UserList) {
-              if( $scope.UserList[i].user_id == $scope.user.selected)
-              {
-                    var uname =  $scope.UserList[i].user_name;
-              }
-          }
+          $scope.exportToExcel=function(tableId){ 
+              var uname = [];// ex: '#my-table'
+           for (var i in $scope.UserList) {
+               for (var k in $scope.user.selected) {
+                   if ($scope.UserList[i].user_id == $scope.user.selected[k]) {
+                        uname.push($scope.UserList[i].user_name);
+                   }
+               }
+               //   if( $scope.UserList[i].user_id == $scope.user.selected)
+               //   {
+               //         var uname =  $scope.UserList[i].user_name;
+               //   }
+           }
           for(var j in $scope.TeamList) {
               if ($scope.TeamList[j].team_id == $scope.team.selected) {
                   var tname = $scope.TeamList[j].team_name;
@@ -458,6 +526,7 @@
                     });
             }
         }
+        $scope.tmpUserName = []; 
 
       
         function showSdaReports() {
@@ -473,6 +542,7 @@
             var userOtTasks = $scope.SdaReport.Ot;
             $scope.isProd = false;
             $scope.showLoader = true;
+
 
             var obj = {
                 From : formatDate1,
@@ -496,6 +566,14 @@
             promiseGet.then(function (pl) {
                  $scope.ReportList = pl.data;
                  $scope.showLoader = false;
+                    $scope.tmpUserName = [];
+                     for (var i in $scope.UserList) {
+                         for (var k in $scope.user.selected) {
+                             if ($scope.UserList[i].user_id == $scope.user.selected[k]) {
+                                 $scope.tmpUserName.push($scope.UserList[i].user_name);
+                             }
+                         }
+                     }
                  $scope.getTotalTime(); 
             },
                   function (errorPl) {

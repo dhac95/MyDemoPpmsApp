@@ -25,7 +25,7 @@
         $scope.removeAddTask = removeAddTask;
         $scope.saveAddTask = saveAddTask;
        // $scope.getTaskbyDate = getTaskbyDate;
-       
+        $scope.deviceFlag = false;
 
         $scope.team = {};
         $scope.date = {};
@@ -43,6 +43,7 @@
             { "id": 2, "Name": "Manager Not Approved" },
             { "id": 3, "Name": "Unexpected" }
         ];
+
 
         $scope.addAddTaskModel = function () {
             $scope.items.isEditing = false;
@@ -288,6 +289,7 @@
                         }
                      }
                         $scope.selectsubTask();
+                        $scope.EnableDeviceCount();
                     },
                           function (errorPl) {
                               Notification({message :'Some Error in Getting Records.'}, 'errorl');
@@ -326,6 +328,30 @@
             // $scope.AddTask.TotalTime = grandTot;
             return totCount;
         }
+
+          $scope.DeviceCounts = [
+            { "id": 1, "Value": "1" },
+            { "id": 2, "Value": "2" },
+            { "id": 3, "Value": "3" },
+            { "id": 4, "Value": "4" },
+            { "id": 5, "Value": "5" },
+            { "id": 6, "Value": "6" }
+        ];
+
+         $scope.EnableDeviceCount = function () {
+              $scope.deviceFlag = false;
+             var task = $scope.task.selected;
+             for (var i in $scope.TaskList) {
+                 if ($scope.TaskList[i].task_id == task) {
+                     var tmpList = $scope.TaskList[i];
+                     if (tmpList.device_count == 1) {
+                         $scope.deviceFlag = true;
+                     } else {
+                          $scope.deviceFlag = false;
+                     }
+                 }
+             }
+         };
 
         // Export to excel
         $scope.exportToExcel = function (tableId) { // ex: '#my-table'
@@ -514,6 +540,7 @@
                     }
                  }
                     $scope.selectsubTask();
+                    $scope.EnableDeviceCount();
                 },
                       function (errorPl) {
                           $log.error('Some Error in Getting Records.', errorPl);
@@ -566,6 +593,29 @@
             { "id": 3, "Name": "Unexpected" }
         ];
 
+           $scope.DeviceCounts = [
+            { "id": 1, "Value": "1" },
+            { "id": 2, "Value": "2" },
+            { "id": 3, "Value": "3" },
+            { "id": 4, "Value": "4" },
+            { "id": 5, "Value": "5" },
+            { "id": 6, "Value": "6" }
+        ];
+
+         $scope.EnableDeviceCount = function () {
+              $scope.deviceFlag = false;
+             var task = $scope.task.selected;
+             for (var i in $scope.TaskList) {
+                 if ($scope.TaskList[i].task_id == task) {
+                     var tmpList = $scope.TaskList[i];
+                     if (tmpList.device_count == 1) {
+                         $scope.deviceFlag = true;
+                     } else {
+                          $scope.deviceFlag = false;
+                     }
+                 }
+             }
+         };
         // getLeaveTypes();
         // function getLeaveTypes() {
 

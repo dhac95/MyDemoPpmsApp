@@ -25,6 +25,7 @@
         $scope.removeUserReport = removeUserReport;
         $scope.showUserReports = showUserReports;
        
+         $scope.deviceFlag = false;
 
         $scope.team = {};
         $scope.build = {};
@@ -391,7 +392,7 @@
                    if ($scope.isEditing) {
                                    for (var team in $scope.TeamList) {
                                     if ($scope.TeamList[team].team_id == $scope.UserReport.team_id) {
-                                       $scope.team.selected = $scope.TeamList[team];
+                                       $scope.team.selected = $scope.TeamList[team].team_id;
                                       }
                 }
              }
@@ -412,7 +413,7 @@
                  if ($scope.isEditing) { 
                    for (var build in $scope.BuildList) {
                       if ($scope.BuildList[build].build_no == $scope.AddTask.build) {
-                          $scope.build.selected = $scope.BuildList[build];
+                          $scope.build.selected = $scope.BuildList[build].build_no;
                       }
                   }
                  }
@@ -431,11 +432,12 @@
              if ($scope.isEditing) {
                      for (var task in $scope.TaskList) {
                         if ($scope.TaskList[task].task_id == $scope.UserReport.tasks_id) {
-                            $scope.task.selected = $scope.TaskList[task];
+                            $scope.task.selected = $scope.TaskList[task].task_id;
                         }
                     }
                  }
                     $scope.selectsubTask();
+                    $scope.EnableDeviceCount();
                 },
                       function (errorPl) {
                           Notification('Some Error in Getting Records.');
@@ -451,7 +453,7 @@
                 if ($scope.isEditing) {
                    for (var subtask in $scope.subTaskList) {
                       if ($scope.subTaskList[subtask].sub_task_id == $scope.UserReport.sub_task_id) {
-                          $scope.subtask.selected = $scope.subTaskList[subtask];
+                          $scope.subtask.selected = $scope.subTaskList[subtask].sub_task_id;
                       }
                   }
              }
@@ -467,6 +469,30 @@
             { "id": 2, "Name": "Manager Not Approved" },
             { "id": 3, "Name": "Unexpected" }
         ];
+
+         $scope.DeviceCounts = [
+            { "id": 1, "Value": "1" },
+            { "id": 2, "Value": "2" },
+            { "id": 3, "Value": "3" },
+            { "id": 4, "Value": "4" },
+            { "id": 5, "Value": "5" },
+            { "id": 6, "Value": "6" }
+        ];
+
+         $scope.EnableDeviceCount = function () {
+              $scope.deviceFlag = false;
+             var task = $scope.task.selected;
+             for (var i in $scope.TaskList) {
+                 if ($scope.TaskList[i].task_id == task) {
+                     var tmpList = $scope.TaskList[i];
+                     if (tmpList.device_count == 1) {
+                         $scope.deviceFlag = true;
+                     } else {
+                          $scope.deviceFlag = false;
+                     }
+                 }
+             }
+         };
         
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');

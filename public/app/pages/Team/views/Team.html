@@ -9,7 +9,7 @@
             </i> Add New
         </button>
         <div style="overflow-x:auto;">
-            <table ng-table="tableParams" class="table table-striped table-responsive" show-filter="true">
+            <table ng-table="tableParams" class="table table-condensed table-bordered table-striped" show-filter="true">
 
                 <tr ng-repeat="row in $data">
                     <td class="text-center" title="'Team ID'" filter="{team_id : 'text'}" sortable="'team_id'">{{ row.team_id }}</td>

@@ -44,7 +44,7 @@
                     <label for="task">Task Name</label>
                     <div class="dropdown">
                         <select class="form-control" id="task" name="task" data-ng-options="Task.task_id as Task.task_name for Task in TaskList"
-                            data-ng-change="selectsubTask()" data-ng-model="task.selected" data-ng-init="task.selected = DailyTarget.task"
+                            data-ng-change="selectsubTask(); EnableDeviceCount();" data-ng-model="task.selected" data-ng-init="task.selected = DailyTarget.task"
                             required>
                             <option value="">Select the Task</option>
                         </select>
@@ -63,11 +63,34 @@
                     <div ng-show="myForm.subtask.$touched && myForm.subtask.$invalid" class="text-danger">*required SubTask</div>
                 </div>
 
-            <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                <label for="DailyTarget">DailyTarget</label>
-                <input type="number" class="form-control" id="DailyTarget" name="DailyTarget" data-ng-model="DailyTarget.con_fac" required/>
-                <div ng-show="myForm.DailyTarget.$touched && myForm.DailyTarget.$invalid" class="text-danger">*required DailyTarget</div>
-            </div>  
+                <div class="form-group col-sm-3 col-md-3 col-lg-3" ng-hide="deviceFlag">
+                    <label for="">Device Count</label>
+                    <input type="number" class="form-control" ng-min = "0" value="1" placeholder="1" disabled/>
+                </div>  
+
+                 <div class="form-group col-sm-3 col-md-3 col-lg-3" ng-show="deviceFlag">
+                    <label for="noofdevice">Device Count</label>
+                    <select type="text" class="form-control" id="noofdevice" name="noofdevice" data-ng-model="DailyTarget.noofdevice" data-ng-options="DeviceCount.id as DeviceCount.Value for DeviceCount in DeviceCounts" ng-required = "deviceFlag" ng-disabled = "!deviceFlag" data-ng-change="loadDeviceCounts();">
+                          
+                    </select>
+                     <div ng-show="myForm.noofdevice.$touched && myForm.noofdevice.$invalid && deviceFlag" class="text-danger">*required Device Count</div>
+                </div>
+
+                <div class="form-group col-sm-3 col-md-3 col-lg-3" ng-hide="deviceFlag && DailyTarget.noofdevice > 1">
+                    <label for="DailyTarget">DailyTarget</label>
+                    <input type="number" class="form-control" id="DailyTarget" name="DailyTarget" data-ng-model="DailyTarget.con_fac" ng-min = "0" ng-required = "!deviceFlag && !DailyTarget.noofdevice > 1" placeholder="null"/>
+                    <!-- <div ng-show="myForm.DailyTarget.$invalid" class="text-danger">*DailyTarget cannot be in negative value</div> -->
+                    <div ng-show="myForm.DailyTarget.$touched && myForm.DailyTarget.$invalid" class="text-danger">*required DailyTarget value as a Postive value</div>
+                    <!-- <div ng-show="myForm.DailyTarget.$invalid" class="text-danger">*DailyTarget cannot be in negative value</div> -->
+                </div>  
+                
+                <div class="form-group col-sm-3 col-md-3 col-lg-3" ng-if="deviceFlag && DailyTarget.noofdevice > 1">
+                    <label for="percentage">Percentage</label>
+                    <input type="number" class="form-control" id="percentage" name="percentage" data-ng-model="DailyTarget.percentage" ng-min = "0" ng-required = "deviceFlag && DailyTarget.noofdevice > 1" placeholder="Percentage of device count"/>
+                    <!-- <div ng-show="myForm.DailyTarget.$invalid" class="text-danger">*DailyTarget cannot be in negative value</div> -->
+                    <div ng-show="myForm.percentage.$touched && myForm.percentage.$invalid" class="text-danger">*required percentage value as a Postive value</div>
+                    <!-- <div ng-show="myForm.DailyTarget.$invalid" class="text-danger">*DailyTarget cannot be in negative value</div> -->
+                </div>  
 
                 </div>
                 </div>
@@ -78,14 +101,20 @@
 <div class="modal-footer">
     <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveDailyTarget(DailyTarget)">Save</button>
     <button class="btn btn-success" ng-click="setTargets(DailyTarget)">Calculate Now!</button>
+
 </div>
 
 
+<!-- <a class="text-left" ng-click=""> Switch view</span> -->
 
 <div class="box box-solid box-primary">
-
+    
     <div class="box-header">
-        DailyTarget for Month of  {{myMonth.name}} {{ myYear }} </span>
+       <span> DailyTarget for Month of  {{myMonth.name}} {{ myYear }} </span>
+       <span class="pull-right">
+           <button class="btn btn-default" ng-click="EnableSwitch()" ng-if="switchFlag">Switch to Device Count View</button>
+           <button class="btn btn-default" ng-click="EnableSwitch()" ng-if="!switchFlag">Switch to Daily Count View</button>   
+       </span>
     </div>
     <div class="box-body">
         <button Build="button" ng-click="setAutoTarget()" class="btn btn-sm btn-success">
@@ -104,15 +133,11 @@
             <i class="glyphicon glyphicon-eject">
             </i>  <small>Set Manual Target Auto</small>
         </button>
-        <!-- <div id="dialog" title="Basic dialog">
-            <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed
-                with the 'x' icon.</p>
-        </div>
-         -->
-        <div ng-if='resultList == ""'>
+        
+        <div ng-if='resultList == "" && countList == ""'>
               <h3 class="text-muted">No Daily target is available for "{{myMonth.name}} {{ myYear }}" for the <span ng-show="$root.team_count > 1">selected</span> team</small>
         </div>
-        <div ng-if='resultList != ""'>
+        <div ng-if='resultList != ""' ng-hide="deviceFlag && DailyTarget.noofdevice > 1 && !switchFlag">
         <div style="overflow-x:auto;">
             <table ng-table="tableParams" class="table table-striped table-responsive" show-filter="true">
 
@@ -147,5 +172,53 @@
             </table>
         </div>
         </div>
+
+        <div ng-show="deviceFlag && DailyTarget.noofdevice > 1 && !switchFlag">
+            <div style="overflow-x:auto;">
+                <table ng-table="tableParamsForDC" class="table table-striped table-responsive" show-filter="true">
+
+                    <tr ng-repeat="row in $data">
+                        <td class="text-center" title="'Month'" filter="{month : 'text'}" sortable="'month'">{{ row.month }}</td>
+                        <td class="text-center" title="'Team Name'" filter="{team_name : 'text'}" sortable="'team_name'">{{ row.team_name }}</td>
+                        <td class="text-center" title="'Task Name'" filter="{task_name : 'text'}" sortable="'task_name'">{{ row.task_name }}</td>
+                        <td class="text-center" title="'SubTask Name'" filter="{sub_task_name : 'text'}" sortable="'sub_task_name'"> {{row.sub_task_name}}
+                        </td>
+                        <td class="text-center" title="'Device Count'" filter="{noofdevice : 'text'}" sortable="'noofdevice'">{{ row.noofdevice }}</td>
+                        <td class="text-center" title="'Percentage'" filter="{percentage : 'text'}" sortable="'percentage'">{{ row.percentage }}</td>
+                        <td class="text-center" title="'create_date'" filter="{create_date : 'text'}" sortable="'create_date'">{{ row.create_date | date : 'MM/dd/yyyy' }}</td>
+                        <td class="text-center" title="'maintain_date'" filter="{maintain_date : 'text'}" sortable="'maintain_date'">{{ row.maintain_date | date : 'MM/dd/yyyy'  }}</td>
+                        
+                        <td class="text-center" title="'Modified By'" filter="{ModifiedBy : 'text'}" sortable="'ModifiedBy'">{{ row.ModifiedBy }}</td>
+                        <td class="text-center" title="'Action'">
+                            <div class="col-md-offset-4" data-ng-if="row.about_cf == 1">
+                                <button type="button" ng-click="editDailyTargetModel(row)" class="btn btn-sm btn-primary">
+                                    <i class="glyphicon glyphicon-pencil">
+                                    </i>
+                                </button>
+                                <button type="button" ng-click="removeDailyTarget(row)" class="btn btn-sm btn-danger">
+                                    <i class="glyphicon glyphicon-trash">
+                                    </i>
+                                </button>
+                            </div>
+                        </td>
+
+                           <td class="text-center" title="'Action'">
+                            <div class="col-md-offset-4" data-ng-if="deviceFlag && DailyTarget.noofdevice > 1">
+                                <button type="button" ng-click="editDeviceCountModel(row)" class="btn btn-sm btn-primary">
+                                    <i class="glyphicon glyphicon-pencil">
+                                    </i>
+                                </button>
+                                <button type="button" ng-click="removeDailyCount(row)" class="btn btn-sm btn-danger">
+                                    <i class="glyphicon glyphicon-trash">
+                                    </i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
     </div>
 </div>

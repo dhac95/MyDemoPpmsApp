@@ -140,7 +140,7 @@
         }
 
         $scope.selectUsers = function () {
-            //  $scope.task.selected = {};
+              $scope.user.selected = undefined;
             var team_id = $scope.team.selected;
             var promiseGet = SdaReportService.getLoadedUsers($scope, $rootScope, $http, team_id);
             promiseGet.then(function (pl) {
@@ -160,7 +160,7 @@
         };
 
         $scope.selectTask = function () {
-            //  $scope.task.selected = {};
+              $scope.task.selected = undefined;
             var team_id = $scope.team.selected;
             var promiseGet = AddTaskService.getLoadedTasks($scope, $rootScope, $http, team_id);
             promiseGet.then(function (pl) {
@@ -180,9 +180,12 @@
         };
 
         $scope.selectsubTask = function () {
-            //  $scope.task.selected = {};
-            var task_id = $scope.task.selected;
-            var promiseGet = AddTaskService.getLoadedsubTasks($scope, $rootScope, $http, task_id);
+             $scope.subtask.selected = undefined;
+            var obj = {
+                task_id: $scope.task.selected
+            };
+             if (obj.task_id != undefined) {
+            var promiseGet = SdaReportService.getSubtaksByMultipleTasks($scope, $rootScope, $http, obj);
             promiseGet.then(function (pl) {
                 $scope.subTaskList = pl.data;
                 if ($scope.isEditing) {
@@ -196,6 +199,7 @@
                 function (errorPl) {
                     Notification('Some Error in Getting Records.');
                 });
+            }
         };
 
         $scope.exportToExcel = function (tableId) { // ex: '#my-table'

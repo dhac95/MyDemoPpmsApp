@@ -14,7 +14,7 @@ function secondsToHms(d) {
     var m = Math.floor(d % 3600 / 60);
     var s = Math.floor(d % 3600 % 60);
 
-    return ('0' + h).slice(-4) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+    return ('0' + h).slice(-5) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
 }
 
 router.post('/' , function(req , res , next){
@@ -48,17 +48,17 @@ router.post('/' , function(req , res , next){
         if (team != "") {
             where2 = " AND user_tasks_ot.team_id = " + team;
         }
-        if (task != undefined) {
-            where3 = " AND user_tasks_ot.tasks_id = " + task;
+         if (task != undefined && task.length != 0) {
+            where3 = " AND user_tasks_ot.tasks_id in (" + task + ")";
         }
-        if (subTask != undefined) {
-            where4 = " AND user_tasks_ot.sub_task_id = " + subTask;
+           if (subTask != undefined && subTask.length != 0) {
+            where4 = " AND user_tasks_ot.sub_task_id in (" + subTask + ")";
         }
         if (taskDesc != undefined) {
             where5 = " AND user_tasks_ot.task_desc = " + taskDesc;
         }
-        if (userID != undefined) {
-            where6 = " AND user_tasks_ot.user_id= " + userID;
+       if (userID != undefined && userID.length != 0) {
+            where6 = " AND user_tasks_ot.user_id in (" + userID + ")";
         }
 
         whereN = where1 + where2 + where3 + where4 + where5 + where6;
@@ -88,17 +88,17 @@ router.post('/' , function(req , res , next){
         if (team != "") {
             where2 = " AND user_tasks.team_id = " + team;
         }
-        if (task != undefined) {
-            where3 = " AND user_tasks.tasks_id = " + task;
+         if (task != undefined && task.length != 0) {
+            where3 = " AND user_tasks.tasks_id in (" + task + ")";
         }
-        if (subTask != undefined) {
-            where4 = " AND user_tasks.sub_task_id = " + subTask;
+         if (subTask != undefined && subTask.length != 0) {
+            where4 = " AND user_tasks.sub_task_id in (" + subTask + ")";
         }
         if (taskDesc != undefined) {
             where5 = " AND user_tasks.task_desc = " + taskDesc;
         }
-        if (userID != undefined) {
-            where6 = " AND user_tasks.user_id= " + userID;
+        if (userID != undefined && userID.length != 0) {
+            where6 = " AND user_tasks.user_id in (" + userID  + ")";
         }
 
         whereN = where1 + where2 + where3 + where4 + where5 + where6;
@@ -144,17 +144,17 @@ router.post('/getTotalTime' , function(req , res , next) {
         if (team != "") {
             where2 = " AND user_tasks_ot.team_id = " + team;
         }
-        if (task != undefined) {
-            where3 = " AND user_tasks_ot.tasks_id = " + task;
+         if (task != undefined && task.length != 0) {
+            where3 = " AND user_tasks_ot.tasks_id in (" + task + ")";
         }
-        if (subTask != undefined) {
-            where4 = " AND user_tasks_ot.sub_task_id = " + subTask;
+          if (subTask != undefined && subTask.length != 0) {
+            where4 = " AND user_tasks_ot.sub_task_id in (" + subTask + ")";
         }
         if (taskDesc != undefined) {
             where5 = " AND user_tasks_ot.task_desc = " + taskDesc;
         }
-        if (userID != undefined) {
-            where6 = " AND user_tasks_ot.user_id= " + userID;
+        if (userID != undefined && userID.length != 0) {
+            where6 = " AND user_tasks_ot.user_id=  (" + userID + ")";
         }
         whereN = where1 + where2 + where3 + where4 + where5 + where6;
 
@@ -202,17 +202,17 @@ else {
         if (team != "") {
             where2 = " AND user_tasks.team_id = " + team;
         }
-        if (task != undefined) {
-            where3 = " AND user_tasks.tasks_id = " + task;
+         if (task != undefined && task.length != 0) {
+            where3 = " AND user_tasks.tasks_id in (" + task + ")";
         }
-        if (subTask != undefined) {
-            where4 = " AND user_tasks.sub_task_id = " + subTask;
+        if (subTask != undefined && subTask.length != 0) {
+            where4 = " AND user_tasks.sub_task_id in (" + subTask + ")";
         }
         if (taskDesc != undefined) {
             where5 = " AND user_tasks.task_desc = " + taskDesc;
         }
-        if (userID != undefined) {
-            where6 = " AND user_tasks.user_id= " + userID;
+       if (userID != undefined && userID.length != 0) {
+            where6 = " AND user_tasks.user_id in (" + userID + ")";
         }
         whereN = where1 + where2 + where3 + where4 + where5 + where6;
 

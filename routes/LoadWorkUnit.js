@@ -59,17 +59,17 @@ router.post('/', function (req, res, next) {
         if (team != "") {
             where2 = " AND user_tasks_ot.team_id = " + team;
         }
-        if (task != undefined) {
-            where3 = " AND user_tasks_ot.tasks_id = " + task;
+         if (task != undefined && task.length != 0) {
+            where3 = " AND user_tasks_ot.tasks_id in (" + task + ")";
         }
-        if (subTask != undefined) {
-            where4 = " AND user_tasks_ot.sub_task_id = " + subTask;
+        if (subTask != undefined && subTask.length != 0) {
+            where4 = " AND user_tasks_ot.sub_task_id in (" + subTask + ")";
         }
         if (taskDesc != undefined) {
             where5 = " AND user_tasks_ot.task_desc = " + taskDesc;
         }
-        if (userID != undefined) {
-            where6 = " AND user_tasks_ot.user_id= " + userID;
+        if (userID != undefined && userID.length != 0) {
+            where6 = " AND user_tasks_ot.user_id in (" + userID + ")";
         }
         whereN = where1 + where2 + where3 + where4 + where5 + where6;
 
@@ -130,17 +130,17 @@ router.post('/', function (req, res, next) {
         if (team != "") {
             where2 = " AND user_tasks.team_id = " + team;
         }
-        if (task != undefined) {
-            where3 = " AND user_tasks.tasks_id = " + task;
+         if (task != undefined && task.length != 0) {
+            where3 = " AND user_tasks.tasks_id in (" + task + ")";
         }
-        if (subTask != undefined) {
-            where4 = " AND user_tasks.sub_task_id = " + subTask;
+       if (subTask != undefined && subTask.length != 0) {
+            where4 = " AND user_tasks.sub_task_id in (" + subTask + ")";
         }
         if (taskDesc != undefined) {
             where5 = " AND user_tasks.task_desc = " + taskDesc;
         }
-        if (userID != undefined) {
-            where6 = " AND user_tasks.user_id= " + userID;
+        if (userID != undefined && userID.length !=0) {
+            where6 = " AND user_tasks.user_id in (" + userID + ")";
         }
         whereN = where1 + where2 + where3 + where4 + where5 + where6;
         
@@ -222,17 +222,17 @@ router.post('/task', function (req, res, next) {
                 if (team != "") {
                     where2 = " AND user_tasks_ot.team_id = " + team;
                 }
-                if (task != undefined) {
-                    where3 = " AND user_tasks_ot.tasks_id = " + task;
+                if (task != undefined && task.length != 0) {
+                    where3 = " AND user_tasks_ot.tasks_id in (" + task + ")";
                 }
-                if (subTask != undefined) {
-                    where4 = " AND user_tasks_ot.sub_task_id = " + subTask;
+               if (subTask != undefined && subTask.length != 0) {
+                    where4 = " AND user_tasks_ot.sub_task_id in (" + subTask + ")";
                 }
                 // if (taskDesc != undefined) {
                 //     where5 = " AND user_tasks_ot.task_desc = " + taskDesc;
                 // }
-                if (userID != undefined) {
-                    where6 = " AND user_tasks_ot.user_id= " + userID;
+               if (userID != undefined && userID.length != 0) {
+                    where6 = " AND user_tasks_ot.user_id in (" + userID + ")";
                 }
                 whereN = where1 + where2 + where3 + where4 + where5 + where6;
 
@@ -316,17 +316,17 @@ router.post('/task', function (req, res, next) {
                 if (team != "") {
                     where2 = " AND user_tasks.team_id = " + team;
                 }
-                if (task != undefined) {
-                    where3 = " AND user_tasks.tasks_id = " + task;
+                 if (task != undefined && task.length != 0) {
+                    where3 = " AND user_tasks.tasks_id in (" + task + ")";
                 }
-                if (subTask != undefined) {
-                    where4 = " AND user_tasks.sub_task_id = " + subTask;
+               if (subTask != undefined && subTask.length != 0) {
+                    where4 = " AND user_tasks.sub_task_id in (" + subTask + ")";
                 }
                 // if (taskDesc != undefined) {
                 //     where5 = " AND user_tasks.task_desc = " + taskDesc;
                 // }
-                if (userID != undefined) {
-                    where6 = " AND user_tasks.user_id= " + userID;
+               if (userID != undefined && userID.length != 0) {
+                    where6 = " AND user_tasks.user_id in (" + userID + ")";
                 }
                 whereN = where1 + where2 + where3 + where4 + where5 + where6;
                 async.each(r, function (single, callback) {
@@ -421,17 +421,17 @@ router.post('/subtask', function (req, res, next) {
                 if (team != "") {
                     where2 = " AND user_tasks_ot.team_id = " + team;
                 }
-                if (task != undefined) {
-                    where3 = " AND user_tasks_ot.tasks_id = " + task;
+                 if (task != undefined && task.length != 0) {
+                    where3 = " AND user_tasks_ot.tasks_id in (" + task + ")";
                 }
-                if (subTask != undefined) {
-                    where4 = " AND user_tasks_ot.sub_task_id = " + subTask;
+              if (subTask != undefined && subTask.length != 0) {
+                    where4 = " AND user_tasks_ot.sub_task_id in (" + subTask + ")";
                 }
                 // if (taskDesc != undefined) {
                 //     where5 = " AND user_tasks_ot.task_desc = " + taskDesc;
                 // }
-                if (userID != undefined) {
-                    where6 = " AND user_tasks_ot.user_id= " + userID;
+                if (userID != undefined && userID.length != 0) {
+                    where6 = " AND user_tasks_ot.user_id in (" + userID + ")";
                 }
                 whereN = where1 + where2 + where3 + where4 + where5 + where6;
 
@@ -509,19 +509,19 @@ router.post('/subtask', function (req, res, next) {
                     where1 = " date between ? and ?";
                 }
                 if (team != "") {
-                    where2 = " AND user_tasks.team_id = " + team;
+                    where2 = " AND user_tasks.team_id in (" + team + ")";
                 }
-                if (task != undefined) {
-                    where3 = " AND user_tasks.tasks_id = " + task;
+                if (task != undefined && task.length != 0) {
+                    where3 = " AND user_tasks.tasks_id in (" + task + ")";
                 }
-                if (subTask != undefined) {
-                    where4 = " AND user_tasks.sub_task_id = " + subTask;
+              if (subTask != undefined && subTask.length != 0) {
+                    where4 = " AND user_tasks.sub_task_id in (" + subTask + ")";
                 }
                 // if (taskDesc != undefined) {
                 //     where5 = " AND user_tasks.task_desc = " + taskDesc;
                 // }
-                if (userID != undefined) {
-                    where6 = " AND user_tasks.user_id= " + userID;
+                if (userID != undefined && userID.length != 0) {
+                    where6 = " AND user_tasks.user_id in (" + userID + ")";
                 }
                 whereN = where1 + where2 + where3 + where4 + where5 + where6;
                 async.each(r, function (single, callback) {
@@ -618,17 +618,17 @@ router.post('/user', function (req, res, next) {
                 if (team != "") {
                     where2 = " AND user_tasks_ot.team_id = " + team;
                 }
-                if (task != undefined) {
-                    where3 = " AND user_tasks_ot.tasks_id = " + task;
+                if (task != undefined && task.length != 0) {
+                    where3 = " AND user_tasks_ot.tasks_id in (" + task + ")";
                 }
-                if (subTask != undefined) {
-                    where4 = " AND user_tasks_ot.sub_task_id = " + subTask;
+               if (subTask != undefined && subTask.length != 0) {
+                    where4 = " AND user_tasks_ot.sub_task_id in (" + subTask + ")";
                 }
                 // if (taskDesc != undefined) {
                 //     where5 = " AND user_tasks_ot.task_desc = " + taskDesc;
                 // }
-                if (userID != undefined) {
-                    where6 = " AND user_tasks_ot.user_id= " + userID;
+                if (userID != undefined && userID.length != 0) {
+                    where6 = " AND user_tasks_ot.user_id in (" + userID + ")";
                 }
                 whereN = where1 + where2 + where3 + where4 + where5 + where6;
 
@@ -703,17 +703,17 @@ router.post('/user', function (req, res, next) {
                 if (team != "") {
                     where2 = " AND user_tasks.team_id = " + team;
                 }
-                if (task != undefined) {
-                    where3 = " AND user_tasks.tasks_id = " + task;
+                if (task != undefined && task.length != 0) {
+                    where3 = " AND user_tasks.tasks_id in (" + task + ")";
                 }
-                if (subTask != undefined) {
-                    where4 = " AND user_tasks.sub_task_id = " + subTask;
+              if (subTask != undefined && subTask.length != 0) {
+                    where4 = " AND user_tasks.sub_task_id in (" + subTask + ")";
                 }
                 // if (taskDesc != undefined) {
                 //     where5 = " AND user_tasks.task_desc = " + taskDesc;
                 // }
-                if (userID != undefined) {
-                    where6 = " AND user_tasks.user_id= " + userID;
+                if (userID != undefined && userID.length != 0) {
+                    where6 = " AND user_tasks.user_id in (" + userID + ")";
                 }
                 whereN = where1 + where2 + where3 + where4 + where5 + where6;
                 async.each(r, function (single, callback) {
