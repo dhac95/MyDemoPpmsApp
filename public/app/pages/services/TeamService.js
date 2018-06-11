@@ -4,8 +4,8 @@
 
 
     angular
-         .module('ERP.service')
-         .service('TeamService', TeamService);
+        .module('ERP.service')
+        .service('TeamService', TeamService);
 
     TeamService.$inject = [];
 
@@ -31,11 +31,11 @@
         }
 
         function updateTeam($scope, $rootScope, $http, Team, id) {
-            return $http.put($rootScope.endPoint + 'Teams/' + id , Team);
+            return $http.put($rootScope.endPoint + 'Teams/' + id, Team);
         }
 
         function deleteTeam($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'Teams/remove/' , obj);
+            return $http.post($rootScope.endPoint + 'Teams/remove/', obj);
         }
     }
 

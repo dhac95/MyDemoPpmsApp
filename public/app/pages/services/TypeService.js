@@ -4,8 +4,8 @@
 
 
     angular
-         .module('ERP.service')
-         .service('TypeService', TypeService);
+        .module('ERP.service')
+        .service('TypeService', TypeService);
 
     TypeService.$inject = [];
 

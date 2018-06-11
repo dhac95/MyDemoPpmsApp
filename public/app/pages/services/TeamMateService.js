@@ -17,10 +17,10 @@
 
         /////////////
 
-      
+
 
         function getAllTeamMatebyID($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'TeamMates/' , obj);
+            return $http.post($rootScope.endPoint + 'TeamMates/', obj);
         }
 
         // function addTeamMate($scope, $rootScope, $http, TeamMate) {
@@ -28,12 +28,13 @@
         // }
 
         function promoteTeamMate($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'TeamMates/promote' , obj);
+            return $http.post($rootScope.endPoint + 'TeamMates/promote', obj);
         }
 
         function deleteTeamMate($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'TeamMates/remove/' , obj);
+            return $http.post($rootScope.endPoint + 'TeamMates/remove/', obj);
         }
+
         function updateTeamMate($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'TeamMates/user/', obj);
         }

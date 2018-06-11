@@ -4,16 +4,18 @@
             <!-- Profile Image -->
             <div class="box box-primary" data-ng-repeat="user in ProfileList">
                 <div class="box-body box-profile">
-                    <img ng-if='user.below_on == null' class="profile-user-img img-responsive img-circle" src="../../../../AdminLTE/img/peccy-3.png" alt="User profile picture">
-                    <img ng-if="user.below_on == 1" class="profile-user-img img-responsive img-circle" src="../../../../AdminLTE/img/peccy-1.gif" alt="User profile picture">
+                    <img ng-if='user.below_on == null' class="profile-user-img img-responsive img-circle" src="../../../../AdminLTE/img/peccy-3.png"
+                        alt="User profile picture">
+                    <img ng-if="user.below_on == 1" class="profile-user-img img-responsive img-circle" src="../../../../AdminLTE/img/peccy-1.gif"
+                        alt="User profile picture">
 
                     <h3 class="profile-username text-center">{{user.first_name}} {{user.last_name}}</h3>
 
                     <p class="text-muted text-center">
-                    <span ng-if="user.user_type == 1"> Device Associate</span>
-                    <span ng-if="user.user_type == 2"> Senior Device Associate</span>
-                    <span ng-if="user.user_type == 3"> Ops Manager</span>
-                    <span ng-if="user.user_type == 4"> Admin</span>
+                        <span ng-if="user.user_type == 1"> Device Associate</span>
+                        <span ng-if="user.user_type == 2"> Senior Device Associate</span>
+                        <span ng-if="user.user_type == 3"> Ops Manager</span>
+                        <span ng-if="user.user_type == 4"> Admin</span>
                     </p>
 
                     <ul class="list-group list-group-unbordered">
@@ -27,28 +29,28 @@
                         </li>
                         <li class="list-group-item">
                             <b>User Name</b>
-                            <a class="pull-right" href="https://phonetool.amazon.com/users/{{user.user_name}}">{{user.user_name}}</a>
+                            <a class="pull-right" href="https://phonetool.amazon.com/users/{{user.user_name}}" target="_blank"> {{user.user_name}}</a>
                         </li>
                         <li class="list-group-item">
                             <b>User Mail</b>
                             <a class="pull-right">{{user.user_mail}}</a>
                         </li>
                     </ul>
-                   
+
                     <button class="btn btn-primary btn-block pull-left" data-ng-click="editProfileModel(user)">
                         <b>Edit Profile</b>
                     </button>
                     <button class="btn btn-primary btn-block pull-right" align="right" data-ng-click="addProfileModel()">
                         <b>Change Password</b>
                     </button>
-             
+
                 </div>
-                <!-- /.box-body --> 
+                <!-- /.box-body -->
             </div>
             <!-- /.box -->
-        
-         </div>
 
         </div>
-         
-  </div>
+
+    </div>
+
+</div>

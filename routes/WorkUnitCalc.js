@@ -22,11 +22,10 @@ router.post('/', function (req, res, next) {
             res.send(e);
         } else if (r.length == 0) {
             res.send({
-                "code" : 305,
-                "message" : "No targets set for the week"
+                "code": 305,
+                "message": "No targets set for the week"
             });
-        }
-        else {
+        } else {
             //   for (var i = 0; i < r.length; i++) {
             async.each(r, function (single, callback) {
                 var conversionFactor = single.con_fac;
@@ -198,7 +197,7 @@ router.post('/', function (req, res, next) {
                     }
                     // callback();
                 }
-                 callback();
+                callback();
 
             }, function (response) {
                 if (queryError.length > 0) {

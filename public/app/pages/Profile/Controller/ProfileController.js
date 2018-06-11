@@ -1,4 +1,3 @@
-
 (function () {
     'use strict';
 
@@ -9,7 +8,8 @@
 
 
     ProfileController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'ProfileService', 'AddTaskService', '$uibModal', 'Notification', 'NgTableParams'];
-    function ProfileController($scope, $rootScope, $http, $filter, ProfileService, AddTaskService, $uibModal, Notification, NgTableParams) { 
+
+    function ProfileController($scope, $rootScope, $http, $filter, ProfileService, AddTaskService, $uibModal, Notification, NgTableParams) {
 
         $rootScope.title = "Profile";
         $rootScope.isLoginPage = false;
@@ -40,8 +40,7 @@
             });
             modalInstance.result.then(function () {
                 loadGrid();
-            }, function () {
-            });
+            }, function () {});
         };
 
 
@@ -64,13 +63,9 @@
 
             modalInstance.result.then(function () {
                 loadGrid();
-            }, function () {
-            });
+            }, function () {});
         };
 
-    
-
-      
         function loadGrid() {
             var id = $rootScope.user_id;
             var self = this;
@@ -83,13 +78,14 @@
             });
 
         }
-    
-}
 
-       
+    }
+
+
 
     ProfileModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', '$cookieStore', 'items', '$uibModalInstance', 'Notification', 'ProfileService'];
-    function ProfileModelController($scope, $rootScope, $http, $filter, $cookieStore ,items, $uibModalInstance, Notification, ProfileService) {
+
+    function ProfileModelController($scope, $rootScope, $http, $filter, $cookieStore, items, $uibModalInstance, Notification, ProfileService) {
 
         $scope.items = items;
 
@@ -107,7 +103,7 @@
                 sessionStorage.setItem('last_name', $scope.Profile.last_name);
                 if ($scope.Profile.pic == undefined) {
                     sessionStorage.setItem('below_on', "null");
-                      $rootScope.below_on = "null";
+                    $rootScope.below_on = "null";
                 } else {
                     sessionStorage.setItem('below_on', $scope.Profile.pic);
                     $rootScope.below_on = $scope.Profile.pic;
@@ -117,47 +113,46 @@
                     if (res.data.code == 200) {
                         Notification.success("Profile Updated");
                         $uibModalInstance.close();
-                    }
-                    else {
-                        Notification({ message: "Error occoured !! Please try again" }, 'error');
+                    } else {
+                        Notification({
+                            message: "Error occoured !! Please try again"
+                        }, 'error');
                     }
                 }, function (err) {
                     Notification("Error while processing! Try Again.");
                 });
             } else {
-                          
+
                 if (Profile.new !== Profile.conf) {
-                    Notification("Passwords doesnt match! please verify " , 'warning');
-                }
-                else {
+                    Notification("Passwords doesnt match! please verify ", 'warning');
+                } else {
                     Profile.user_id = $rootScope.user_id;
-             
-                ProfileService.ChangePassword($scope, $rootScope, $http, Profile).then(function (res) {
-                    if (res.data.code == 200) {
-                        Notification.success("Password Updated Successfully");
-                        $uibModalInstance.close();
-                    } else if(res.data.code == 400) {
-                        Notification("Password is wrong!! verify the old password" , 'error');
-                    }
-                    else {
-                        Notification("Error occoured !! Please try again");
-                    }
-                }, function (err) {
-                    Notification.error("Error in processing sever error 500! Try Again.");
-                });
-            }
+
+                    ProfileService.ChangePassword($scope, $rootScope, $http, Profile).then(function (res) {
+                        if (res.data.code == 200) {
+                            Notification.success("Password Updated Successfully");
+                            $uibModalInstance.close();
+                        } else if (res.data.code == 400) {
+                            Notification("Password is wrong!! verify the old password", 'error');
+                        } else {
+                            Notification("Error occoured !! Please try again");
+                        }
+                    }, function (err) {
+                        Notification.error("Error in processing sever error 500! Try Again.");
+                    });
+                }
             }
         };
-        
+
 
 
 
         $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel'); 
+            $uibModalInstance.dismiss('cancel');
         };
-     }
-        
-    
-    
+    }
+
+
+
 
 })();

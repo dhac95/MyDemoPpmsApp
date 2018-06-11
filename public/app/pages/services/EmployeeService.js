@@ -4,8 +4,8 @@
 
 
     angular
-         .module('ERP.service')
-         .service('EmployeeService', EmployeeService);
+        .module('ERP.service')
+        .service('EmployeeService', EmployeeService);
 
     EmployeeService.$inject = [];
 
@@ -31,7 +31,7 @@
         }
 
         function updateEmployee($scope, $rootScope, $http, Employee, id) {
-            return $http.put($rootScope.endPoint + 'AllUserInfo/' + id , Employee);
+            return $http.put($rootScope.endPoint + 'AllUserInfo/' + id, Employee);
         }
 
         function deleteEmployee($scope, $rootScope, $http, id) {

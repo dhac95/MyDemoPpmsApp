@@ -44,13 +44,14 @@
 
             <div class="form-group col-sm-3 col-md-3 col-lg-3" ng-hide="deviceFlag">
                 <label for="">Device Count</label>
-                <input type="number" class="form-control" ng-min = "0" value="1" placeholder="1" disabled/>
-            </div>  
+                <input type="number" class="form-control" ng-min="0" value="1" placeholder="1" disabled/>
+            </div>
 
 
             <div class="form-group col-sm-3 col-md-3 col-lg-3">
                 <label for="DailyTarget">DailyTarget</label>
-                <input type="number" class="form-control" id="DailyTarget" name="DailyTarget" data-ng-model="DailyTarget.con_fac" ng-min = "0" required/>
+                <input type="number" class="form-control" id="DailyTarget" name="DailyTarget" data-ng-model="DailyTarget.con_fac" ng-min="0"
+                    required/>
                 <div ng-show="myForm.DailyTarget.$touched && myForm.DailyTarget.$invalid" class="text-danger">*required DailyTarget</div>
                 <div ng-show="myForm.DailyTarget.$invalid" class="text-danger">*DailyTarget cannot be in negative value</div>
             </div>

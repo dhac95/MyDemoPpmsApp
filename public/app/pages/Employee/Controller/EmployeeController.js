@@ -1,4 +1,3 @@
-
 (function () {
     'use strict';
 
@@ -9,6 +8,7 @@
 
 
     EmployeeController.$inject = ['$scope', '$rootScope', '$http', 'EmployeeService', '$uibModal', 'NgTableParams'];
+
     function EmployeeController($scope, $rootScope, $http, EmployeeService, $uibModal, NgTableParams) {
 
         $rootScope.title = "Employee";
@@ -20,7 +20,7 @@
         $scope.items.isEditing = $scope.isEditing;
 
         $scope.removeEmployee = removeEmployee;
-    
+
         loadGrid();
 
         $scope.addEmployeeModel = function () {
@@ -41,8 +41,7 @@
 
             modalInstance.result.then(function () {
                 loadGrid();
-            }, function () {
-            });
+            }, function () {});
         };
 
         $scope.editEmployeeModel = function (Employee) {
@@ -64,14 +63,15 @@
 
             modalInstance.result.then(function () {
                 loadGrid();
-            }, function () {
-            });
+            }, function () {});
         };
 
         function loadGrid() {
             var self = this;
             EmployeeService.getAllEmployee($scope, $rootScope, $http).then(function (responce) {
-                $scope.tableParams = new NgTableParams({}, { dataset: responce.data });
+                $scope.tableParams = new NgTableParams({}, {
+                    dataset: responce.data
+                });
 
             });
 
@@ -89,11 +89,11 @@
 
         function removeEmployee(Employee) {
             //if (Employee.Active === 0) {
-               var id = Employee.Employee_id;
+            var id = Employee.Employee_id;
             //    id :  Employee.Employee_id
             // //     //Active: Employee.Active,
             // //     //ActionBy: $rootScope.loggedUserId
-           //   };
+            //   };
             if (window.confirm("Do you really want to delete this Employee")) {
                 EmployeeService.deleteEmployee($scope, $rootScope, $http, id).then(function (res) {
                     if (res.data.result) {
@@ -114,6 +114,7 @@
     }
 
     EmployeeModelController.$inject = ['$scope', '$rootScope', '$http', 'items', '$uibModalInstance', 'EmployeeService'];
+
     function EmployeeModelController($scope, $rootScope, $http, items, $uibModalInstance, EmployeeService) {
         $scope.items = items;
         if (items.isEditing)
@@ -127,7 +128,7 @@
                 var id = Employee.user_id;
                 $scope.Employee.last_entry_on = $rootScope.date;
                 $scope.Employee.create_date = $rootScope.date;
-                EmployeeService.updateEmployee($scope, $rootScope, $http, $scope.Employee,id).then(function (res) {
+                EmployeeService.updateEmployee($scope, $rootScope, $http, $scope.Employee, id).then(function (res) {
                     if (res.data.result) {
                         alert("Update Successful")
                         $uibModalInstance.close();
@@ -142,7 +143,7 @@
                 $scope.Employee.create_date = $rootScope.date;
                 $scope.Employee.maintain_date = $rootScope.date;
                 //$scope.Employee.CreatedBy = "1";
-               // $scope.Employee.ModifiedBy = "1";
+                // $scope.Employee.ModifiedBy = "1";
                 EmployeeService.addEmployee($scope, $rootScope, $http, $scope.Employee).then(function (res) {
                     if (res.data.result) {
                         alert("Added Successful")

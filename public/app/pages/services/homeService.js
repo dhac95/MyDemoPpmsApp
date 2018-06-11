@@ -17,7 +17,7 @@
 
 
         function getUserTasksforChart($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'chart/monthSingleUser/' , obj);
+            return $http.post($rootScope.endPoint + 'chart/monthSingleUser/', obj);
         }
 
     }

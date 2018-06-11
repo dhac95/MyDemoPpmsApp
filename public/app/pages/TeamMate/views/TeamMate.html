@@ -46,7 +46,8 @@
                     <!-- <td class="text-center" title="'TeamMate #'" filter="{TeamMate_id : 'text'}" sortable="'TeamMate_id'">{{ row.TeamMate_id }}</td> -->
                     <td class="text-center" title="'#'">{{ $index +1}}</td>
                     <td class="text-center" title="'User Name'" filter="{user_name : 'text'}" sortable="'user_name'">
-                         <a href="https://phonetool.amazon.com/users/{{ row.user_name }}">{{ row.user_name }}</a></td>
+                        <a href="https://phonetool.amazon.com/users/{{ row.user_name }}" target="_blank">{{ row.user_name }}</a>
+                    </td>
                     <td class="text-center" title="'First Name'" filter="{first_name : 'text'}" sortable="'first_name'">{{ row.first_name }}</td>
                     <td class="text-center" title="'Last Name'" filter="{last_name : 'text'}" sortable="'last_name'">{{ row.last_name }}</td>
                     <td class="text-center" title="'Team Count'" filter="{team_count : 'text'}" sortable="'team_count'">{{ row.team_count }}</td>
@@ -63,7 +64,9 @@
                         <span data-ng-if="row.user_type === 3" class="label label-success">Manager</span>
                         <span data-ng-if="row.user_type === 4" class="label label-warning">Admin</span>
                     </td>
-                    <td class="text-center" title="'User mail'" filter="{user_mail : 'text'}" sortable="'user_mail'"><a href="mailto: {{ row.user_mail }}"> {{ row.user_mail }}</a> </td>
+                    <td class="text-center" title="'User mail'" filter="{user_mail : 'text'}" sortable="'user_mail'">
+                        <a href="mailto: {{ row.user_mail }}"> {{ row.user_mail }}</a>
+                    </td>
                     <!-- <td class="text-center" title="'Host Ip'" filter="{host_name_1 : 'text'}" sortable="'host_name_1'">{{ row.host_name_1 }}</td> -->
                     <td class="text-center" title="'Approvar'" filter="{Approvar : 'text'}" sortable="'Approvar'">{{ row.Approvar }}</td>
                     <!-- <td class="text-center" title="'User Status'" filter="{user_status : 'text'}" sortable="'user_status'">
@@ -75,13 +78,13 @@
                         <span data-ng-if="row.user_activation === 1" class="label label-success">In Team</span>
                         <span data-ng-if="row.user_activation === 0" class="label label-danger">Not In Team</span>
                     </td> -->
-                    <td class="text-center" title="'Last Entry'" filter="{last_entry_on : 'text'}" sortable="'last_entry_on'">{{ row.last_entry_on  | date : 'MM/dd/yyyy'}}</td>
+                    <td class="text-center" title="'Last Entry'" filter="{last_entry_on : 'text'}" sortable="'last_entry_on'">{{ row.last_entry_on | date : 'MM/dd/yyyy'}}</td>
                     <td class="text-center" title="'Create Date'" filter="{create_date : 'text'}" sortable="'create_date'">{{ row.create_date | date : 'MM/dd/yyyy'}}</td>
-                    
-                    <td class="text-center" title="'Action'" >
+
+                    <td class="text-center" title="'Action'">
                         <span class="col-md-offset-4" data-ng-if="$root.user_type < 3">
-                                <i class="glyphicon glyphicon-info-sign"></i> Manager Level Access
-                            
+                            <i class="glyphicon glyphicon-info-sign"></i> Manager Level Access
+
                         </span>
                         <div class="col-md-offset-4" data-ng-if="$root.user_type > 2">
                             <button type="button" ng-click="editTeamMateModel(row)" class="btn btn-sm btn-primary">

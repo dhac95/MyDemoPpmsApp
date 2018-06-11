@@ -1,22 +1,27 @@
-
 (function () {
     'use strict';
 
     angular
         .module('ERP.pages.Build')
         .controller('BuildController', BuildController)
-        .controller('BuildModelController', BuildModelController);
+        .controller('BuildModelController', BuildModelController)
+        .factory('team', function () {
+            return {
+                selected: ''
+            };
+        }); 
 
 
-    BuildController.$inject = ['$scope', '$rootScope', '$http', 'BuildService', '$uibModal', 'NgTableParams','Notification' , 'AddTaskService'];
-    function BuildController($scope, $rootScope, $http, BuildService, $uibModal, NgTableParams, Notification , AddTaskService) {
+    BuildController.$inject = ['$scope', '$rootScope', '$http', 'BuildService', '$uibModal', 'NgTableParams', 'Notification', 'AddTaskService', 'team'];
+
+    function BuildController($scope, $rootScope, $http, BuildService, $uibModal, NgTableParams, Notification, AddTaskService, team) {
 
         $rootScope.title = "Build";
         $rootScope.isLoginPage = false;
         $scope.noOfRows = "10";
         $scope.items = {};
         $scope.temp_team = {};
-        $scope.team = {};
+        $scope.team = team;
         $scope.isEditing = false;
         $scope.items.isEditing = $scope.isEditing;
         $scope.removeBuild = removeBuild;
@@ -40,8 +45,7 @@
 
             modalInstance.result.then(function () {
                 $scope.loadGrid();
-            }, function () {
-            });
+            }, function () {});
         };
 
         $scope.editBuildModel = function (Build) {
@@ -63,37 +67,35 @@
 
             modalInstance.result.then(function () {
                 $scope.loadGrid();
-            }, function () {
-            });
+            }, function () {});
         };
 
         getTeamList();
+
         function getTeamList() {
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
-                $scope.TeamList = pl.data;
-                if (pl.data.length > 1) {
-                    if ($scope.isEditing) {
-                        for (var team in $scope.TeamList) {
-                            if ($scope.TeamList[team].team_id == $scope.Build.team_id) {
-                                $scope.team.selected = $scope.TeamList[team];
+                    $scope.TeamList = pl.data;
+                    if (pl.data.length > 1) {
+                        if ($scope.isEditing) {
+                            for (var team in $scope.TeamList) {
+                                if ($scope.TeamList[team].team_id == $scope.Build.team_id) {
+                                    $scope.team.selected = $scope.TeamList[team].team_id;
+
+                                }
 
                             }
-
+                            $scope.loadGrid();
+                        } else {
+                            $scope.team.selected = $scope.TeamList[0].team_id;
+                            $scope.loadGrid();
                         }
-                        $scope.loadGrid();
-                    }
-                    else {
+                    } else {
                         $scope.team.selected = $scope.TeamList[0].team_id;
                         $scope.loadGrid();
                     }
-                }
-                else {
-                     $scope.team.selected = $scope.TeamList[0].team_id;
-                    $scope.loadGrid();
-                }
 
-            },
+                },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.');
                 });
@@ -125,7 +127,7 @@
         //           });
         // }
 
-        $scope.loadGrid = function() {
+        $scope.loadGrid = function () {
             $scope.showLoader = true;
             // if($rootScope.team_count > 1) {
             //     var id = $scope.team.selected;
@@ -135,8 +137,10 @@
             // }
             var id = $scope.team.selected;
             var self = this;
-            BuildService.getAllBuildbyID($scope, $rootScope, $http , id).then(function (responce) {
-                $scope.tableParams = new NgTableParams({}, { dataset: responce.data });
+            BuildService.getAllBuildbyID($scope, $rootScope, $http, id).then(function (responce) {
+                $scope.tableParams = new NgTableParams({}, {
+                    dataset: responce.data
+                });
                 $scope.showLoader = false;
 
             });
@@ -145,29 +149,35 @@
 
         function removeBuild(Build) {
             if (Build.build_status === 0) {
-               var id = Build.build_no;
-            if (window.confirm("Do you really want to delete this Build")) {
-                BuildService.deleteBuild($scope, $rootScope, $http, id).then(function (res) {
-                    if (res.data.code === 200) {
-                        Notification.success("Deleted Successful");
-                        $scope.loadGrid();
-                    } else {
-                        Notification({message :"Error Occurred"} , 'error');
-                    
-                    }
-                }, function (err) {
-                    Notification("Error while processing! Try Again.");
-                });
-            }
+                var id = Build.build_no;
+                if (window.confirm("Do you really want to delete this Build")) {
+                    BuildService.deleteBuild($scope, $rootScope, $http, id).then(function (res) {
+                        if (res.data.code === 200) {
+                            Notification.success("Deleted Successful");
+                            $scope.loadGrid();
+                        } else {
+                            Notification({
+                                message: "Error Occurred"
+                            }, 'error');
+
+                        }
+                    }, function (err) {
+                        Notification("Error while processing! Try Again.");
+                    });
+                }
             } else {
-                Notification({message : "Active Status Can't be removed" , title : "The selected build has status of active"} , 'warning');
+                Notification({
+                    message: "Active Status Can't be removed",
+                    title: "The selected build has status of active"
+                }, 'warning');
             }
         }
     }
 
-    BuildModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance', 'BuildService', 'AddTaskService', 'NgTableParams', 'Notification' ];
-    function BuildModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, BuildService, AddTaskService, NgTableParams, Notification) {
-        $scope.team = {};
+    BuildModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance', 'BuildService', 'AddTaskService', 'NgTableParams', 'Notification', 'team'];
+
+    function BuildModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, BuildService, AddTaskService, NgTableParams, Notification, team) {
+      $scope.team = team;
         $scope.items = items;
         if (items.isEditing)
             $scope.Build = angular.copy(items.Build);
@@ -185,23 +195,21 @@
                 // else {
                 //     $scope.Build.team_id =  $scope.temp_team;
                 // } 
-                  $scope.Build.team_id = $scope.team.selected;
+                $scope.Build.team_id = $scope.team.selected;
 
                 $scope.Build.modified_by = $rootScope.user_id;
-               
+
                 $scope.Build.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
 
-                if($scope.Build.build_status == true)
-                {
+                if ($scope.Build.build_status == true) {
                     $scope.Build.build_status = 1;
-                }
-                else {
+                } else {
                     $scope.Build.build_status = 0;
                 }
 
                 $scope.Build.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
 
-                BuildService.updateBuild($scope, $rootScope, $http, $scope.Build,id).then(function (res) {
+                BuildService.updateBuild($scope, $rootScope, $http, $scope.Build, id).then(function (res) {
 
                     if (res.data.code === 200) {
                         Notification.success("Updated Successful");
@@ -209,7 +217,7 @@
                     } else {
                         Notification.error("Error while updating! Try Again.");
                     }
-                }, function(err) {
+                }, function (err) {
                     Notification("Error while processing! Try Again.");
                 });
             } else {
@@ -222,14 +230,12 @@
                 // } 
                 $scope.Build.team_id = $scope.team.selected;
                 $scope.Build.added_by = $rootScope.user_id;
-               
+
                 $scope.Build.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
 
-                if($scope.Build.build_status == true)
-                {
+                if ($scope.Build.build_status == true) {
                     $scope.Build.build_status = 1;
-                }
-                else {
+                } else {
                     $scope.Build.build_status = 0;
                 }
 
@@ -249,34 +255,34 @@
         };
 
         getTeamList();
+
         function getTeamList() {
-            var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http ,$rootScope.user_id );
+            $scope.storedTeamValue = $scope.team.selected;
+            var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
-                 $scope.TeamList = pl.data; 
-                if ($rootScope.team_count > 1) {
-                   if (items.isEditing) { 
-                                   for (var team in $scope.TeamList) {
-                                    if ($scope.TeamList[team].team_id == $scope.Build.team_id) {
-                                        $scope.team.selected = $scope.TeamList[team].team_id;
-                                 }
+                    $scope.TeamList = pl.data;
+                    if ($rootScope.team_count > 1) {
+                        if (items.isEditing) {
+                            for (var team in $scope.TeamList) {
+                                if ($scope.TeamList[team].team_id == $scope.Build.team_id) {
+                                    $scope.team.selected = $scope.TeamList[team].team_id;
+                                }
                             }
-                         }
-                         else{
-                              $scope.team.selected = $scope.TeamList[0].team_id;
-                         }
+                        } else {
+                            $scope.team.selected = $scope.storedTeamValue;
                         }
-                else {
-                    $scope.team.selected = $scope.TeamList[0].team_id;
-                }
-                    
-                $scope.loadGrid();
-            },
-                  function (errorPl) {
-                      Notification('Some Error in Getting Records.');
-                  });
+                    } else {
+                        $scope.team.selected = $scope.TeamList[0].team_id;
+                    }
+
+                    $scope.loadGrid();
+                },
+                function (errorPl) {
+                    Notification('Some Error in Getting Records.');
+                });
         }
 
-        $scope.loadGrid = function() {
+        $scope.loadGrid = function () {
             // if($rootScope.team_count > 1) {
             //     var id = $scope.team.selected;
             // }
@@ -285,8 +291,10 @@
             // }
             var id = $scope.team.selected;
             var self = this;
-            BuildService.getAllBuildbyID($scope, $rootScope, $http , id).then(function (responce) {
-                $scope.tableParams = new NgTableParams({}, { dataset: responce.data });
+            BuildService.getAllBuildbyID($scope, $rootScope, $http, id).then(function (responce) {
+                $scope.tableParams = new NgTableParams({}, {
+                    dataset: responce.data
+                });
 
             });
 

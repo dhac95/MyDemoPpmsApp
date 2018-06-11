@@ -4,8 +4,8 @@
 
 
     angular
-         .module('ERP.service')
-         .service('BuildService', BuildService);
+        .module('ERP.service')
+        .service('BuildService', BuildService);
 
     BuildService.$inject = [];
 
@@ -31,7 +31,7 @@
         }
 
         function updateBuild($scope, $rootScope, $http, Build, id) {
-            return $http.put($rootScope.endPoint + 'Builds/' + id , Build);
+            return $http.put($rootScope.endPoint + 'Builds/' + id, Build);
         }
 
         function deleteBuild($scope, $rootScope, $http, id) {

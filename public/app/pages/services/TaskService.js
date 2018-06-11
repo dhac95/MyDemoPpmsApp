@@ -4,8 +4,8 @@
 
 
     angular
-         .module('ERP.service')
-         .service('TaskService', TaskService);
+        .module('ERP.service')
+        .service('TaskService', TaskService);
 
     TaskService.$inject = [];
 
@@ -31,7 +31,7 @@
         }
 
         function updateTask($scope, $rootScope, $http, Task, id) {
-            return $http.put($rootScope.endPoint + 'Tasks/' + id , Task);
+            return $http.put($rootScope.endPoint + 'Tasks/' + id, Task);
         }
 
         function deleteTask($scope, $rootScope, $http, obj) {

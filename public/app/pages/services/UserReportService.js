@@ -4,10 +4,10 @@
 
 
     angular
-         .module('ERP.service')
-         .service('UserReportService', UserReportService);
+        .module('ERP.service')
+        .service('UserReportService', UserReportService);
 
-         UserReportService.$inject = [];
+    UserReportService.$inject = [];
 
     function UserReportService() {
         this.getUserReports = getUserReports;
@@ -21,7 +21,7 @@
         }
 
         function getRemaingReportsTime($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'userReports/getTotalTime/' , obj);
+            return $http.post($rootScope.endPoint + 'userReports/getTotalTime/', obj);
         }
 
     }

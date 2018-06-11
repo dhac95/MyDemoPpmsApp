@@ -25,6 +25,7 @@
         this.getDeviceCountList = getDeviceCountList;
         this.saveDeviceCountList = saveDeviceCountList;
         this.deleteDeviceCountList = deleteDeviceCountList;
+        this.setDeviceCountByPrev = setDeviceCountByPrev;
         //////////////////
         function setTargets($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'mwu/', obj);
@@ -35,7 +36,7 @@
         }
 
         function getAllDailyTargetbyID($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'wu/Get/' , obj);
+            return $http.post($rootScope.endPoint + 'wu/Get/', obj);
         }
 
         function addDailyTarget($scope, $rootScope, $http, DailyTarget) {
@@ -47,10 +48,10 @@
         }
 
         function deleteDailyTarget($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'wu/delete/' , obj);
+            return $http.post($rootScope.endPoint + 'wu/delete/', obj);
         }
 
-        function getTaskswithManualCF($scope, $rootScope, $http , team_id) {
+        function getTaskswithManualCF($scope, $rootScope, $http, team_id) {
             return $http.get($rootScope.endPoint + 'loadcftasks/tasks/manual/' + team_id);
         }
 
@@ -61,23 +62,33 @@
         function setAutoTarget($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'atu/', obj);
         }
+
         function setNonTarget($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'ncf/', obj);
         }
+
         function setManualTarget($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'mcf/', obj);
         }
+
         function setManualTargetByPrev($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'mcf/prev/', obj);
         }
+
+        function setDeviceCountByPrev($scope, $rootScope, $http, obj) {
+            return $http.post($rootScope.endPoint + 'dcload/', obj);
+        }
+
         function getDeviceCountList($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'dccheck/Get/', obj);
         }
+
         function saveDeviceCountList($scope, $rootScope, $http, DailyTarget) {
-             return $http.post($rootScope.endPoint + 'dccheck/', DailyTarget);
+            return $http.post($rootScope.endPoint + 'dccheck/', DailyTarget);
         }
+
         function deleteDeviceCountList($scope, $rootScope, $http, DailyTarget) {
-              return $http.post($rootScope.endPoint + 'dccheck/delete/', DailyTarget);
+            return $http.post($rootScope.endPoint + 'dccheck/delete/', DailyTarget);
         }
     }
 

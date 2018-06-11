@@ -5,31 +5,31 @@
 	<form name="myForm" role="form" class="well well-sm">
 		<div class="row">
 			<!-- <div class="col-md-6 col-lg-6"> -->
-				
-				<div class="form-group col-md-6 col-lg-6">
-					<label for="team_name">Team Name</label>
-					<input type="text" class="form-control" id="team_name" name="tTeamName" data-ng-model="Team.team_name" />
-					<div ng-show="myForm.tTeamName.$touched  && myForm.tTeamName.$invalid" class="text-danger">*required  TeamName</div>
-				</div>
-				<!-- <div class="form-group">
+
+			<div class="form-group col-md-6 col-lg-6">
+				<label for="team_name">Team Name</label>
+				<input type="text" class="form-control" id="team_name" name="tTeamName" data-ng-model="Team.team_name" />
+				<div ng-show="myForm.tTeamName.$touched  && myForm.tTeamName.$invalid" class="text-danger">*required TeamName</div>
+			</div>
+			<!-- <div class="form-group">
 					<label for="added_by">Added By</label>
 					<input type="number" class="form-control" id="added_by" name="tadded_by" data-ng-model="Team.added_by"  />
                 </div> -->
-                <!-- <div class="form-group">
+			<!-- <div class="form-group">
 					<label for="status">Status</label>
 					<input type="number" class="form-control" id="status" name="tstatus" data-ng-model="Team.status"  />
 				</div> -->
-				
-				<div class="form-group col-md-6 col-lg-6">
-					<label for="status">Status</label>
-					<switch id="status" name="status" ng-model="Team.status" class="switch small green " data-ng-value="Team.status"></switch>
-				</div>
 
-                <!-- <div class="form-group">
+			<div class="form-group col-md-6 col-lg-6">
+				<label for="status">Status</label>
+				<switch id="status" name="status" ng-model="Team.status" class="switch small green " data-ng-value="Team.status"></switch>
+			</div>
+
+			<!-- <div class="form-group">
 					<label for="team_deletion">Team Deletion</label>
 					<input type="number" class="form-control" id="team_deletion" name="tteam_deletion" data-ng-model="Team.team_deletion"  />
                 </div> -->
-                <!-- <div class="form-group">
+			<!-- <div class="form-group">
 					<label for="last_modify">last_modify</label>
 					<input type="date" class="form-control" id="last_modify" name="tlast_modify" data-ng-model="Team.last_modify"  ng-model-options="{timezone:'UTC'}"/>
                 </div>
@@ -41,7 +41,7 @@
 					<label for="create_date">create_date</label>
 					<input type="date" class="form-control" id="create_date" name="tcreate_date" data-ng-model="Team.create_date" ng-model-options="{timezone:'UTC'}" />
                 </div> -->
-                
+
 			<!-- </div> -->
 		</div>
 	</form>

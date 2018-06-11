@@ -15,13 +15,13 @@
                     <td class="text-center" title="'Team ID'" filter="{team_id : 'text'}" sortable="'team_id'">{{ row.team_id }}</td>
                     <td class="text-center" title="'Team Name'" filter="{team_name : 'text'}" sortable="'team_name'">{{ row.team_name }}</td>
                     <td class="text-center" title="'Added By'" filter="{user_name : 'text'}" sortable="'user_name'">{{ row.user_name }}</td>
-                    
+
                     <td class="text-center" title="'Team Status'" filter="{status : 'text'}" sortable="'status'">
-                            <span data-ng-if="row.status === 1" class="label label-success">Active</span>
-                            <span data-ng-if="row.status === 0" class="label label-danger">InActive</span>
+                        <span data-ng-if="row.status === 1" class="label label-success">Active</span>
+                        <span data-ng-if="row.status === 0" class="label label-danger">InActive</span>
                     </td>
                     <!-- <td class="text-center" title="'team_deletion'" filter="{team_deletion : 'text'}" sortable="'team_deletion'">{{ row.team_deletion }}</td> -->
-                 
+
                     <td title="'Last Modified'" filter="{last_modify : 'text'}" sortable="'last_modify'">{{ row.last_modify | date : "dd.MM.y" }}</td>
                     <td title="'Created Date'" filter="{create_date : 'text'}" sortable="'create_date'">{{ row.create_date | date : "dd.MM.y" }}</td>
                     <!-- <td title="'maintain_date'" filter="{maintain_date : 'text'}" sortable="'maintain_date'">{{ row.maintain_date | date : "dd.MM.y" }}</td> -->
@@ -51,5 +51,3 @@
         </div>
     </div>
 </div>
-
-

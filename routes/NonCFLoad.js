@@ -74,16 +74,16 @@ router.post('/', function (req, res, next) {
 
                     }, function (response) {
                         if (queryError.length > 0) {
-                                res.send({
-                                    "code" : 500 , 
-                                    "BulkError": queryError
+                            res.send({
+                                "code": 500,
+                                "BulkError": queryError
                             });
                         } else {
-                        res.send({
-                            "code": 200,
-                            "message": "success"
-                        });
-                    }
+                            res.send({
+                                "code": 200,
+                                "message": "success"
+                            });
+                        }
                     });
                 }
             });

@@ -4,8 +4,8 @@
 
 
     angular
-         .module('ERP.service')
-         .service('UserOTService', UserOTService);
+        .module('ERP.service')
+        .service('UserOTService', UserOTService);
 
     UserOTService.$inject = [];
 
@@ -13,7 +13,7 @@
         this.addUserOT = addUserOT;
         this.updateUserOT = updateUserOT;
         this.deleteUserOT = deleteUserOT;
-     //   this.getAllUserOT = getAllUserOT;
+        //   this.getAllUserOT = getAllUserOT;
         this.getAllUserOTbyID = getAllUserOTbyID;
         this.getLoadedTeam = getLoadedTeam;
         this.getLoadedTasks = getLoadedTasks;
@@ -35,8 +35,9 @@
         function addUserOT($scope, $rootScope, $http, UserOT) {
             return $http.post($rootScope.endPoint + 'userot/', UserOT);
         }
+
         function getRemaingTime($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'userot/getTime/', obj); 
+            return $http.post($rootScope.endPoint + 'userot/getTime/', obj);
         }
 
         function getAddedTask($scope, $rootScope, $http, obj) {
@@ -44,7 +45,7 @@
         }
 
         function updateUserOT($scope, $rootScope, $http, UserOT, id) {
-            return $http.put($rootScope.endPoint + 'userot/' + id , UserOT);
+            return $http.put($rootScope.endPoint + 'userot/' + id, UserOT);
         }
 
         function deleteUserOT($scope, $rootScope, $http, id) {
@@ -54,12 +55,15 @@
         function getLoadedTeam($scope, $rootScope, $http, id) {
             return $http.get($rootScope.endPoint + 'loadTeam/' + id);
         }
+
         function getLoadedTasks($scope, $rootScope, $http, team_id) {
             return $http.get($rootScope.endPoint + 'loadTasks/' + team_id);
         }
+
         function getLoadedsubTasks($scope, $rootScope, $http, task_id) {
             return $http.get($rootScope.endPoint + 'loadTasks/subtask/' + task_id);
         }
+
         function getLoadedBuilds($scope, $rootScope, $http, team_id) {
             return $http.get($rootScope.endPoint + 'loadBuilds/' + team_id);
         }

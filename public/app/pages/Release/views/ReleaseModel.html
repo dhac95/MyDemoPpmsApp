@@ -17,7 +17,7 @@
                     <div class="dropdown">
                         <select class="form-control" id="team" name="team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList"
                             data-ng-change="loadGrid()" data-ng-model="team.selected" data-ng-init="team.selected = Release.team_id"
-                             data-ng-required = "$root.team_count > 1">
+                            data-ng-required="$root.team_count > 1">
                             <option value="">Select the Team</option>
                         </select>
                     </div>

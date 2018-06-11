@@ -1,4 +1,3 @@
-
 (function () {
     'use strict';
 
@@ -9,6 +8,7 @@
 
 
     ChartsController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'Excel', '$timeout', 'SdaReportService', 'AddTaskService', '$uibModal', 'NgTableParams', 'Notification'];
+
     function ChartsController($scope, $rootScope, $http, $filter, Excel, $timeout, SdaReportService, AddTaskService, $uibModal, NgTableParams, Notification) {
 
         $rootScope.title = "Charts";
@@ -66,8 +66,7 @@
             modalInstance.result.then(function () {
                 $scope.getTotalTime();
                 showChartss();
-            }, function () {
-            });
+            }, function () {});
         };
 
         var today = new Date();
@@ -105,100 +104,101 @@
         //         });
         // }
         getTeamList();
+
         function getTeamList() {
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
-                $scope.TeamList = pl.data;
-                if (pl.data.length > 1) {
-                    if ($scope.isEditing) {
-                        for (var team in $scope.TeamList) {
-                            if ($scope.TeamList[team].team_id == $scope.Charts.team_id) {
-                                $scope.team.selected = $scope.TeamList[team];
+                    $scope.TeamList = pl.data;
+                    if (pl.data.length > 1) {
+                        if ($scope.isEditing) {
+                            for (var team in $scope.TeamList) {
+                                if ($scope.TeamList[team].team_id == $scope.Charts.team_id) {
+                                    $scope.team.selected = $scope.TeamList[team];
+
+                                }
 
                             }
-
+                            $scope.selectTask();
+                            $scope.selectUsers();
+                        } else {
+                            $scope.team.selected = $scope.TeamList[0].team_id;
+                            $scope.selectTask();
+                            $scope.selectUsers();
                         }
-                        $scope.selectTask();
-                        $scope.selectUsers();
-                    }
-                    else {
+                    } else {
                         $scope.team.selected = $scope.TeamList[0].team_id;
                         $scope.selectTask();
                         $scope.selectUsers();
                     }
-                }
-                else {
-                    $scope.team.selected = $scope.TeamList[0].team_id;
-                    $scope.selectTask();
-                    $scope.selectUsers();
-                }
 
-            },
+                },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.');
                 });
         }
 
         $scope.selectUsers = function () {
-              $scope.user.selected = undefined;
+            $scope.user.selected = undefined;
             var team_id = $scope.team.selected;
             var promiseGet = SdaReportService.getLoadedUsers($scope, $rootScope, $http, team_id);
             promiseGet.then(function (pl) {
-                $scope.UserList = pl.data;
-                if ($scope.isEditing) {
-                    for (var user in $scope.UserList) {
-                        if ($scope.UserList[user].user_id == $scope.Charts.user_id) {
-                            $scope.user.selected = $scope.UserList[user];
+                    $scope.UserList = pl.data;
+                    if ($scope.isEditing) {
+                        for (var user in $scope.UserList) {
+                            if ($scope.UserList[user].user_id == $scope.Charts.user_id) {
+                                $scope.user.selected = $scope.UserList[user];
+                            }
                         }
                     }
-                }
 
-            },
+                },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.');
                 });
         };
 
         $scope.selectTask = function () {
-              $scope.task.selected = undefined;
+            $scope.task.selected = undefined;
             var team_id = $scope.team.selected;
             var promiseGet = AddTaskService.getLoadedTasks($scope, $rootScope, $http, team_id);
             promiseGet.then(function (pl) {
-                $scope.TaskList = pl.data;
-                if ($scope.isEditing) {
-                    for (var task in $scope.TaskList) {
-                        if ($scope.TaskList[task].task_id == $scope.Charts.tasks_id) {
-                            $scope.task.selected = $scope.TaskList[task];
+                    $scope.TaskList = pl.data;
+                    if ($scope.isEditing) {
+                        for (var task in $scope.TaskList) {
+                            if ($scope.TaskList[task].task_id == $scope.Charts.tasks_id) {
+                                $scope.task.selected = $scope.TaskList[task];
+                            }
                         }
                     }
-                }
-                $scope.selectsubTask();
-            },
+                    $scope.selectsubTask();
+                },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.');
                 });
         };
 
         $scope.selectsubTask = function () {
-             $scope.subtask.selected = undefined;
+            //  $scope.subtask.selected = undefined;
+
             var obj = {
                 task_id: $scope.task.selected
             };
-             if (obj.task_id != undefined) {
-            var promiseGet = SdaReportService.getSubtaksByMultipleTasks($scope, $rootScope, $http, obj);
-            promiseGet.then(function (pl) {
-                $scope.subTaskList = pl.data;
-                if ($scope.isEditing) {
-                    for (var subtask in $scope.subTaskList) {
-                        if ($scope.subTaskList[subtask].sub_task_id == $scope.Charts.sub_task_id) {
-                            $scope.subtask.selected = $scope.subTaskList[subtask];
+            $scope.subTaskList = "";
+            if (obj.task_id != undefined) {
+                var promiseGet = SdaReportService.getSubtaksByMultipleTasks($scope, $rootScope, $http, obj);
+                promiseGet.then(function (pl) {
+                        $scope.subTaskList = pl.data;
+                        if ($scope.isEditing) {
+                            for (var subtask in $scope.subTaskList) {
+                                if ($scope.subTaskList[subtask].sub_task_id == $scope.Charts.sub_task_id) {
+                                    $scope.subtask.selected = $scope.subTaskList[subtask];
+                                }
+                            }
                         }
-                    }
-                }
-            },
-                function (errorPl) {
-                    Notification('Some Error in Getting Records.');
-                });
+                    },
+                    function (errorPl) {
+                        Notification('Some Error in Getting Records.');
+                    });
             }
         };
 
@@ -220,7 +220,7 @@
             var exportHref = Excel.tableToExcel(tableId, 'User Data');
             $timeout(function () {
                 var link = document.createElement('a');
-                document.body.appendChild(link);  // For Mozilla
+                document.body.appendChild(link); // For Mozilla
                 link.href = exportHref;
 
                 link.download = name + '.xls';
@@ -265,16 +265,17 @@
 
             };
             if (formatDate1 > formatDate2) {
-                Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
-            }
-            else {
+                Notification({
+                    message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>"
+                }, 'warning');
+            } else {
                 var promiseGet = SdaReportService.getProductiviy($scope, $rootScope, $http, obj);
                 promiseGet.then(function (pl) {
-                    $scope.ProdList = "";
-                    $scope.ProdList = pl.data;
-                    $scope.createOverAllChart();
-                    $scope.chartTitle = "Bar Chart - OverAll Productivity";
-                },
+                        $scope.ProdList = "";
+                        $scope.ProdList = pl.data;
+                        $scope.createOverAllChart();
+                        $scope.chartTitle = "Bar Chart - OverAll Productivity";
+                    },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
                     });
@@ -310,16 +311,17 @@
 
             };
             if (formatDate1 > formatDate2) {
-                Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
-            }
-            else {
+                Notification({
+                    message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>"
+                }, 'warning');
+            } else {
                 var promiseGet = SdaReportService.getProductiviyByUser($scope, $rootScope, $http, obj);
                 promiseGet.then(function (pl) {
-                    $scope.ProdList = "";
-                    $scope.ProdList = pl.data;
-                    $scope.createUserChart();
-                    $scope.chartTitle = "Bar Chart - UserWise Productivity";
-                },
+                        $scope.ProdList = "";
+                        $scope.ProdList = pl.data;
+                        $scope.createUserChart();
+                        $scope.chartTitle = "Bar Chart - UserWise Productivity";
+                    },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
                     });
@@ -355,16 +357,17 @@
 
             };
             if (formatDate1 > formatDate2) {
-                Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
-            }
-            else {
+                Notification({
+                    message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>"
+                }, 'warning');
+            } else {
                 var promiseGet = SdaReportService.getProductiviyByTask($scope, $rootScope, $http, obj);
                 promiseGet.then(function (pl) {
-                    $scope.ProdList = "";
-                    $scope.ProdList = pl.data;
-                    $scope.createTaskChart();
-                    $scope.chartTitle = "Bar Chart - Taskwise Productivity";
-                },
+                        $scope.ProdList = "";
+                        $scope.ProdList = pl.data;
+                        $scope.createTaskChart();
+                        $scope.chartTitle = "Bar Chart - Taskwise Productivity";
+                    },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
                     });
@@ -400,16 +403,17 @@
 
             };
             if (formatDate1 > formatDate2) {
-                Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
-            }
-            else {
+                Notification({
+                    message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>"
+                }, 'warning');
+            } else {
                 var promiseGet = SdaReportService.getProductiviyBySubTask($scope, $rootScope, $http, obj);
                 promiseGet.then(function (pl) {
-                    $scope.ProdList = "";
-                    $scope.ProdList = pl.data;
-                    $scope.createSubTaskChart();
-                    $scope.chartTitle = "Bar Chart - SubTaskWise Productivity";
-                },
+                        $scope.ProdList = "";
+                        $scope.ProdList = pl.data;
+                        $scope.createSubTaskChart();
+                        $scope.chartTitle = "Bar Chart - SubTaskWise Productivity";
+                    },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
                     });
@@ -446,7 +450,9 @@
             var DOMURL = window.URL || window.webkitURL || window;
 
             var img = new Image();
-            var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
+            var svgBlob = new Blob([data], {
+                type: 'image/svg+xml;charset=utf-8'
+            });
             var url = DOMURL.createObjectURL(svgBlob);
 
             img.onload = function () {
@@ -459,7 +465,7 @@
 
                 // triggerDownload(imgURI);
                 var link = document.createElement('a');
-                document.body.appendChild(link);  // For Mozilla
+                document.body.appendChild(link); // For Mozilla
                 link.href = imgURI;
 
                 link.download = $scope.chartTitle + '.png';
@@ -488,7 +494,9 @@
             var DOMURL = window.URL || window.webkitURL || window;
 
             var img = new Image();
-            var svgBlob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
+            var svgBlob = new Blob([data], {
+                type: 'image/svg+xml;charset=utf-8'
+            });
             var url = DOMURL.createObjectURL(svgBlob);
 
             img.onload = function () {
@@ -501,7 +509,7 @@
 
                 // triggerDownload(imgURI);
                 var link = document.createElement('a');
-                document.body.appendChild(link);  // For Mozilla
+                document.body.appendChild(link); // For Mozilla
                 link.href = imgURI;
 
                 link.download = $scope.chartTitle + '.jpg';
@@ -537,14 +545,15 @@
 
             };
             if (formatDate1 > formatDate2) {
-                Notification({ message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>" }, 'warning');
-            }
-            else {
+                Notification({
+                    message: "The From date cannot be greater than To date <b> Try chaning the date 🤦</b>"
+                }, 'warning');
+            } else {
                 var promiseGet = SdaReportService.getChartss($scope, $rootScope, $http, obj);
                 promiseGet.then(function (pl) {
-                    $scope.ReportList = pl.data;
-                    $scope.getTotalTime();
-                },
+                        $scope.ReportList = pl.data;
+                        $scope.getTotalTime();
+                    },
                     function (errorPl) {
                         Notification('Some Error in Getting Records.');
                     });
@@ -575,15 +584,74 @@
             };
             var promiseGet = SdaReportService.getRemaingReportsTime($scope, $rootScope, $http, obj);
             promiseGet.then(function (pl) {
-                $scope.remTime = pl.data;
-            },
+                    $scope.remTime = pl.data;
+                },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.');
                 });
         };
 
         $scope.createOverAllChart = function () {
-            var chart;
+            var WU = [],
+                Time = [],
+                totalList = [];
+                totalList.push(100);
+
+            WU.push(parseFloat($scope.ProdList.AverageWorkUnit));
+            // cat2.push($scope.ProdList[i].TaskName);
+            Time.push($scope.ProdList.total);
+
+            Highcharts.chart('container', {
+                // chart: {
+                //     type: 'column'
+                // },
+                chart: {
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Overall Productivity'
+                },
+                xAxis: {
+                    categories: Time,
+                    title: {
+                        text: 'Time'
+                    },
+                    tooltip: {
+                        valueSuffix: 'Hrs'
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: 'Work Units'
+                    }
+                },
+                tooltip: {
+                    shared: true
+                },
+
+                legend: {
+                    enabled: true
+                },
+
+                credits: {
+                    enabled: false
+                },
+
+                series: [{
+                    label: Time,
+                    type: 'column',
+                    name: 'Work Unit Actuals',
+                    data: WU
+                } , 
+                    {
+                        name: 'Targets',
+                        type: 'spline',
+                        data: totalList,
+
+                    }]
+            });
+
+            /* var chart;
             nv.addGraph(function () {
                 chart = nv.models.discreteBarChart()
                      .x(function (d) { return d.total; })    //Specify the data accessors.
@@ -603,86 +671,273 @@
                     values: [$scope.ProdList]	
                 }
             ]).transition().duration(500).call(chart);
-        });
-    };
-
-        $scope.createSubTaskChart = function () {
-            var chart;
-            nv.addGraph(function () {
-                chart = nv.models.discreteBarChart()
-                    .x(function (d) { return d.SubTaskName; })    //Specify the data accessors.
-                    .y(function (d) { return d.AverageWorkUnit; })
-                    .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
-                  //  .tooltips(false)        //Don't show tooltips
-                    .showValues(false)       //...instead, show the bar value right on top of each bar.
-                    //.transitionDuration(350)
-                    ;
-                // chart.y1Axis
-                //     .tickFormat(d3.format(',f'));
-
-                // chart.y2Axis
-                //     .tickFormat(function (d) { return d3.format(',f')(d); });
-
-                // for (var i in $scope.ProdList) {
-                //       $scope.ProdList2.push({  "SubTaskName" : $scope.ProdList[i].SubTaskName ,  "target" : 100 });
-                // }
-                    
-                d3.select('#basicChart').datum([
-                    {
-                        key: "Actuval",
-                        values: $scope.ProdList
-                    }
-                    // {
-                        
-                    //     key : "Target",
-                    //     values: $scope.ProdList2
-                    // }
-
-                ]).transition().duration(500).call(chart);
-            }); 
+        }); */
         };
 
+    
         $scope.createUserChart = function () {
-            var chart;
-            nv.addGraph(function () {
-                chart = nv.models.discreteBarChart()
-                    .x(function (d) { return d.UserName; })    //Specify the data accessors.
-                    .y(function (d) { return d.AverageWorkUnit; })
-                    .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
-                    //.tooltips(true)        //Don't show tooltips
-                    .showValues(true)       //...instead, show the bar value right on top of each bar.
-                    // .transitionDuration(350)
-                    ;
 
-                d3.select('#basicChart').datum([
-                    {
-                        key: "Report Chart",
-                        values: $scope.ProdList
+            var WU = [],
+                Time = [],
+                Name = [],
+                totalList = [];
+            for (var i in $scope.ProdList) {
+                WU.push(parseFloat($scope.ProdList[i].AverageWorkUnit));
+                Name.push($scope.ProdList[i].UserName);
+                Time.push($scope.ProdList[i].total);
+            }
+            for (var j in $scope.ProdList) {
+               totalList.push(100);
+            }
+
+            Highcharts.chart('container', {
+                // chart: {
+                //     type: 'column'
+                // },
+                chart: {
+                    zoomType: 'xy'
+                },
+                title: {
+                    text: 'Userwise productivity'
+                },
+                xAxis: {
+                    categories: Name,
+                    crosshair: true,
+                    title: {
+                        text: 'User Name'
                     }
-                ]).transition().duration(500).call(chart);
+                },
+                yAxis: {
+                    title: {
+                        text: 'Work Units'
+                    }
+                },
+                tooltip: {
+                    shared: true
+                },
+                //  tooltip: {
+                //      valueSuffix: '°C'
+                //  },
+                legend: {
+                    enabled: true
+                },
+
+                credits: {
+                    enabled: false
+                },
+
+                series: [{
+                    label: Name,
+                    type: 'column',
+                    name: 'Work Units Actuals',
+                    data: WU
+                }, {
+                        name: 'Targets',
+                        type: 'spline',
+                        data: totalList,
+                        
+                    }
+            ]
             });
+            // var chart;
+            // nv.addGraph(function () {
+            //     chart = nv.models.discreteBarChart()
+            //         .x(function (d) { return d.UserName; })    //Specify the data accessors.
+            //         .y(function (d) { return d.AverageWorkUnit; })
+            //         .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
+            //         //.tooltips(true)        //Don't show tooltips
+            //         .showValues(true)       //...instead, show the bar value right on top of each bar.
+            //         // .transitionDuration(350)
+            //         ;
+
+            //     d3.select('#basicChart').datum([
+            //         {
+            //             key: "Report Chart",
+            //             values: $scope.ProdList
+            //         }
+            //     ]).transition().duration(500).call(chart);
+            // });
         };
 
         $scope.createTaskChart = function () {
-            var chart;
-            nv.addGraph(function () {
-                chart = nv.models.discreteBarChart()
-                    .x(function (d) { return d.TaskName; })    //Specify the data accessors.
-                    .y(function (d) { return d.AverageWorkUnit; })
-                    .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
-                    //.tooltips(true)        //Don't show tooltips
-                    .showValues(true)       //...instead, show the bar value right on top of each bar.
-                    // .transitionDuration(350)
-                    ;
+            /*  var chart;
+             nv.addGraph(function () {
+                 chart = nv.models.discreteBarChart()
+                     .x(function (d) { return d.TaskName; })    //Specify the data accessors.
+                     .y(function (d) { return d.AverageWorkUnit; })
+                     .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
+                     //.tooltips(true)        //Don't show tooltips
+                     .showValues(true)       //...instead, show the bar value right on top of each bar.
+                     // .transitionDuration(350)
+                     ;
 
-                d3.select('#basicChart').datum([
-                    {
-                        key: "Report Chart",
-                        values: $scope.ProdList
+                 d3.select('#basicChart').datum([
+                     {
+                         key: "Report Chart",
+                         values: $scope.ProdList
+                     }
+                 ]).transition().duration(500).call(chart);
+             }); */
+            var WU = [],
+                Time = [],
+                Name = [],
+                totalList = [];
+            for (var i in $scope.ProdList) {
+                WU.push(parseFloat($scope.ProdList[i].AverageWorkUnit));
+                Name.push($scope.ProdList[i].TaskName);
+                Time.push($scope.ProdList[i].total);
+            }
+            for (var j in $scope.ProdList) {
+                totalList.push(100);
+            }
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'column'
+                },
+                // chart: {
+                //     zoomType: 'xy'
+                // },
+                title: {
+                    text: 'Taskwise productivity'
+                },
+                xAxis: {
+                    categories: Name,
+                    title: {
+                        text: 'Task Name'
                     }
-                ]).transition().duration(500).call(chart);
+                },
+                yAxis: {
+                    title: {
+                        text: 'Work Units'
+                    }
+                },
+                //  tooltip: {
+                //      valueSuffix: '°C'
+                //  },
+                // tooltip: {
+                //     shared: true
+                // },
+                legend: {
+                    enabled: true
+                },
+
+                credits: {
+                    enabled: false
+                },
+
+                series: [{
+                    label: Name,
+                    // type: 'column',
+                    name: 'Work Units Actuals',
+                    data: WU
+                }
+                // , {
+                //     name: 'Targets',
+                //     type: 'spline',
+                //     data: totalList,
+
+                // }
+                ]
             });
         };
+
+         $scope.createSubTaskChart = function () {
+             var WU = [],
+                 Time = [],
+                 Name = [],
+                 totalList = [];
+             for (var i in $scope.ProdList) {
+                 WU.push(parseFloat($scope.ProdList[i].AverageWorkUnit));
+                 Name.push($scope.ProdList[i].SubTaskName);
+                 Time.push($scope.ProdList[i].total);
+             }
+             for (var j in $scope.ProdList) {
+                 totalList.push(100);
+             }
+             Highcharts.chart('container', {
+                 chart: {
+                     type: 'column'
+                 },
+                //  chart: {
+                //      zoomType: 'xy'
+                //  },
+                 title: {
+                     text: 'Subtaskwise productivity'
+                 },
+                 xAxis: {
+                     categories: Name,
+                     title: {
+                         text: 'SubTask Name'
+                     }
+                 },
+                 yAxis: {
+                     title: {
+                         text: 'Work Units'
+                     }
+                 },
+                 //  tooltip: {
+                 //      valueSuffix: '°C'
+                 //  },
+                 tooltip: {
+                     shared: true
+                 },
+                 legend: {
+                     enabled: true
+                 },
+
+                 credits: {
+                     enabled: false
+                 },
+
+                 series: [{
+                     label: Name,
+                    //  type: 'column',
+                     name: 'Work Units Actuals',
+                     data: WU
+                 }
+                //  , {
+                //      name: 'Targets',
+                //      type: 'spline',
+                //      data: totalList,
+
+                //  }
+                ]
+             });
+
+             /*  var chart;
+              nv.addGraph(function () {
+                  chart = nv.models.discreteBarChart()
+                      .x(function (d) { return d.SubTaskName; })    //Specify the data accessors.
+                      .y(function (d) { return d.AverageWorkUnit; })
+                      .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
+                    //  .tooltips(false)        //Don't show tooltips
+                      .showValues(false)       //...instead, show the bar value right on top of each bar.
+                      //.transitionDuration(350)
+                      ;
+                  // chart.y1Axis
+                  //     .tickFormat(d3.format(',f'));
+
+                  // chart.y2Axis
+                  //     .tickFormat(function (d) { return d3.format(',f')(d); });
+
+                  // for (var i in $scope.ProdList) {
+                  //       $scope.ProdList2.push({  "SubTaskName" : $scope.ProdList[i].SubTaskName ,  "target" : 100 });
+                  // }
+                      
+                  d3.select('#basicChart').datum([
+                      {
+                          key: "Actuval",
+                          values: $scope.ProdList
+                      }
+                      // {
+                          
+                      //     key : "Target",
+                      //     values: $scope.ProdList2
+                      // }
+
+                  ]).transition().duration(500).call(chart);
+              });  */
+         };
 
         function removeCharts(Charts) {
             //if (Charts.Active === 0) {
@@ -715,6 +970,7 @@
 
 
     ChartsModelController.$inject = ['$scope', '$rootScope', '$http', 'items', '$uibModalInstance', 'AddTaskService', 'SdaReportService'];
+
     function ChartsModelController($scope, $rootScope, $http, items, $uibModalInstance, AddTaskService, SdaReportService) {
         $scope.items = items;
         if (items.isEditing)
@@ -740,9 +996,11 @@
                         // $scope.getTotalTime();
                         // showChartss();
                     } else if (res.data.results) {
-                        Notification({ message: "Error occoured !! Check the entered time", title: "Time total must be total of 8 hours" }, 'error');
-                    }
-                    else {
+                        Notification({
+                            message: "Error occoured !! Check the entered time",
+                            title: "Time total must be total of 8 hours"
+                        }, 'error');
+                    } else {
                         Notification.error("Error occoured !! Please try again");
                     }
                 }, function (err) {
@@ -761,8 +1019,7 @@
                         $uibModalInstance.close();
                     } else if (res.data.results) {
                         Notification.error("Error occoured !! Check the entered time");
-                    }
-                    else {
+                    } else {
                         Notification.error("Error occoured !! Please try again");
                     }
                 }, function (err) {
@@ -777,17 +1034,17 @@
         function getTeamList() {
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
-                $scope.TeamList = pl.data;
-                if ($scope.isEditing) {
-                    for (var team in $scope.TeamList) {
-                        if ($scope.TeamList[team].team_id == $scope.Charts.team_id) {
-                            $scope.team.selected = $scope.TeamList[team];
+                    $scope.TeamList = pl.data;
+                    if ($scope.isEditing) {
+                        for (var team in $scope.TeamList) {
+                            if ($scope.TeamList[team].team_id == $scope.Charts.team_id) {
+                                $scope.team.selected = $scope.TeamList[team];
+                            }
                         }
                     }
-                }
-                $scope.selectTask();
-                $scope.selectBuild();
-            },
+                    $scope.selectTask();
+                    $scope.selectBuild();
+                },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.');
                 });
@@ -798,15 +1055,15 @@
             var team_id = $scope.team.selected;
             var promiseGet = AddTaskService.getLoadedBuilds($scope, $rootScope, $http, team_id);
             promiseGet.then(function (pl) {
-                $scope.BuildList = pl.data;
-                if ($scope.isEditing) {
-                    for (var build in $scope.BuildList) {
-                        if ($scope.BuildList[build].build_no == $scope.AddTask.build) {
-                            $scope.build.selected = $scope.BuildList[build];
+                    $scope.BuildList = pl.data;
+                    if ($scope.isEditing) {
+                        for (var build in $scope.BuildList) {
+                            if ($scope.BuildList[build].build_no == $scope.AddTask.build) {
+                                $scope.build.selected = $scope.BuildList[build];
+                            }
                         }
                     }
-                }
-            },
+                },
                 function (errorPl) {
                     $log.error('Some Error in Getting Records.', errorPl);
                 });
@@ -817,16 +1074,16 @@
             var team_id = $scope.team.selected;
             var promiseGet = AddTaskService.getLoadedTasks($scope, $rootScope, $http, team_id);
             promiseGet.then(function (pl) {
-                $scope.TaskList = pl.data;
-                if ($scope.isEditing) {
-                    for (var task in $scope.TaskList) {
-                        if ($scope.TaskList[task].task_id == $scope.Charts.tasks_id) {
-                            $scope.task.selected = $scope.TaskList[task];
+                    $scope.TaskList = pl.data;
+                    if ($scope.isEditing) {
+                        for (var task in $scope.TaskList) {
+                            if ($scope.TaskList[task].task_id == $scope.Charts.tasks_id) {
+                                $scope.task.selected = $scope.TaskList[task];
+                            }
                         }
                     }
-                }
-                $scope.selectsubTask();
-            },
+                    $scope.selectsubTask();
+                },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.', 'error');
                 });
@@ -837,15 +1094,15 @@
             var task_id = $scope.task.selected;
             var promiseGet = AddTaskService.getLoadedsubTasks($scope, $rootScope, $http, task_id);
             promiseGet.then(function (pl) {
-                $scope.subTaskList = pl.data;
-                if ($scope.isEditing) {
-                    for (var subtask in $scope.subTaskList) {
-                        if ($scope.subTaskList[subtask].sub_task_id == $scope.Charts.sub_task_id) {
-                            $scope.subtask.selected = $scope.subTaskList[subtask];
+                    $scope.subTaskList = pl.data;
+                    if ($scope.isEditing) {
+                        for (var subtask in $scope.subTaskList) {
+                            if ($scope.subTaskList[subtask].sub_task_id == $scope.Charts.sub_task_id) {
+                                $scope.subtask.selected = $scope.subTaskList[subtask];
+                            }
                         }
                     }
-                }
-            },
+                },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.', errorPl);
                 });

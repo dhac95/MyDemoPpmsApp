@@ -59,11 +59,11 @@
                     <div ng-show="myForm.subTask.$touched && myForm.subTask.$invalid" class="text-danger">*required Sub Task</div>
                 </div>
 
-                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <!-- <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="task_desc">Leave Type</label>
 					<select type="text" class="form-control" id="task_desc" name="task_desc" data-ng-model="AddTask.task_desc" data-ng-options="Leave.id as Leave.Name for Leave in LeaveTypes">
                     </select>
-                </div>
+                </div> -->
 
                 <div class="form-group col-sm-3 col-md-3 col-lg-3">
 					<label for="count">Count</label>
@@ -132,9 +132,9 @@
                         <th st-sort="task_name">Task Name</th>
                         <th st-sort="sub_task_name">Subtask Name</th>
                         <!-- <th st-sort="task_desc">Leave Type</th> -->
-                        <th st-sort="count">count</th>
-                        <th st-sort="time">time</th>
-                        <th st-sort="date">date</th>
+                        <th st-sort="count">Count</th>
+                        <th st-sort="time">Time</th>
+                        <th st-sort="date">Date</th>
                         <th st-sort="cmds">Comments</th>
 
                         <th>Action</th>

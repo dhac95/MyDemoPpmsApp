@@ -1,38 +1,39 @@
 <div class="jumbotron modal-header">
-        <h3 class="modal-title" id="modal-title">Build</h3>
-    </div>
-    <div class="modal-body" id="modal-body">
-        <form name="myForm" role="form" class="well well-sm">
-            <div class="row">
-                    <div class="form-group col-md-3 col-lg-3">
-                            <label for="status">Status</label>
-                           
-                            <switch id="status" name="status" ng-model="Build.build_status" class="switch small green " data-ng-value="Build.build_status"></switch>
-                    </div>
+    <h3 class="modal-title" id="modal-title">Build</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <form name="myForm" role="form" class="well well-sm">
+        <div class="row">
+            <div class="form-group col-md-3 col-lg-3">
+                <label for="status">Status</label>
 
-                <div ng-show="$root.team_count > 1">
-                    <div class="form-group col-md-3 col-lg-3">
-                        <label for="team">Team Name</label>
-                        <div class="dropdown">
-                            <select class="form-control" id="team" name="team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="loadGrid()" data-ng-model="team.selected" data-ng-init="team.selected = Build.team_id" data-ng-required = "$root.team_count > 1">
-                                <option value="">Select the Team</option>
-                            </select>               
-                        </div>
-                        <div ng-show="myForm.team.$touched && myForm.team.$invalid" class="text-danger">*required team</div>
+                <switch id="status" name="status" ng-model="Build.build_status" class="switch small green " data-ng-value="Build.build_status"></switch>
+            </div>
+
+            <div ng-show="$root.team_count > 1">
+                <div class="form-group col-md-3 col-lg-3">
+                    <label for="team">Team Name</label>
+                    <div class="dropdown">
+                        <select class="form-control" id="team" name="team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList"
+                            data-ng-change="loadGrid()" data-ng-model="team.selected" data-ng-init="team.selected = Build.team_id"
+                            data-ng-required="$root.team_count > 1">
+                            <option value="">Select the Team</option>
+                        </select>
                     </div>
+                    <div ng-show="myForm.team.$touched && myForm.team.$invalid" class="text-danger">*required team</div>
                 </div>
-                
-                    <div class="form-group col-md-3 col-lg-3">
-                        <label for="build">Build Name</label>
-                        <input type="text" class="form-control" id="build" name="build" data-ng-model="Build.build_name" required/>
-                        <div ng-show="myForm.build.$touched && myForm.build.$invalid" class="text-danger">*required build</div>
-                    </div>
+            </div>
+
+            <div class="form-group col-md-3 col-lg-3">
+                <label for="build">Build Name</label>
+                <input type="text" class="form-control" id="build" name="build" data-ng-model="Build.build_name" required/>
+                <div ng-show="myForm.build.$touched && myForm.build.$invalid" class="text-danger">*required build</div>
             </div>
         </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="submit" ng-click="saveBuild(Build)">Save</button>
-        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-    </div>
-    
+</div>
+</form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="submit" ng-click="saveBuild(Build)">Save</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

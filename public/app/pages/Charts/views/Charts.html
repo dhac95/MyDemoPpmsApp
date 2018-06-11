@@ -8,13 +8,13 @@
 
             <div class="form-group col-sm-3 col-md-3 col-lg-3">
                 <label for="from">Date From</label>
-                <input type="date" class="form-control" id="from" name="from" data-ng-model="Charts.From" required/>
+                <input type="date" class="form-control" id="from" name="from" data-ng-model="Charts.From" placeholder="YYYY-MM-DD" required/>
                 <span ng-show="myForm.from.$touched && myForm.from.$invalid" class="text-danger">*required From Date</span>
             </div>
 
             <div class="form-group col-sm-3 col-md-3 col-lg-3">
                 <label for="to">Date To</label>
-                <input type="date" class="form-control" id="to" name="to" data-ng-model="Charts.To" required/>
+                <input type="date" class="form-control" id="to" name="to" data-ng-model="Charts.To" placeholder="YYYY-MM-DD" required/>
                 <span ng-show="myForm.to.$touched && myForm.to.$invalid" class="text-danger">*required To Date</span>
             </div>
 
@@ -118,17 +118,18 @@
                             <div class="box box-success">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">{{chartTitle}}</h3>
-                                    <div class="model-title"> <button class="btn btn-primary" ng-click="exportToPNG2()">PNG</button></div>
+                                    <!-- <div class="model-title"> <button class="btn btn-primary" ng-click="exportToPNG2()">PNG</button></div> -->
                                     <!-- <div class="mode-title"> <button class="btn btn-success" ng-click="exportToJPG()">JPG</button></div> -->
                                     <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse">
                                             <i class="fa fa-minus"></i>
-                                        </button>
+                                        </button> -->
                                         <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
                                     </div>
                                 </div>
-                                <div class="box-body" style="height: 350px;">
-                                    <svg id="basicChart"></svg>
+                                <div class="box-body" style="height: 500px;">
+                                    <!-- <svg id="basicChart"></svg> -->
+                                    <div id="container"></div>
                                     <!--<canvas id="pieChart" style="height:250px"></canvas>-->
                                 </div>
                                 <!-- /.box-body -->

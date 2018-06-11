@@ -26,7 +26,7 @@
             return $http.post($rootScope.endPoint + 'cp/', Profile);
         }
 
-        function updateProfile($scope, $rootScope, $http, Profile, id) { 
+        function updateProfile($scope, $rootScope, $http, Profile, id) {
             return $http.put($rootScope.endPoint + 'cp/' + id, Profile);
         }
 

@@ -12,18 +12,48 @@
                 <i class="fa fa-circle text-success"></i> Online</a>
         </div>
     </div>
-    
+
     <!-- Sidebar Menu -->
-    <ul class="sidebar-menu" data-widget="tree"> 
+    <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Menu</li>
         <!-- Optionally, you can add icons to the links -->
-        <li data-ng-if="$root.user_type == 1"><a href="#/home"><i class="fa fa-home"></i><span>DA Home</span></a></li>
-        <li data-ng-if="$root.user_type == 2"> <a href="#/home"><i class="fa fa-home"></i><span>SDA Home</span></a></li>
-        <li data-ng-if="$root.user_type == 3"><a href="#/home"><i class="fa fa-home"></i><span>Manager Home</span></a></li>
-        <li data-ng-if="$root.user_type == 4"><a href="#/home"><i class="fa fa-home"></i><span>Admin Home</span></a></li>
-        <li data-ng-if="$root.user_type != 1" ><a href="#/DailyTarget/master"><i class="fa fa-cogs"></i><span>Work Unit Calculation</span></a></li>
+        <li data-ng-if="$root.user_type == 1">
+            <a href="#/home">
+                <i class="fa fa-home"></i>
+                <span>DA Home</span>
+            </a>
+        </li>
+        <li data-ng-if="$root.user_type == 2">
+            <a href="#/home">
+                <i class="fa fa-home"></i>
+                <span>SDA Home</span>
+            </a>
+        </li>
+        <li data-ng-if="$root.user_type == 3">
+            <a href="#/home">
+                <i class="fa fa-home"></i>
+                <span>Manager Home</span>
+            </a>
+        </li>
+        <li data-ng-if="$root.user_type == 4">
+            <a href="#/home">
+                <i class="fa fa-home"></i>
+                <span>Admin Home</span>
+            </a>
+        </li>
+        <li data-ng-if="$root.user_type != 1">
+            <a href="#/DailyTarget/master">
+                <i class="fa fa-cogs"></i>
+                <span>Work Unit Calculation</span>
+            </a>
+        </li>
 
-        <li data-ng-if="$root.user_type == 4"><a href="#/Team/master"><i class="fa fa-suitcase"></i><span>Team</span></a></li>
+        <li data-ng-if="$root.user_type == 4">
+            <a href="#/Team/master">
+                <i class="fa fa-suitcase"></i>
+                <span>Team</span>
+            </a>
+        </li>
 
         <li class="treeview" data-ng-show="$root.user_type != 1">
             <a href="#">
@@ -33,45 +63,79 @@
                 <i class="fa fa-angle-left pull-right"></i>
             </a>
             <ul class="treeview-menu">
-               <li data-ng-if="$root.user_type != 1"><a href="#/Build/master"><i class="fa fa-cubes"></i><span>Build</span></a></li>
-               <li data-ng-if="$root.user_type != 1"><a href="#/Release/master"><i class="fa fa-bar-chart-o"></i><span>Release</span></a></li>
-               <li data-ng-if="$root.user_type != 1" ><a href="#/Task/master"><i class="fa fa-tasks"></i><span>Task</span></a></li>
-               <li data-ng-if="$root.user_type != 1"><a href="#/SubTask/master"><i class="fa fa-object-group"></i> Subtasks</a></li>  
-            <li data-ng-if="$root.user_type != 1">
-                <a href="#/MapBuild/master">
-                    <i class="fa fa-map"></i> Map Builds</a>
-            </li>
-               
+                <li data-ng-if="$root.user_type != 1">
+                    <a href="#/Build/master">
+                        <i class="fa fa-cubes"></i>
+                        <span>Build</span>
+                    </a>
+                </li>
+                <li data-ng-if="$root.user_type != 1">
+                    <a href="#/Release/master">
+                        <i class="fa fa-bar-chart-o"></i>
+                        <span>Release</span>
+                    </a>
+                </li>
+                <li data-ng-if="$root.user_type != 1">
+                    <a href="#/Task/master">
+                        <i class="fa fa-tasks"></i>
+                        <span>Task</span>
+                    </a>
+                </li>
+                <li data-ng-if="$root.user_type != 1">
+                    <a href="#/SubTask/master">
+                        <i class="fa fa-object-group"></i> Subtasks</a>
+                </li>
+                <li data-ng-if="$root.user_type != 1">
+                    <a href="#/MapBuild/master">
+                        <i class="fa fa-map"></i> Map Builds</a>
+                </li>
+
             </ul>
         </li>
-         <li class="treeview" data-ng-show="$root.user_type != 1" >
-                    <a href="#">
-                        <i class="fa fa-users"></i>
-                        <span>Users</span>
-                        <span class="pull-right-container"></span>
-                        <i class="fa fa-angle-left pull-right"></i>
+        <li class="treeview" data-ng-show="$root.user_type != 1">
+            <a href="#">
+                <i class="fa fa-users"></i>
+                <span>Users</span>
+                <span class="pull-right-container"></span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li>
+                    <a href="#/TeamMate/master">
+                        <i class="fa fa-magic"></i>
+                        <span>Team Users</span>
                     </a>
-                    <ul class="treeview-menu">
-                        <li><a href="#/TeamMate/master"><i class="fa fa-magic"></i><span>Team Users</span></a></li>
-                        <li><a href="#/Approve/master"><i class="fa fa-check-square"></i><span>Approve User</span></a></li>
-                    </ul>
                 </li>
-                   <li class="treeview" data-ng-show="$root.user_type != 1" >
-                    <a href="#">
-                        <i class="fa fa-pie-chart"></i>
-                        <span>Reports</span>
-                        <span class="pull-right-container"></span>
-                        <i class="fa fa-angle-left pull-right"></i>
+                <li>
+                    <a href="#/Approve/master">
+                        <i class="fa fa-check-square"></i>
+                        <span>Approve User</span>
                     </a>
-                    <ul class="treeview-menu">
-                       <li><a href="#/SdaReport/master"><i class="fa fa-stack-exchange"></i>My Team Reports</a></li> 
-                       <li><a href="#/Charts/master"><i class="fa fa-line-chart "></i>Charts</a></li>   
-                    </ul>
                 </li>
+            </ul>
+        </li>
+        <li class="treeview" data-ng-show="$root.user_type != 1">
+            <a href="#">
+                <i class="fa fa-pie-chart"></i>
+                <span>Reports</span>
+                <span class="pull-right-container"></span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li>
+                    <a href="#/SdaReport/master">
+                        <i class="fa fa-stack-exchange"></i>My Team Reports</a>
+                </li>
+                <li>
+                    <a href="#/Charts/master">
+                        <i class="fa fa-line-chart "></i>Charts</a>
+                </li>
+            </ul>
+        </li>
         <!-- <li data-ng-if="$root.user_type == 3" ><a href="#/client/master"><i class="fa fa-suitcase"></i><span>pTeam Info</span></a></li> -->
         <!-- <li data-ng-if="$root.user_type == 4"><a href="#/Employee/master"><i class="fa fa-coffee"></i><span>Employee</span></a></li> -->
         <!-- <li class="active"><a href="#/Type/master"><i class="fa fa-intersex"></i><span>Type</span></a></li> -->
-       
+
         <!-- <li class="treeview" data-ng-show="$root.user_type == 1" >
             <a href="#">
                 <i class="fa fa-gg-circle"></i>
@@ -93,13 +157,22 @@
                 <i class="fa fa-angle-left pull-right"></i>
             </a>
             <ul class="treeview-menu">
-                <li><a href="#/AddTask/master"><i class="fa fa-tasks"></i>Add Daily Entries</a></li>  
-                <li><a href="#/UserOT/master"><i class="fa fa-sticky-note"></i>Add OT Entries</a></li> 
-                <li><a href="#/UserReport/master"><i class="fa fa-sticky-note-o"></i>{{$root.user_name}}'s Reports</a></li>  
-                             
+                <li>
+                    <a href="#/AddTask/master">
+                        <i class="fa fa-tasks"></i>Add Daily Entries</a>
+                </li>
+                <li>
+                    <a href="#/UserOT/master">
+                        <i class="fa fa-sticky-note"></i>Add OT Entries</a>
+                </li>
+                <li>
+                    <a href="#/UserReport/master">
+                        <i class="fa fa-sticky-note-o"></i>{{$root.user_name}}'s Reports</a>
+                </li>
+
             </ul>
-        </li>     
-        
+        </li>
+
         <!-- <li class="treeview">
             <a href="#">
                 <i class="fa fa-desktop"></i>
@@ -113,8 +186,9 @@
                 <li class="active"><a href="#/Holiday/master"><i class="fa fa-calendar-times-o"></i><span>Holidays</span></a></li>
             </ul>
         </li> -->
-       
-       
-    </ul><!-- /.sidebar-menu -->
+
+
+    </ul>
+    <!-- /.sidebar-menu -->
 </section>
 <!-- /.sidebar -->

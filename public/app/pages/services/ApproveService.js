@@ -4,22 +4,22 @@
 
 
     angular
-         .module('ERP.service')
-         .service('ApproveService', ApproveService);
+        .module('ERP.service')
+        .service('ApproveService', ApproveService);
 
-         ApproveService.$inject = [];
+    ApproveService.$inject = [];
 
     function ApproveService() {
         this.getRegisteredUsers = getRegisteredUsers;
         this.updateApprove = updateApprove;
         this.deleteApprove = deleteApprove;
-       
+
 
         /////////////
         function updateApprove($scope, $rootScope, $http, Approve) {
-            return $http.post($rootScope.endPoint + 'approve/' , Approve);
+            return $http.post($rootScope.endPoint + 'approve/', Approve);
         }
-        
+
         function deleteApprove($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'approve/reject/', obj);
         }

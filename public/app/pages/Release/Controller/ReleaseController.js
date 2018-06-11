@@ -1,21 +1,27 @@
-
 (function () {
     'use strict';
 
     angular
         .module('ERP.pages.Release')
         .controller('ReleaseController', ReleaseController)
-        .controller('ReleaseModelController', ReleaseModelController);
+        .controller('ReleaseModelController', ReleaseModelController)
+         .factory('team', function () {
+             return {
+                 selected: ''
+             };
+         });
 
 
-    ReleaseController.$inject = ['$scope', '$rootScope', '$http', 'ReleaseService', '$uibModal', 'NgTableParams', 'AddTaskService', 'Notification'];
-    function ReleaseController($scope, $rootScope, $http, ReleaseService, $uibModal, NgTableParams, AddTaskService, Notification) {
+
+    ReleaseController.$inject = ['$scope', '$rootScope', '$http', 'ReleaseService', '$uibModal', 'NgTableParams', 'AddTaskService', 'Notification', 'team'];
+
+    function ReleaseController($scope, $rootScope, $http, ReleaseService, $uibModal, NgTableParams, AddTaskService, Notification, team) {
 
         $rootScope.title = "Release";
         $rootScope.isLoginPage = false;
         $scope.noOfRows = "10";
         $scope.items = {};
-        $scope.team = {};
+        $scope.team = team;
 
         $scope.isEditing = false;
         $scope.items.isEditing = $scope.isEditing;
@@ -43,8 +49,7 @@
 
             modalInstance.result.then(function () {
                 $scope.loadGrid();
-            }, function () {
-            });
+            }, function () {});
         };
 
         $scope.editReleaseModel = function (Release) {
@@ -66,8 +71,7 @@
 
             modalInstance.result.then(function () {
                 $scope.loadGrid();
-            }, function () {
-            });
+            }, function () {});
         };
 
         // getTeamList();
@@ -97,32 +101,31 @@
 
 
         getTeamList();
+
         function getTeamList() {
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
-                $scope.TeamList = pl.data;
-                if ($rootScope.team_count  > 1) {
-                    if ($scope.isEditing) {
-                        for (var team in $scope.TeamList) {
-                            if ($scope.TeamList[team].team_id == $scope.Release.team_id) {
-                                $scope.team.selected = $scope.TeamList[team];
+                    $scope.TeamList = pl.data;
+                    if ($rootScope.team_count > 1) {
+                        if ($scope.isEditing) {
+                            for (var team in $scope.TeamList) {
+                                if ($scope.TeamList[team].team_id == $scope.Release.team_id) {
+                                    $scope.team.selected = $scope.TeamList[team];
+
+                                }
 
                             }
-
+                            $scope.loadGrid();
+                        } else {
+                            $scope.team.selected = $scope.TeamList[0].team_id;
+                            $scope.loadGrid();
                         }
-                        $scope.loadGrid();
-                    }
-                    else {
+                    } else {
                         $scope.team.selected = $scope.TeamList[0].team_id;
                         $scope.loadGrid();
                     }
-                }
-                else {
-                    $scope.team.selected = $scope.TeamList[0].team_id;
-                    $scope.loadGrid();
-                }
 
-            },
+                },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.');
                 });
@@ -140,7 +143,9 @@
             var id = $scope.team.selected;
             var self = this;
             ReleaseService.getAllReleasebyID($scope, $rootScope, $http, id).then(function (responce) {
-                $scope.tableParams = new NgTableParams({}, { dataset: responce.data });
+                $scope.tableParams = new NgTableParams({}, {
+                    dataset: responce.data
+                });
                 $scope.showLoader = false;
             });
 
@@ -175,7 +180,9 @@
                             Notification.success("Deleted Successful");
                             $scope.loadGrid();
                         } else {
-                            Notification({ message: "Error Occurred" }, 'error');
+                            Notification({
+                                message: "Error Occurred"
+                            }, 'error');
                             // loadGrid();
                         }
                     }, function (err) {
@@ -183,13 +190,18 @@
                     });
                 }
             } else {
-                Notification({ message: "Active Status Can't be removed", title: "The selected Release has status of active" }, 'warning');
+                Notification({
+                    message: "Active Status Can't be removed",
+                    title: "The selected Release has status of active"
+                }, 'warning');
             }
         }
     }
 
-    ReleaseModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance', 'ReleaseService', 'AddTaskService', 'NgTableParams', 'Notification'];
-    function ReleaseModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, ReleaseService, AddTaskService, NgTableParams, Notification) {
+    ReleaseModelController.$inject = ['$scope', '$rootScope', '$http', '$filter', 'items', '$uibModalInstance', 'ReleaseService', 'AddTaskService', 'NgTableParams', 'Notification', 'team'];
+
+    function ReleaseModelController($scope, $rootScope, $http, $filter, items, $uibModalInstance, ReleaseService, AddTaskService, NgTableParams, Notification, team) {
+        $scope.team = team;
         $scope.items = items;
         if (items.isEditing)
             $scope.Release = angular.copy(items.Release);
@@ -209,11 +221,10 @@
                 // }
 
                 $scope.Release.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
-               
+
                 if ($scope.Release.release_status == true || $scope.Release.release_status == '1') {
                     $scope.Release.release_status = '1';
-                }
-                else {
+                } else {
                     $scope.Release.release_status = '0';
                 }
 
@@ -241,11 +252,10 @@
                 $scope.Release.added_by = $rootScope.user_id;
 
                 $scope.Release.modified_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
-                
+
                 if ($scope.Release.release_status == true) {
                     $scope.Release.release_status = '1';
-                }
-                else {
+                } else {
                     $scope.Release.release_status = '0';
                 }
                 $scope.Release.create_date = $filter('date')($rootScope.date, "yyyy-MM-dd");
@@ -263,28 +273,28 @@
         };
 
         getTeamList();
+
         function getTeamList() {
+            $scope.storedTeamValue = $scope.team.selected;
             var promiseGet = AddTaskService.getLoadedTeam($scope, $rootScope, $http, $rootScope.user_id);
             promiseGet.then(function (pl) {
-                $scope.TeamList = pl.data;
-                if ($rootScope.team_count > 1) {
-                    if (items.isEditing) {
-                        for (var team in $scope.TeamList) {
-                            if ($scope.TeamList[team].team_id == $scope.Release.team_id) {
-                                $scope.team.selected = $scope.TeamList[team].team_id;
+                    $scope.TeamList = pl.data;
+                    if ($rootScope.team_count > 1) {
+                        if (items.isEditing) {
+                            for (var team in $scope.TeamList) {
+                                if ($scope.TeamList[team].team_id == $scope.Release.team_id) {
+                                    $scope.team.selected = $scope.TeamList[team].team_id;
+                                }
                             }
+                        } else {
+                            $scope.team.selected = $scope.storedTeamValue;
                         }
-                    }
-                    else {
+                    } else {
                         $scope.team.selected = $scope.TeamList[0].team_id;
                     }
-                }
-                else {
-                    $scope.team.selected = $scope.TeamList[0].team_id;
-                }
 
-                $scope.loadGrid();
-            },
+                    $scope.loadGrid();
+                },
                 function (errorPl) {
                     Notification('Some Error in Getting Records.');
                 });
@@ -302,7 +312,9 @@
 
             var self = this;
             ReleaseService.getAllReleasebyID($scope, $rootScope, $http, id).then(function (responce) {
-                $scope.tableParams = new NgTableParams({}, { dataset: responce.data });
+                $scope.tableParams = new NgTableParams({}, {
+                    dataset: responce.data
+                });
 
             });
 

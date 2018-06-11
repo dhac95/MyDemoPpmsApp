@@ -10,12 +10,12 @@ var app = angular.module('ERP', [
 	'ngCookies',
 	'ui.bootstrap',
 	'ui.router',
-	'ui.select',
-	'ngSanitize',
+	// 'ui.select',
+	// 'ngSanitize',
 	'uiSwitch',
 	'angularMoment',
 	//'ngTouch',
-	'ceibo.components.table.export',
+	// 'ceibo.components.table.export',
 	'toastr',
 	'720kb.datepicker',
 	'smart-table',
@@ -24,9 +24,11 @@ var app = angular.module('ERP', [
 	'ui-notification',
 	'ngMessages',
 	'nvd3',
-	'angular-screenshot',
+	// 'angular-screenshot',
 	'ERP.pages',
-	'ERP.service'
+	'ERP.service',
+
+	// 'ui.multiselect'
 ]);
 
 app.config(['$urlRouterProvider', '$stateProvider', function ($urlRouterProvider, $stateProvider) {
@@ -37,16 +39,16 @@ app.config(['$urlRouterProvider', '$stateProvider', function ($urlRouterProvider
 
 var today = new Date();
 var dd = today.getDate();
-var mm = today.getMonth()+1; //January is 0!
+var mm = today.getMonth() + 1; //January is 0!
 var yyyy = today.getFullYear();
 
-if(dd<10) {
-    dd = '0'+dd;
-} 
+if (dd < 10) {
+	dd = '0' + dd;
+}
 
-if(mm<10) {
-    mm = '0'+mm;
-} 
+if (mm < 10) {
+	mm = '0' + mm;
+}
 
 today = yyyy + '-' + mm + '-' + dd;
 
@@ -60,39 +62,153 @@ today = yyyy + '-' + mm + '-' + dd;
 
 //Sign-out if user is idle
 
+
+/* app.directive('multiSelect', function () {
+	return {
+		link: function (scope, element, attrs) {
+			element.multiselect({
+				buttonClass: 'btn',
+				buttonWidth: 'auto',
+				buttonContainer: '<div class="btn-group" />',
+				maxHeight: false,
+				buttonText: function (options) {
+					if (options.length == 0) {
+						return 'None selected <b class="caret"></b>';
+					} else if (options.length > 3) {
+						return options.length + ' selected  <b class="caret"></b>';
+					} else {
+						var selected = '';
+						options.each(function () {
+							selected += $(this).text() + ', ';
+						});
+						return selected.substr(0, selected.length - 2) + ' <b class="caret"></b>';
+					}
+				}
+			});
+
+			// Watch for any changes to the length of our select element
+			scope.$watch(function () {
+				return element[0].length;
+			}, function () {
+				element.multiselect('rebuild');
+			});
+
+			// Watch for any changes from outside the directive and refresh
+			scope.$watch(attrs.ngModel, function () {
+				element.multiselect('refresh');
+			});
+
+		}
+
+	};
+}); */
+// For Datepicker
+
+// app.directive('datepicker', function () {
+// 	return {
+// 		require: 'ngModel',
+// 		link: function (scope, el, attr, ngModel) {
+// 			$(el).datepicker({
+
+// 				onSelect: function (dateText) {
+// 					scope.$apply(function () {
+// 						ngModel.$setViewValue(dateText);
+// 					});
+
+// 				},
+// 				dateFormat: 'MM-dd-Y'
+// 			}).datepicker("setDate", new Date());
+// 		}
+// 	};
+// });
+
 app.config(function (IdleProvider, KeepaliveProvider) {
 	IdleProvider.idle(600); // 10 min
 	IdleProvider.timeout(11);
 	//KeepaliveProvider.interval(600); // heartbeat every 10 min
 	//KeepaliveProvider.http('/api/heartbeat'); // URL that makes sure session is alive
 });
+/* 
+app.directive('multiSelect', function () {
+
+	function link(scope, element) {
+		var options = {
+			enableClickableOptGroups: true,
+			onChange: function () {
+				element.change();
+			}
+		};
+		element.multiselect(options);
+	}
+
+	return {
+		restrict: 'A',
+		link: link
+	};
+});
+ */
+/* app.config(['$provide', function ($provide) {
+	$provide.decorator('selectDirective', ['$delegate', function ($delegate) {
+		var directive = $delegate[0];
+
+		directive.compile = function () {
+
+			function post(scope, element, attrs, ctrls) {
+				directive.link.post.apply(this, arguments);
+
+				var ngModelController = ctrls[1];
+				if (ngModelController && attrs.multiSelect !== null) {
+					originalRender = ngModelController.$render;
+					ngModelController.$render = function () {
+						originalRender();
+						element.multiselect('refresh');
+					};
+				}
+			}
+
+			return {
+				pre: directive.link.pre,
+				post: post
+			};
+		};
+
+		return $delegate;
+	}]);
+}]); */
 
 
-app.run(['$rootScope', 'toastr', '$http', '$location', 'Idle', 'Notification', function ($rootScope, toastr, $http, $location , Idle, Notification) {
-	
-	$rootScope.endPoint =  'http://' + location.host +'/'  || "http://localhost:3000/"; //Main Url
+app.run(['$rootScope', 'toastr', '$http', '$location', 'Idle', 'Notification', function ($rootScope, toastr, $http, $location, Idle, Notification) {
+
+	$rootScope.endPoint = 'http://' + location.host + '/' || "http://localhost:3000/"; //Main Url
 
 	Idle.watch();
-	$rootScope.$on('IdleStart', function () { Notification({ message: 'Do something to keep it alive <iframe src="https://giphy.com/embed/d3yxg15kJppJilnW" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>', title: 'Sessions is about to expire'} , 'warning' ); });
-	$rootScope.$on('IdleTimeout', function () { $rootScope.logout(); });
+	$rootScope.$on('IdleStart', function () {
+		Notification({
+			message: 'Do something to keep it alive <iframe src="https://giphy.com/embed/d3yxg15kJppJilnW" width="280" height="260" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>',
+			title: 'Sessions is about to expire'
+		}, 'warning');
+	});
+	$rootScope.$on('IdleTimeout', function () {
+		$rootScope.logout();
+	});
 
-	
-  
+
+
 	$rootScope.year = (new Date()).getFullYear();
 	$rootScope.date = today;
 	$rootScope.$on('$stateChangeStart', function (event) {
 		//Get data from session when login
-	    if (sessionStorage.getItem('IsAuth')) { 
+		if (sessionStorage.getItem('IsAuth')) {
 			$rootScope.user_id = sessionStorage.getItem('user_id');
-	        $rootScope.IsAuth = sessionStorage.getItem('IsAuth');
-	        $rootScope.first_name = sessionStorage.getItem('first_name');
-	        $rootScope.last_name = sessionStorage.getItem('last_name');
-	        $rootScope.user_name = sessionStorage.getItem('user_name');
-	        $rootScope.team_count = sessionStorage.getItem('team_count');
-	        $rootScope.user_type = sessionStorage.getItem('user_type');
+			$rootScope.IsAuth = sessionStorage.getItem('IsAuth');
+			$rootScope.first_name = sessionStorage.getItem('first_name');
+			$rootScope.last_name = sessionStorage.getItem('last_name');
+			$rootScope.user_name = sessionStorage.getItem('user_name');
+			$rootScope.team_count = sessionStorage.getItem('team_count');
+			$rootScope.user_type = sessionStorage.getItem('user_type');
 			$rootScope.user_mail = sessionStorage.getItem('user_mail');
 			$rootScope.host_name_1 = sessionStorage.getItem('host_name_1');
-	        $rootScope.host_name_2 = sessionStorage.getItem('host_name_2');
+			$rootScope.host_name_2 = sessionStorage.getItem('host_name_2');
 			$rootScope.below_on = sessionStorage.getItem('below_on');
 			$rootScope.manager = sessionStorage.getItem('manager');
 			$rootScope.user_status = sessionStorage.getItem('user_status');
@@ -101,36 +217,34 @@ app.run(['$rootScope', 'toastr', '$http', '$location', 'Idle', 'Notification', f
 			$rootScope.last_entry_on = sessionStorage.getItem('last_entry_on');
 			$rootScope.create_date = sessionStorage.getItem('create_date');
 			$rootScope.maintain_date = sessionStorage.getItem('maintain_date');
-		
-		}
-	    else if (localStorage.getItem('IsAuth')) {
+
+		} else if (localStorage.getItem('IsAuth')) {
 			$rootScope.user_id = localStorage.getItem('user_id');
-			 $rootScope.IsAuth = localStorage.getItem('IsAuth');
-			 $rootScope.first_name = localStorage.getItem('first_name');
-			 $rootScope.last_name = localStorage.getItem('last_name');
-			 $rootScope.user_name = localStorage.getItem('user_name');
-			 $rootScope.team_count = localStorage.getItem('team_count');
-			 $rootScope.user_type = localStorage.getItem('user_type');
-			 $rootScope.user_mail = localStorage.getItem('user_mail');
-			 $rootScope.host_name_1 = localStorage.getItem('host_name_1');
-			 $rootScope.host_name_2 = localStorage.getItem('host_name_2');
-			 $rootScope.below_on = localStorage.getItem('below_on');
-			 $rootScope.manager = localStorage.getItem('manager');
-			 $rootScope.user_status = localStorage.getItem('user_status');
+			$rootScope.IsAuth = localStorage.getItem('IsAuth');
+			$rootScope.first_name = localStorage.getItem('first_name');
+			$rootScope.last_name = localStorage.getItem('last_name');
+			$rootScope.user_name = localStorage.getItem('user_name');
+			$rootScope.team_count = localStorage.getItem('team_count');
+			$rootScope.user_type = localStorage.getItem('user_type');
+			$rootScope.user_mail = localStorage.getItem('user_mail');
+			$rootScope.host_name_1 = localStorage.getItem('host_name_1');
+			$rootScope.host_name_2 = localStorage.getItem('host_name_2');
+			$rootScope.below_on = localStorage.getItem('below_on');
+			$rootScope.manager = localStorage.getItem('manager');
+			$rootScope.user_status = localStorage.getItem('user_status');
 			$rootScope.user_activation = localStorage.getItem('user_activation');
 			$rootScope.user_deletion = localStorage.getItem('user_deletion');
 			$rootScope.last_entry_on = localStorage.getItem('last_entry_on');
 			$rootScope.create_date = localStorage.getItem('create_date');
 			$rootScope.maintain_date = localStorage.getItem('maintain_date');
-		}
-		else {
+		} else {
 			$rootScope.logout();
 		}
-			// Links for homepage
+		// Links for homepage
 		var sim = "https://issues.amazon.com/issues/search?q=assignee:" + $rootScope.user_name + "%20status:Open&sort=lastUpdatedConversationDate%20desc&actor=" + $rootScope.user_name;
 		$rootScope.sim = sim;
 
-		var wiki = "https://w.amazon.com/index.php/Special:Contributions/" +$rootScope.user_name;
+		var wiki = "https://w.amazon.com/index.php/Special:Contributions/" + $rootScope.user_name;
 		$rootScope.wiki = wiki;
 	});
 
@@ -165,8 +279,8 @@ app.run(['$rootScope', 'toastr', '$http', '$location', 'Idle', 'Notification', f
 	//}
 	//loadAppMenu();
 
-//Data removal
-	$rootScope.logout = function () {           
+	//Data removal
+	$rootScope.logout = function () {
 		sessionStorage.removeItem('user_id');
 		sessionStorage.removeItem('first_name');
 		sessionStorage.removeItem('last_name');
@@ -180,7 +294,7 @@ app.run(['$rootScope', 'toastr', '$http', '$location', 'Idle', 'Notification', f
 		sessionStorage.removeItem('below_on');
 		sessionStorage.removeItem('manager');
 		sessionStorage.removeItem('user_status');
-	  
+
 		localStorage.removeItem('user_id');
 		localStorage.removeItem('first_name');
 		localStorage.removeItem('last_name');
@@ -194,9 +308,9 @@ app.run(['$rootScope', 'toastr', '$http', '$location', 'Idle', 'Notification', f
 		localStorage.removeItem('below_on');
 		localStorage.removeItem('manager');
 		localStorage.removeItem('user_status');
-		
-	    window.location.replace("/index.html");
-	
+
+		window.location.replace("/index.html");
+
 	};
 
 	$rootScope.checkMenu = function (menuId) {
@@ -264,7 +378,7 @@ app.run(['$rootScope', 'toastr', '$http', '$location', 'Idle', 'Notification', f
 			});
 			checkElement.parent("li").removeClass("active");
 		}
-			//If the menu is not visible
+		//If the menu is not visible
 		else if ((checkElement.is('.treeview-menu')) && (!checkElement.is(':visible'))) {
 			//Get the parent menu
 			var parent = $this.parents('ul').first();
@@ -304,7 +418,7 @@ app.run(['$rootScope', 'toastr', '$http', '$location', 'Idle', 'Notification', f
 // });
 
 // NotificationProvider config
-app.config(function(NotificationProvider) {
+app.config(function (NotificationProvider) {
 	NotificationProvider.setOptions({
 		delay: 10000,
 		startTop: 20,
@@ -366,43 +480,49 @@ app.directive('loading', ['$http', function ($http) {
 
 //propsFilter
 app.filter('propsFilter', function () {
-    return function (items, props) {
-        var out = [];
+	return function (items, props) {
+		var out = [];
 
-        if (angular.isArray(items)) {
-            var keys = Object.keys(props);
+		if (angular.isArray(items)) {
+			var keys = Object.keys(props);
 
-            items.forEach(function (item) {
-                var itemMatches = false;
+			items.forEach(function (item) {
+				var itemMatches = false;
 
-                for (var i = 0; i < keys.length; i++) {
-                    var prop = keys[i];
-                    var text = props[prop].toLowerCase();
-                    if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
-                        itemMatches = true;
-                        break;
-                    }
-                }
+				for (var i = 0; i < keys.length; i++) {
+					var prop = keys[i];
+					var text = props[prop].toLowerCase();
+					if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+						itemMatches = true;
+						break;
+					}
+				}
 
-                if (itemMatches) {
-                    out.push(item);
-                }
-            });
-        } else {
-            // Let the output be the input untouched
-            out = items;
-        }
+				if (itemMatches) {
+					out.push(item);
+				}
+			});
+		} else {
+			// Let the output be the input untouched
+			out = items;
+		}
 
-        return out;
-    };
+		return out;
+	};
 });
 
 //Export to excel
-app.factory('Excel',function($window){
-	var uri='data:application/vnd.ms-excel;base64,',
-		template='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="https://www.w3.org/TR/html401/"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
-		base64=function(s){return $window.btoa(unescape(encodeURIComponent(s)));},
-		format=function(s,c){return s.replace(/{(\w+)}/g,function(m,p){return c[p];});};
+app.factory('Excel', function ($window) {
+	var uri = 'data:application/vnd.ms-excel;base64,',
+		template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="https://www.w3.org/TR/html401/"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+		base64 = function (s) {
+			return $window.btoa(unescape(encodeURIComponent(s)));
+		},
+		format = function (s, c) {
+			return s.replace(/{(\w+)}/g, function (m, p) {
+				return c[p];
+			});
+		};
 	// return {
 	// 	tableToExcel: function (tableId, worksheetName) {
 	// 		var table = document.querySelector(tableId),
@@ -412,10 +532,13 @@ app.factory('Excel',function($window){
 	// 	}
 	// };
 	return {
-		tableToExcel:function(tableId,worksheetName){
-			var table=$(tableId),
-				ctx={worksheet:worksheetName,table:table.html()},
-				href=uri+base64(format(template,ctx));
+		tableToExcel: function (tableId, worksheetName) {
+			var table = $(tableId),
+				ctx = {
+					worksheet: worksheetName,
+					table: table.html()
+				},
+				href = uri + base64(format(template, ctx));
 			return href;
 		}
 	};
@@ -495,7 +618,7 @@ app.directive('sidebar', function () {
 			// $('ul.treeview-menu a').filter(function () {
 			// 	return this.href == url;
 			// }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
-			
+
 		}
 	};
 });
@@ -572,24 +695,28 @@ app.directive('knob', function () {
 					// "tron" case
 					if (this.$.data('skin') == 'tron') {
 
-						var a = this.angle(this.cv)  // Angle
-								, sa = this.startAngle          // Previous start angle
-								, sat = this.startAngle         // Start angle
-								, ea                            // Previous end angle
-								, eat = sat + a                 // End angle
-								, r = true;
+						var a = this.angle(this.cv) // Angle
+							,
+							sa = this.startAngle // Previous start angle
+							,
+							sat = this.startAngle // Start angle
+							,
+							ea // Previous end angle
+							, eat = sat + a // End angle
+							,
+							r = true;
 
 						this.g.lineWidth = this.lineWidth;
 
-						this.o.cursor
-								&& (sat = eat - 0.3)
-								&& (eat = eat + 0.3);
+						this.o.cursor &&
+							(sat = eat - 0.3) &&
+							(eat = eat + 0.3);
 
 						if (this.o.displayPrevious) {
 							ea = this.startAngle + this.angle(this.value);
-							this.o.cursor
-									&& (sa = ea - 0.3)
-									&& (ea = ea + 0.3);
+							this.o.cursor &&
+								(sa = ea - 0.3) &&
+								(ea = ea + 0.3);
 							this.g.beginPath();
 							this.g.strokeStyle = this.previousColor;
 							this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false);
@@ -637,8 +764,8 @@ app.controller('LineCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
 	$scope.labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 	$scope.series = ['Series A', 'Series B'];
 	$scope.data = [
-	  [65, 59, 80, 81, 56, 55, 40],
-	  [28, 48, 40, 19, 86, 27, 90]
+		[65, 59, 80, 81, 56, 55, 40],
+		[28, 48, 40, 19, 86, 27, 90]
 	];
 	$scope.onClick = function (points, evt) {
 		console.log(points, evt);
@@ -654,23 +781,27 @@ app.controller('LineCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
 	$timeout(function () {
 		$scope.labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 		$scope.data = [
-		  [28, 48, 40, 19, 86, 27, 90],
-		  [65, 59, 80, 81, 56, 55, 40]
+			[28, 48, 40, 19, 86, 27, 90],
+			[65, 59, 80, 81, 56, 55, 40]
 		];
 		$scope.series = ['Series C', 'Series D'];
 	}, 3000);
 }]);
 
 app.controller('BarCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
-	$scope.options = { scaleShowVerticalLines: false };
+	$scope.options = {
+		scaleShowVerticalLines: false
+	};
 	$scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
 	$scope.series = ['Series A', 'Series B'];
 	$scope.data = [
-	  [65, 59, 80, 81, 56, 55, 40],
-	  [28, 48, 40, 19, 86, 27, 90]
+		[65, 59, 80, 81, 56, 55, 40],
+		[28, 48, 40, 19, 86, 27, 90]
 	];
 	$timeout(function () {
-		$scope.options = { scaleShowVerticalLines: true };
+		$scope.options = {
+			scaleShowVerticalLines: true
+		};
 	}, 3000);
 }]);
 
@@ -710,8 +841,8 @@ app.controller('RadarCtrl', function ($scope) {
 	$scope.labels = ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'];
 
 	$scope.data = [
-	  [65, 59, 90, 81, 56, 55, 40],
-	  [28, 48, 40, 19, 96, 27, 100]
+		[65, 59, 90, 81, 56, 55, 40],
+		[28, 48, 40, 19, 96, 27, 100]
 	];
 
 	$scope.onClick = function (points, evt) {
@@ -724,34 +855,33 @@ app.controller('StackedBarCtrl', function ($scope) {
 	$scope.type = 'StackedBar';
 
 	$scope.data = [
-	  [65, 59, 90, 81, 56, 55, 40],
-	  [28, 48, 40, 19, 96, 27, 100]
+		[65, 59, 90, 81, 56, 55, 40],
+		[28, 48, 40, 19, 96, 27, 100]
 	];
 });
 
 app.controller('DataTablesCtrl', function ($scope) {
 	$scope.labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 	$scope.data = [
-	  [65, 59, 80, 81, 56, 55, 40],
-	  [28, 48, 40, 19, 86, 27, 90]
+		[65, 59, 80, 81, 56, 55, 40],
+		[28, 48, 40, 19, 86, 27, 90]
 	];
-	$scope.colours = [
-	  { // grey
-		  fillColor: 'rgba(148,159,177,0.2)',
-		  strokeColor: 'rgba(148,159,177,1)',
-		  pointColor: 'rgba(148,159,177,1)',
-		  pointStrokeColor: '#fff',
-		  pointHighlightFill: '#fff',
-		  pointHighlightStroke: 'rgba(148,159,177,0.8)'
-	  },
-	  { // dark grey
-		  fillColor: 'rgba(77,83,96,0.2)',
-		  strokeColor: 'rgba(77,83,96,1)',
-		  pointColor: 'rgba(77,83,96,1)',
-		  pointStrokeColor: '#fff',
-		  pointHighlightFill: '#fff',
-		  pointHighlightStroke: 'rgba(77,83,96,1)'
-	  }
+	$scope.colours = [{ // grey
+			fillColor: 'rgba(148,159,177,0.2)',
+			strokeColor: 'rgba(148,159,177,1)',
+			pointColor: 'rgba(148,159,177,1)',
+			pointStrokeColor: '#fff',
+			pointHighlightFill: '#fff',
+			pointHighlightStroke: 'rgba(148,159,177,0.8)'
+		},
+		{ // dark grey
+			fillColor: 'rgba(77,83,96,0.2)',
+			strokeColor: 'rgba(77,83,96,1)',
+			pointColor: 'rgba(77,83,96,1)',
+			pointStrokeColor: '#fff',
+			pointHighlightFill: '#fff',
+			pointHighlightStroke: 'rgba(77,83,96,1)'
+		}
 	];
 	$scope.randomize = function () {
 		$scope.data = $scope.data.map(function (data) {
@@ -804,7 +934,7 @@ app.controller('FlotInteractive', ['$scope', '$log', '$element', function ($scop
 		while ($scope.data.length < $scope.totalPoints) {
 
 			var prev = $scope.data.length > 0 ? $scope.data[$scope.data.length - 1] : 50,
-					y = prev + Math.random() * 10 - 5;
+				y = prev + Math.random() * 10 - 5;
 
 			if (y < 0) {
 				y = 0;
@@ -834,7 +964,8 @@ app.controller('FlotInteractive', ['$scope', '$log', '$element', function ($scop
 
 }]);
 app.controller('FlotLineChart', function ($scope) {
-	var sin = [], cos = [];
+	var sin = [],
+		cos = [];
 	for (var i = 0; i < 14; i += 0.5) {
 		sin.push([i, Math.sin(i)]);
 		cos.push([i, Math.cos(i)]);
@@ -878,9 +1009,26 @@ app.controller('FlotLineChart', function ($scope) {
 	};
 });
 app.controller('FlotAreaChart', function ($scope) {
-	var areaData = [[2, 88.0], [3, 93.3], [4, 102.0], [5, 108.5], [6, 115.7], [7, 115.6],
-	[8, 124.6], [9, 130.3], [10, 134.3], [11, 141.4], [12, 146.5], [13, 151.7], [14, 159.9],
-	[15, 165.4], [16, 167.8], [17, 168.7], [18, 169.5], [19, 168.0]];
+	var areaData = [
+		[2, 88.0],
+		[3, 93.3],
+		[4, 102.0],
+		[5, 108.5],
+		[6, 115.7],
+		[7, 115.6],
+		[8, 124.6],
+		[9, 130.3],
+		[10, 134.3],
+		[11, 141.4],
+		[12, 146.5],
+		[13, 151.7],
+		[14, 159.9],
+		[15, 165.4],
+		[16, 167.8],
+		[17, 168.7],
+		[18, 169.5],
+		[19, 168.0]
+	];
 
 	$scope.myData = [areaData];
 	$scope.myChartOptions = {
@@ -904,7 +1052,14 @@ app.controller('FlotAreaChart', function ($scope) {
 });
 app.controller('FlotBarChart', function ($scope) {
 	$scope.myData = [{
-		data: [["January", 10], ["February", 8], ["March", 4], ["April", 13], ["May", 17], ["June", 9]],
+		data: [
+			["January", 10],
+			["February", 8],
+			["March", 4],
+			["April", 13],
+			["May", 17],
+			["June", 9]
+		],
 		color: "#3c8dbc"
 	}];
 	$scope.myChartOptions = {
@@ -927,10 +1082,21 @@ app.controller('FlotBarChart', function ($scope) {
 	};
 });
 app.controller('FlotDonutChart', function ($scope) {
-	$scope.myData = [
-		  { label: "Series2", data: 30, color: "#3c8dbc" },
-		  { label: "Series3", data: 20, color: "#0073b7" },
-		  { label: "Series4", data: 50, color: "#00c0ef" }
+	$scope.myData = [{
+			label: "Series2",
+			data: 30,
+			color: "#3c8dbc"
+		},
+		{
+			label: "Series3",
+			data: 20,
+			color: "#0073b7"
+		},
+		{
+			label: "Series4",
+			data: 50,
+			color: "#00c0ef"
+		}
 	];
 	$scope.myChartOptions = {
 		series: {
@@ -951,29 +1117,30 @@ app.controller('FlotDonutChart', function ($scope) {
 			show: false
 		}
 	};
+
 	function labelFormatter(label, series) {
-		return "<div style='font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;'>"
-				+ label
-				+ "<br/>"
-				+ Math.round(series.percent) + "%</div>";
+		return "<div style='font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;'>" +
+			label +
+			"<br/>" +
+			Math.round(series.percent) + "%</div>";
 	}
 });
 
 app.controller('ChatController', function ($scope, $http, $filter) {
 	$http.get('/partials/widgets/dialog1.json')
-	.success(function (data) {
-		$scope.messages = data;
-	});
+		.success(function (data) {
+			$scope.messages = data;
+		});
 });
 /* BoxWidget
-* =========
-* BoxWidget is plugin to handle collapsing and
-* removing boxes from the screen.
-*
-* @type Object
-* @usage $.AdminLTE.boxWidget.activate()
-*        Set all of your option in the main $.AdminLTE.options object
-*/
+ * =========
+ * BoxWidget is plugin to handle collapsing and
+ * removing boxes from the screen.
+ *
+ * @type Object
+ * @usage $.AdminLTE.boxWidget.activate()
+ *        Set all of your option in the main $.AdminLTE.options object
+ */
 app.directive('box', function () {
 	return {
 		restrict: 'C',
@@ -1037,14 +1204,19 @@ app.directive('chat', function () {
 		restrict: 'E',
 		//template: '<h1>Hello World</h1>',
 		templateUrl: 'templates/direct-chat.html',
-		scope: { type: '@', title: '@', count: '@count', messages: '=messages' },
+		scope: {
+			type: '@',
+			title: '@',
+			count: '@count',
+			messages: '=messages'
+		},
 		replace: true,
 		compile: function (tElement, tAttr) {
 			tElement.find("[data-widget='chat-pane-toggle']").click(function () {
 				$(this).parents('.direct-chat').first().toggleClass('direct-chat-contacts-open');
 			});
 			return {
-				pre: function preLink(scope, iElement, iAttrs) { },
+				pre: function preLink(scope, iElement, iAttrs) {},
 				post: function postLink(scope, iElement, iAttrs) {
 
 				}
@@ -1259,7 +1431,9 @@ $.AdminLTE.layout = {
 		//Make sure the body tag has the .fixed class
 		if (!$("body").hasClass("fixed")) {
 			if (typeof $.fn.slimScroll != 'undefined') {
-				$(".sidebar").slimScroll({ destroy: true }).height("auto");
+				$(".sidebar").slimScroll({
+					destroy: true
+				}).height("auto");
 			}
 			return;
 		} else if (typeof $.fn.slimScroll == 'undefined' && console) {
@@ -1269,7 +1443,9 @@ $.AdminLTE.layout = {
 		if ($.AdminLTE.options.sidebarSlimScroll) {
 			if (typeof $.fn.slimScroll != 'undefined') {
 				//Distroy if it exists
-				$(".sidebar").slimScroll({ destroy: true }).height("auto");
+				$(".sidebar").slimScroll({
+					destroy: true
+				}).height("auto");
 				//Add slimscroll
 				$(".sidebar").slimscroll({
 					height: ($(window).height() - $(".main-header").height()) + "px",
@@ -1300,7 +1476,7 @@ $.AdminLTE.pushMenu = function (toggleBtn) {
 		if ($(window).width() > (screenSizes.sm - 1)) {
 			$("body").toggleClass('sidebar-collapse');
 		}
-			//Handle sidebar push menu for small screens
+		//Handle sidebar push menu for small screens
 		else {
 			if ($("body").hasClass('sidebar-open')) {
 				$("body").removeClass('sidebar-open');
@@ -1346,7 +1522,7 @@ $.AdminLTE.tree = function (menu) {
 			});
 			checkElement.parent("li").removeClass("active");
 		}
-			//If the menu is not visible
+		//If the menu is not visible
 		else if ((checkElement.is('.treeview-menu')) && (!checkElement.is(':visible'))) {
 			//Get the parent menu
 			var parent = $this.parents('ul').first();
@@ -1402,10 +1578,8 @@ $.AdminLTE.tree = function (menu) {
 			//File source to be loaded (e.g: ajax/src.php)
 			source: "",
 			//Callbacks
-			onLoadStart: function (box) {
-			}, //Right after the button has been clicked
-			onLoadDone: function (box) {
-			} //When the source has been loaded
+			onLoadStart: function (box) {}, //Right after the button has been clicked
+			onLoadDone: function (box) {} //When the source has been loaded
 
 		}, options);
 
@@ -1484,11 +1658,9 @@ $.AdminLTE.tree = function (menu) {
 		// Render options
 		var settings = $.extend({
 			//When the user checks the input
-			onCheck: function (ele) {
-			},
+			onCheck: function (ele) {},
 			//When the user unchecks the input
-			onUncheck: function (ele) {
-			}
+			onUncheck: function (ele) {}
 		}, options);
 
 		return this.each(function () {

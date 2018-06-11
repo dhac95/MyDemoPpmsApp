@@ -12,7 +12,7 @@ router.post('/', function (req, res, next) {
     var tempDate = req.body.month;
     var actionBy = req.body.user_id;
     var formattedDate = moment(tempDate).format('YYYY-MM');
-    var formatDate2 = moment(tempDate).subtract(1 , 'M').format('YYYY MMMM');
+    var formatDate2 = moment(tempDate).subtract(1, 'M').format('YYYY MMMM');
     var endDate = moment(tempDate).add(1, 'M').format('YYYY-MM-DD');
     var today = moment().format('YYYY-MM-DD');
     var queryError = [];
@@ -74,15 +74,15 @@ router.post('/', function (req, res, next) {
                     }, function (response) {
                         if (queryError.length > 0) {
                             res.send({
-                                    "code" : 500,
+                                "code": 500,
                                 "BulkError": queryError
                             });
                         } else {
-                        res.send({
-                            "code": 200,
-                            "message": "success"
-                        });
-                    }
+                            res.send({
+                                "code": 200,
+                                "message": "success"
+                            });
+                        }
                     });
                 }
             });
@@ -102,55 +102,53 @@ router.post('/prev', function (req, res, next) {
     var queryError = [];
 
     db.query('select * from amz_daily_target where month_from = ? and team = ? and status = 1 and deletion = 0 and about_cf = 1', [formatDate2, team], function (e, r, f) {
-        if(e) { 
+        if (e) {
             res.send(e);
-         } else if(r.length == 0){
+        } else if (r.length == 0) {
             res.send({
                 "code": 304,
                 "message": "No Target for previous month"
             });
-        } 
-        else {
-            db.query('select * from amz_daily_target where month_from = ? and team = ? and status = 1 and deletion = 0 and about_cf = 1' , [tempDate , team] , function(err , results , fields){
-                if(err) {
+        } else {
+            db.query('select * from amz_daily_target where month_from = ? and team = ? and status = 1 and deletion = 0 and about_cf = 1', [tempDate, team], function (err, results, fields) {
+                if (err) {
                     res.send(err);
-                } else if(results.length > 0) {
+                } else if (results.length > 0) {
                     res.send({
                         "code": 300,
                         "message": "Error occoured",
                         "error": err
                     });
-                }
-          else {
-            async.each(r, function (single, callback) {
-                db.query('INSERT INTO amz_daily_target (month_from , team , task , sub_task , cf_updated , con_fac , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)', [tempDate, single.team, single.task, single.sub_task, single.cf_updated, single.con_fac, single.wu_status, single.status, single.deletion , actionBy, actionBy, today, today, '1'], function (e2, r2, f2) {
-                        if(e2) {
-                            queryError.push({
-                                "code": 400,
-                                "message": "Error occoured",
-                                "error": e3
+                } else {
+                    async.each(r, function (single, callback) {
+                        db.query('INSERT INTO amz_daily_target (month_from , team , task , sub_task , cf_updated , con_fac , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)', [tempDate, single.team, single.task, single.sub_task, single.cf_updated, single.con_fac, single.wu_status, single.status, single.deletion, actionBy, actionBy, today, today, '1'], function (e2, r2, f2) {
+                            if (e2) {
+                                queryError.push({
+                                    "code": 400,
+                                    "message": "Error occoured",
+                                    "error": e3
+                                });
+                            }
+                        });
+
+                        callback();
+                    }, function (response) {
+                        if (queryError.length > 0) {
+                            res.send({
+                                "code": 500,
+                                "BulkError": queryError
+                            });
+                        } else {
+                            res.send({
+                                "code": 200,
+                                "message": "success"
                             });
                         }
-                });
-
-                callback();
-            }, function (response) {
-                if (queryError.length > 0) {
-                    res.send({
-                        "code" : 500 , 
-                        "BulkError": queryError
                     });
-                } else {
-                res.send({
-                    "code": 200,
-                    "message": "success"
-                });
-            }
+                }
             });
-             }
-            });
-            
-        } 
+
+        }
 
     });
 });

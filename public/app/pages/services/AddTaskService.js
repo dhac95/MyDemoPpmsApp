@@ -4,8 +4,8 @@
 
 
     angular
-         .module('ERP.service')
-         .service('AddTaskService', AddTaskService);
+        .module('ERP.service')
+        .service('AddTaskService', AddTaskService);
 
     AddTaskService.$inject = [];
 
@@ -36,34 +36,39 @@
         function addAddTask($scope, $rootScope, $http, AddTask) {
             return $http.post($rootScope.endPoint + 'UserDailyTasks/', AddTask);
         }
+
         function getAddedTask($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'getAddedTask/', obj);
         }
 
         function updateAddTask($scope, $rootScope, $http, AddTask, id) {
-            return $http.put($rootScope.endPoint + 'UserDailyTasks/' + id , AddTask);
+            return $http.put($rootScope.endPoint + 'UserDailyTasks/' + id, AddTask);
         }
 
         function deleteAddTask($scope, $rootScope, $http, id) {
             return $http.delete($rootScope.endPoint + 'UserDailyTasks/' + id);
         }
+
         function getRemaingDate($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'UserGetDate/' , obj);
+            return $http.post($rootScope.endPoint + 'UserGetDate/', obj);
         }
 
         function getRemaingTime($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'UserDailyTasks/getTime/' , obj);
+            return $http.post($rootScope.endPoint + 'UserDailyTasks/getTime/', obj);
         }
 
         function getLoadedTeam($scope, $rootScope, $http, id) {
             return $http.get($rootScope.endPoint + 'loadTeam/' + id);
         }
+
         function getLoadedTasks($scope, $rootScope, $http, team_id) {
             return $http.get($rootScope.endPoint + 'loadTasks/' + team_id);
         }
+
         function getLoadedsubTasks($scope, $rootScope, $http, task_id) {
             return $http.get($rootScope.endPoint + 'loadTasks/subtask/' + task_id);
         }
+
         function getLoadedBuilds($scope, $rootScope, $http, team_id) {
             return $http.get($rootScope.endPoint + 'loadBuilds/' + team_id);
         }

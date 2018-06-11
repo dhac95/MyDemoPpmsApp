@@ -36,7 +36,7 @@
         }
 
         function deleteMapBuild($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'mapbuild/remove/' , obj);
+            return $http.post($rootScope.endPoint + 'mapbuild/remove/', obj);
         }
 
         function getReleaseById($scope, $rootScope, $http, id) {

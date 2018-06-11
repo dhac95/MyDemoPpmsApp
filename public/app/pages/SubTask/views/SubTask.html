@@ -3,100 +3,98 @@
 </div>
 
 <div ng-show="$root.team_count > 1">
-        <div class="modal-body" id="modal-body">
-            <form name="myForm" role="form" class="well well-sm">
-                <div class="row">
-                        <div class="form-group col-sm-3 col-md-3 col-lg-3">
-                                <label for="Team">Change Team</label>
-                                <div class="dropdown">
-                                  <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="loadGrid()" data-ng-model="team.selected">
-                                        <option value="">Select the Team</option>
-                                    </select>
-                                </div>
-                            </div>
-                </div>
-            </form>
-        </div>
-        </div>
-        
-        <div class="box box-solid box-primary">
-        
-            <div class="box-header">
-                SubTask
-            </div>
-                <div class="row">
-                    <div data-ng-show="showLoader">
-                        <div class="col-xs-12 text-center">
-                            <img src="../../../../vendor/image_1.gif"> Loading Subtasks please wait...
-                        </div>
+    <div class="modal-body" id="modal-body">
+        <form name="myForm" role="form" class="well well-sm">
+            <div class="row">
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                    <label for="Team">Change Team</label>
+                    <div class="dropdown">
+                        <select class="form-control" data-ng-options="Team.team_id as Team.team_name for Team in TeamList " data-ng-change="loadGrid()"
+                            data-ng-model="team.selected">
+                            <option value="">Select the Team</option>
+                        </select>
                     </div>
                 </div>
-            <div class="box-body" ng-hide="showLoader">
-                <button SubTask="button" ng-click="addSubTaskModel()" class="btn btn-sm btn-success">
-                    <i class="glyphicon glyphicon-plus">
-                    </i> Add New
-                </button>
-                <div style="overflow-x:auto;">
-                    <table ng-table="tableParams" class="table table-striped table-responsive" show-filter="true">
-        
-                        <tr ng-repeat="row in $data">
-                            <td class="text-center" title="'SubTask #'" filter="{sub_task_id : 'text'}" sortable="'sub_task_id'">{{ row.sub_task_id }}</td>
-                            <td class="text-center" title="'Team Name'" filter="{team_name : 'text'}" sortable="'team_name'">{{ row.team_name }}</td>
-                            <td class="text-center" title="'Task Name'" filter="{task_name : 'text'}" sortable="'task_name'">{{ row.task_name }}</td>
-                            <td class="text-center" title="'SubTask Name'" filter="{sub_task_name : 'text'}" sortable="'sub_task_name'">{{ row.sub_task_name }}</td>
-                           
-                            <td class="text-center" title="'SubTask Status'" filter="{task_status : 'text'}" sortable="'task_status'">
-                                <span data-ng-if="row.task_status === 1" class="label label-success">Active</span>
-                                <span data-ng-if="row.task_status === 0" class="label label-danger">In Active</span>
-                            </td>
-                            <td class="text-center" title="'Daily Report Calculations'" filter="{about_cf : 'text'}" sortable="'about_cf'">
-                                <span data-ng-if="row.about_cf === 1" class="label label-primary">Manual Target</span>
-                                <span data-ng-if="row.about_cf === 0" class="label label-info">Auto Target</span>
-                                <span data-ng-if="row.about_cf === null" class="label label-warning">No Target</span>
-                            </td>
-                            <td class="text-center" title="'Chart Type'" filter="{about_chart : 'text'}" sortable="'about_chart'">
-                                <span data-ng-if="row.about_chart === 1" class="label label-info">Task Wise</span>
-                                <span data-ng-if="row.about_chart === 2" class="label label-primary">SubTask wise</span>
-                                <span data-ng-if="row.about_chart === 3" class="label label-warning">SubTask Project wise</span>
-                                <span data-ng-if="row.about_chart === 0" class="label label-danger">No Chart</span>
-                            </td>
-                            
-                            <td class="text-center" title="'Operational'" filter="{op_type : 'text'}" sortable="'op_type'">
-                                <span data-ng-if="row.op_type === 1" class="label label-success">Yes</span>
-                                <span data-ng-if="row.op_type === 0" class="label label-danger">No</span>
-                            </td>
-    
-                            <!-- <td class="text-center" title="'Deletion Status'" filter="{deletion : 'text'}" sortable="'deletion'">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="box box-solid box-primary">
+
+    <div class="box-header">
+        SubTask
+    </div>
+    <div class="row">
+        <div data-ng-show="showLoader">
+            <div class="col-xs-12 text-center">
+                <img src="../../../../vendor/image_1.gif"> Loading Subtasks please wait...
+            </div>
+        </div>
+    </div>
+    <div class="box-body" ng-hide="showLoader">
+        <button SubTask="button" ng-click="addSubTaskModel()" class="btn btn-sm btn-success">
+            <i class="glyphicon glyphicon-plus">
+            </i> Add New
+        </button>
+        <div style="overflow-x:auto;">
+            <table ng-table="tableParams" class="table table-striped table-responsive" show-filter="true">
+
+                <tr ng-repeat="row in $data">
+                    <td class="text-center" title="'SubTask #'" filter="{sub_task_id : 'text'}" sortable="'sub_task_id'">{{ row.sub_task_id }}</td>
+                    <td class="text-center" title="'Team Name'" filter="{team_name : 'text'}" sortable="'team_name'">{{ row.team_name }}</td>
+                    <td class="text-center" title="'Task Name'" filter="{task_name : 'text'}" sortable="'task_name'">{{ row.task_name }}</td>
+                    <td class="text-center" title="'SubTask Name'" filter="{sub_task_name : 'text'}" sortable="'sub_task_name'">{{ row.sub_task_name }}</td>
+
+                    <td class="text-center" title="'SubTask Status'" filter="{task_status : 'text'}" sortable="'task_status'">
+                        <span data-ng-if="row.task_status === 1" class="label label-success">Active</span>
+                        <span data-ng-if="row.task_status === 0" class="label label-danger">In Active</span>
+                    </td>
+                    <td class="text-center" title="'Daily Report Calculations'" filter="{about_cf : 'text'}" sortable="'about_cf'">
+                        <span data-ng-if="row.about_cf === 1" class="label label-primary">Manual Target</span>
+                        <span data-ng-if="row.about_cf === 0" class="label label-info">Auto Target</span>
+                        <span data-ng-if="row.about_cf === null" class="label label-warning">No Target</span>
+                    </td>
+                    <td class="text-center" title="'Chart Type'" filter="{about_chart : 'text'}" sortable="'about_chart'">
+                        <span data-ng-if="row.about_chart === 1" class="label label-info">Task Wise</span>
+                        <span data-ng-if="row.about_chart === 2" class="label label-primary">SubTask wise</span>
+                        <span data-ng-if="row.about_chart === 3" class="label label-warning">SubTask Project wise</span>
+                        <span data-ng-if="row.about_chart === 0" class="label label-danger">No Chart</span>
+                    </td>
+
+                    <td class="text-center" title="'Operational'" filter="{op_type : 'text'}" sortable="'op_type'">
+                        <span data-ng-if="row.op_type === 1" class="label label-success">Yes</span>
+                        <span data-ng-if="row.op_type === 0" class="label label-danger">No</span>
+                    </td>
+
+                    <!-- <td class="text-center" title="'Deletion Status'" filter="{deletion : 'text'}" sortable="'deletion'">
                                 <span data-ng-if="row.deletion === 0" class="label label-success">In use</span>
                                 <span data-ng-if="row.deletion === 1" class="label label-danger">Not In Use</span>
                             </td> -->
-                            <td class="text-center" title="'Modified By'" filter="{Modified : 'text'}" sortable="'Modified'">{{ row.Modified }}</td>	
-    
-                            <td class="text-center" title="'Action'">
-                                <div class="col-md-offset-4">
-                                    <button type="button" ng-click="editSubTaskModel(row)" class="btn btn-sm btn-primary">
-                                        <i class="glyphicon glyphicon-pencil">
-                                        </i>
-                                    </button>
-                                    <button type="button" ng-click="removeSubTask(row)" class="btn btn-sm btn-danger">
-                                        <i class="glyphicon glyphicon-trash">
-                                        </i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-        
-        
-        
-                        <!--<tfoot>
+                    <td class="text-center" title="'Modified By'" filter="{Modified : 'text'}" sortable="'Modified'">{{ row.Modified }}</td>
+
+                    <td class="text-center" title="'Action'">
+                        <div class="col-md-offset-4">
+                            <button type="button" ng-click="editSubTaskModel(row)" class="btn btn-sm btn-primary">
+                                <i class="glyphicon glyphicon-pencil">
+                                </i>
+                            </button>
+                            <button type="button" ng-click="removeSubTask(row)" class="btn btn-sm btn-danger">
+                                <i class="glyphicon glyphicon-trash">
+                                </i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+
+
+                <!--<tfoot>
                             <tr>
                                 <td class="text-center" st-pagination="" st-items-by-page="noOfRows" colspan="10"></td>
                             </tr>
                         </tfoot>-->
-                    </table>
-                </div>
-            </div>
+            </table>
         </div>
-        
-        
-        
+    </div>
+</div>

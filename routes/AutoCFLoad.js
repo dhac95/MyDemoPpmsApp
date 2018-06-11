@@ -23,83 +23,83 @@ router.post('/', function (req, res, next) {
                 "code": 300,
                 "Message": "Already exisits"
             });
-        } else { 
-            db.query('SELECT * FROM amz_tasks WHERE status = 1 AND deletion = 0 AND team_id = ?' , [team] , function(e1 , r1 , f1){
-                    if(e1) {
-                        res.send({
-                            "code": 300,
-                            "message": "Error occoured",
-                            "error": e1
-                        });
-                    } else {
-                        async.each(r1, function (single, callback) {
-                            if(single.have_st == 0 && single.about_cf == 0) {
-                                db.query('INSERT INTO amz_daily_target (month_from , team , task , cf_updated , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )', [tempDate, team, single.task_id, '1', '1', '1', '0', actionBy, actionBy, today, today, '0'], function (e2, r2, f2) {
-                                    if(e2) {
-                                        queryError.push({
-                                            "code": 400,
-                                            "message": "Error occoured",
-                                            "error": e2
-                                        });
-                                    }
-                                });
-                                callback();
-                            } else if (single.have_st == 1) {
-                                db.query('SELECT * FROM amz_sub_tasks WHERE task_status = 1 AND deletion = 0 AND about_cf = 0 AND team_id = ? AND task_id = ?', [team, single.task_id], function (e3, r3, f3) {
-                                        if(e3) {
-                                            queryError.push({
-                                                "code": 400,
-                                                "message": "Error occoured",
-                                                "error": e3
-                                            });
-                                        } else {
-                                            
-                                            async.each(r3, function (taskresult, callback) {                        
-                                                db.query('INSERT INTO amz_daily_target (month_from , team , task , sub_task , cf_updated  , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )', [tempDate, team, single.task_id, taskresult.sub_task_id , '1', '1', '1', '0', actionBy, actionBy, today, today, '0'], function (e4, r4, f4) {
-                                                if (e4) {
-                                                    queryError.push({
-                                                        "code": 400,
-                                                        "message": "Error occoured",
-                                                        "error": e4
-                                                    });
-                                                }
-                                                    callback();
-                                            });
-                                              
-                                        });
-                                        
-                                        }
-                                });
-                                callback();
-                            } 
-                            // else if (single.have_st == 0 && single.about_cf == undefined) {
-                            //     db.query('INSERT INTO amz_daily_target (month_from , team , task , cf_updated , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )', [tempDate, team, single.task_id, '1', '1', '1', '0', actionBy, actionBy, today, today, '0'], function (e5, r5, f5) {
-                            //         if (e5) {
-                            //             res.send({
-                            //                 "code": 400,
-                            //                 "message": "Error occoured",
-                            //                 "error": e5
-                            //             });
-                            //         }
-                            //     });
-                            // }
+        } else {
+            db.query('SELECT * FROM amz_tasks WHERE status = 1 AND deletion = 0 AND team_id = ?', [team], function (e1, r1, f1) {
+                if (e1) {
+                    res.send({
+                        "code": 300,
+                        "message": "Error occoured",
+                        "error": e1
+                    });
+                } else {
+                    async.each(r1, function (single, callback) {
+                        if (single.have_st == 0 && single.about_cf == 0) {
+                            db.query('INSERT INTO amz_daily_target (month_from , team , task , cf_updated , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )', [tempDate, team, single.task_id, '1', '1', '1', '0', actionBy, actionBy, today, today, '0'], function (e2, r2, f2) {
+                                if (e2) {
+                                    queryError.push({
+                                        "code": 400,
+                                        "message": "Error occoured",
+                                        "error": e2
+                                    });
+                                }
+                            });
+                            callback();
+                        } else if (single.have_st == 1) {
+                            db.query('SELECT * FROM amz_sub_tasks WHERE task_status = 1 AND deletion = 0 AND about_cf = 0 AND team_id = ? AND task_id = ?', [team, single.task_id], function (e3, r3, f3) {
+                                if (e3) {
+                                    queryError.push({
+                                        "code": 400,
+                                        "message": "Error occoured",
+                                        "error": e3
+                                    });
+                                } else {
 
-                            
+                                    async.each(r3, function (taskresult, callback) {
+                                        db.query('INSERT INTO amz_daily_target (month_from , team , task , sub_task , cf_updated  , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )', [tempDate, team, single.task_id, taskresult.sub_task_id, '1', '1', '1', '0', actionBy, actionBy, today, today, '0'], function (e4, r4, f4) {
+                                            if (e4) {
+                                                queryError.push({
+                                                    "code": 400,
+                                                    "message": "Error occoured",
+                                                    "error": e4
+                                                });
+                                            }
+                                            callback();
+                                        });
 
-                        }, function (response) {
-                            if (queryError.length > 0) {
-                                res.send({
-                                    "code" : 500,
-                                    "bulkerror": queryError
-                                });
-                            } else {
+                                    });
+
+                                }
+                            });
+                            callback();
+                        }
+                        // else if (single.have_st == 0 && single.about_cf == undefined) {
+                        //     db.query('INSERT INTO amz_daily_target (month_from , team , task , cf_updated , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )', [tempDate, team, single.task_id, '1', '1', '1', '0', actionBy, actionBy, today, today, '0'], function (e5, r5, f5) {
+                        //         if (e5) {
+                        //             res.send({
+                        //                 "code": 400,
+                        //                 "message": "Error occoured",
+                        //                 "error": e5
+                        //             });
+                        //         }
+                        //     });
+                        // }
+
+
+
+                    }, function (response) {
+                        if (queryError.length > 0) {
+                            res.send({
+                                "code": 500,
+                                "bulkerror": queryError
+                            });
+                        } else {
                             res.send({
                                 "code": 200,
                                 "message": "success"
                             });
                         }
                     });
-                    }
+                }
             });
         }
     });

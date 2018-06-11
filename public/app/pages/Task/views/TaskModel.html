@@ -5,72 +5,75 @@
     <form name="myForm" role="form" class="well well-sm">
         <div class="row">
             <!-- <div class="col-md-6 col-lg-6"> -->
-                <div class="form-group col-md-3">
-                        <label for="status">Status </label>  
-                        <switch id="status" name="status" ng-model="Task.status" class="switch small green" data-ng-value="Task.status"></switch>
-                    </div>
+            <div class="form-group col-md-3">
+                <label for="status">Status </label>
+                <switch id="status" name="status" ng-model="Task.status" class="switch small green" data-ng-value="Task.status"></switch>
+            </div>
 
-                    <div class="form-group col-md-3">
-                        <label for="have_st">Have SubTask</label>
-                        <switch id="have_st" name="have_st" ng-model="Task.have_st" class="switch small green" data-ng-value="Task.have_st"></switch>
-                    </div>
-                    
-                    <div class="form-group col-md-3">
-                        <label for="device_count">Have Device Count</label>
-                        <switch id="device_count" name="device_count" data-ng-model="Task.device_count" data-ng-value="Task.device_count"></switch>
-                    </div>
-                    
-                    <div class="form-group col-md-3">
-                        <label for="op_type">Operational Task </label>
-                        <switch data-ng-model="Task.op_type" data-ng-value="Task.op_type" name="op_type" id="op_type"></switch>
-                    </div>
- 
-                    <!-- <div class="form-group">
+            <div class="form-group col-md-3">
+                <label for="have_st">Have SubTask</label>
+                <switch id="have_st" name="have_st" ng-model="Task.have_st" class="switch small green" data-ng-value="Task.have_st"></switch>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label for="device_count">Have Device Count</label>
+                <switch id="device_count" name="device_count" data-ng-model="Task.device_count" data-ng-value="Task.device_count"></switch>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label for="op_type">Operational Task </label>
+                <switch data-ng-model="Task.op_type" data-ng-value="Task.op_type" name="op_type" id="op_type"></switch>
+            </div>
+
+            <!-- <div class="form-group">
                             <label for="deletion">Deletion</label>
                             <switch id="deletion" name="deletion"  class="col-md-push-3" ng-model="Task.deletion" class="switch small green" data-ng-value="Task.deletion"></switch>
                         </div> -->
-        
-                <div ng-show="$root.team_count > 1">
-                    <div class="form-group col-md-3 col-lg-3">
-                        <label for="Team">Team Name</label>
-                        <div class="dropdown">
-                            <select class="form-control" id="Team" name="Team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList" data-ng-change="loadGrid()" data-ng-model="team.selected" data-ng-init="team.selected = Task.team_id" data-ng-required = "$root.team_count > 1">
-                                <option value="">Select the Team</option>
-                            </select>               
-                        </div>
-                        <span ng-show="myForm.Team.$touched && myForm.Team.$invalid" class="text-danger">*required Team</span>
-                    </div>
-                </div> 
-            
-                <div class="form-group col-md-3 col-lg-3">
-                    <label for="task">Task Name</label>
-                    <input type="text" class="form-control" id="task" name="task" data-ng-model="Task.task_name" required/>
-                    <span ng-show="myForm.task.$touched && myForm.task.$invalid" class="text-danger">*required Task Name</span>
-                </div>
 
+            <div ng-show="$root.team_count > 1">
                 <div class="form-group col-md-3 col-lg-3">
-                    <label for="about_cf">Daily Target Type</label>
+                    <label for="Team">Team Name</label>
                     <div class="dropdown">
-                        <select id="about_cf" name="about_cf" class="form-control" data-ng-model="Task.about_cf" data-ng-value="Task.about_cf" data-ng-options="DailyType.id as DailyType.Name for DailyType in DailyTargetTypes">
-                            <option value="">No Target</option>
+                        <select class="form-control" id="Team" name="Team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList"
+                            data-ng-change="loadGrid()" data-ng-model="team.selected" data-ng-init="team.selected = Task.team_id"
+                            data-ng-required="$root.team_count > 1">
+                            <option value="">Select the Team</option>
                         </select>
                     </div>
+                    <span ng-show="myForm.Team.$touched && myForm.Team.$invalid" class="text-danger">*required Team</span>
                 </div>
+            </div>
 
-                <div class="form-group col-md-3 col-lg-3">
-                    <label for="about_chart">Trend Chart</label>
-                    <div class="dropdown">
-                        <select id="about_chart" name="about_chart" class="form-control" data-ng-model="Task.about_chart" data-ng-value="Task.about_chart" data-ng-options="Chart.id as Chart.Name for Chart in ChartTypes" required>
-    
-                        </select>
-                    </div>
-                    <span ng-show="myForm.about_chart.$touched && myForm.about_chart.$invalid" class="text-danger">*required Chart Type</span>
+            <div class="form-group col-md-3 col-lg-3">
+                <label for="task">Task Name</label>
+                <input type="text" class="form-control" id="task" name="task" data-ng-model="Task.task_name" required/>
+                <span ng-show="myForm.task.$touched && myForm.task.$invalid" class="text-danger">*required Task Name</span>
+            </div>
+
+            <div class="form-group col-md-3 col-lg-3">
+                <label for="about_cf">Daily Target Type</label>
+                <div class="dropdown">
+                    <select id="about_cf" name="about_cf" class="form-control" data-ng-model="Task.about_cf" data-ng-value="Task.about_cf" data-ng-options="DailyType.id as DailyType.Name for DailyType in DailyTargetTypes">
+                        <option value="">No Target</option>
+                    </select>
                 </div>
-              
-          <!-- </div> -->
+            </div>
+
+            <div class="form-group col-md-3 col-lg-3">
+                <label for="about_chart">Trend Chart</label>
+                <div class="dropdown">
+                    <select id="about_chart" name="about_chart" class="form-control" data-ng-model="Task.about_chart" data-ng-value="Task.about_chart"
+                        data-ng-options="Chart.id as Chart.Name for Chart in ChartTypes" required>
+
+                    </select>
+                </div>
+                <span ng-show="myForm.about_chart.$touched && myForm.about_chart.$invalid" class="text-danger">*required Chart Type</span>
+            </div>
+
+            <!-- </div> -->
         </div>
-    </div>
-    </form>
+</div>
+</form>
 
 </div>
 <div class="modal-footer">
