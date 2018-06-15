@@ -122,6 +122,10 @@
                 AddTaskService.addAddTask($scope, $rootScope, $http, $scope.AddTask).then(function (res) {
                     if (res.data.code == 200) {
                         Notification.success("Task Added");
+                        $scope.AddTask.count = "";
+                        $scope.AddTask.time = "";
+                        $scope.AddTask.cmds = "";
+
                         $scope.getTaskbyDate();
                         getTotalTime();
                     } else if (res.data.results) {

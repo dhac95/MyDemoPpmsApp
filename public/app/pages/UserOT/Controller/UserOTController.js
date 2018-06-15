@@ -167,6 +167,9 @@
                     Notification.success("Added Successful");
                     getTaskbyDate();
                     getTotalTime();
+                    $scope.UserOT.time = "";
+                    $scope.UserOT.cmds = "";
+                    $scope.UserOT.count = "";
                     $scope.showLoader = false;
                 } else if (res.data.results) {
                     Notification({

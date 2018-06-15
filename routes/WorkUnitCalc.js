@@ -1,5 +1,4 @@
 var express = require('express');
-var md5 = require('md5');
 var router = express.Router();
 var nodestrtotime = require('nodestrtotime');
 var in_array = require('in_array');
@@ -17,7 +16,7 @@ router.post('/', function (req, res, next) {
     var today = moment().format('YYYY-MM-DD');
     var queryError = [];
 
-    db.query('SELECT amz_daily_target.s_no, amz_daily_target.month_from , amz_daily_target.month_to , amz_daily_target.team , amz_daily_target.task , amz_daily_target.sub_task , amz_daily_target.about_cf , amz_daily_target.cf_updated , amz_daily_target.con_fac, amz_daily_target.wu_status , amz_daily_target.status , amz_daily_target.deletion , amz_daily_target.added_by , amz_daily_target.modified_by , amz_daily_target.create_date , amz_daily_target.modified_by , amz_dc_units.noofdevice , amz_dc_units.percentage FROM test.amz_daily_target LEFT JOIN amz_dc_units ON(amz_daily_target.month_from = amz_dc_units.month AND amz_daily_target.team = amz_dc_units.team_id AND amz_daily_target.task = amz_dc_units.task_id AND amz_daily_target.sub_task = amz_dc_units.sub_task_id) where amz_daily_target.status = 1 and amz_daily_target.deletion = 0 and amz_daily_target.team = ? and amz_daily_target.month_from = ? ', [team, tempDate], function (e, r, f) {
+    db.query('SELECT amz_daily_target.s_no, amz_daily_target.month_from , amz_daily_target.month_to , amz_daily_target.team , amz_daily_target.task , amz_daily_target.sub_task , amz_daily_target.about_cf , amz_daily_target.cf_updated , amz_daily_target.con_fac, amz_daily_target.wu_status , amz_daily_target.status , amz_daily_target.deletion , amz_daily_target.added_by , amz_daily_target.modified_by , amz_daily_target.create_date , amz_daily_target.modified_by , amz_dc_units.noofdevice , amz_dc_units.percentage FROM amz_daily_target LEFT JOIN amz_dc_units ON(amz_daily_target.month_from = amz_dc_units.month AND amz_daily_target.team = amz_dc_units.team_id AND amz_daily_target.task = amz_dc_units.task_id AND amz_daily_target.sub_task = amz_dc_units.sub_task_id) where amz_daily_target.status = 1 and amz_daily_target.deletion = 0 and amz_daily_target.team = ? and amz_daily_target.month_from = ? ORDER BY amz_daily_target.s_no ASC', [team, tempDate], function (e, r, f) {
         if (e) {
             res.send(e);
         } else if (r.length == 0) {
@@ -26,33 +25,34 @@ router.post('/', function (req, res, next) {
                 "message": "No targets set for the week"
             });
         } else {
+            
+             var multiplier = 0 , multiplier2 = 0 , multiplier3 = 0 , multiplier4 = 0 , multiplier5 = 0 , multiplier6 = 0;
+
             //   for (var i = 0; i < r.length; i++) {
             async.each(r, function (single, callback) {
                 var conversionFactor = single.con_fac;
                 var task = single.task;
                 var subTask = single.sub_task;
-
-                var multiplier = 0;
-
+               
                 if (single.noofdevice == 2) {
-                    multiplier = single.percentage;
+                    multiplier2 = single.percentage;
                 } else if (single.noofdevice == 3) {
-                    multiplier = single.percentage;
+                    multiplier3 = single.percentage;
                 } else if (single.noofdevice == 4) {
-                    multiplier = single.percentage;
+                    multiplier4 = single.percentage;
                 } else if (single.noofdevice == 5) {
-                    multiplier = single.percentage;
+                    multiplier5 = single.percentage;
                 } else if (single.noofdevice == 6) {
-                    multiplier = single.percentage;
-                } else {
+                    multiplier6 = single.percentage;
+                } else if(single.noofdevice == null){
                     multiplier = 0;
                 }
 
 
                 if (subTask != undefined) {
-                    if (conversionFactor != undefined) {
+                    if (conversionFactor != null) {
 
-                        db.query('UPDATE user_tasks set cf = ? ,  wu_status = 1 , wu = ( CASE WHEN noofdevice = 2 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 3 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 4 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 5 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 6 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 1 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice IS NULL THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') END) WHERE team_id = ? AND tasks_id = ? AND sub_task_id = ? AND date between ? and ? ', [conversionFactor, team, task, subTask, formatDate2, endDate],
+                        db.query('UPDATE user_tasks set cf = ? ,  wu_status = 1 , wu = ( CASE WHEN noofdevice = 2 THEN ((count + (count * ' + (multiplier2 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 3 THEN ((count + (count * ' + (multiplier3 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 4 THEN ((count + (count * ' + (multiplier4 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 5 THEN ((count + (count * ' + (multiplier5 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 6 THEN ((count + (count * ' + (multiplier6 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 1 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice IS NULL THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') END) WHERE team_id = ? AND tasks_id = ? AND sub_task_id = ? AND date between ? and ? ', [conversionFactor, team, task, subTask, formatDate2, endDate],
                             function (e4, r4, f4) {
                                 if (e4) {
                                     queryError.push({
@@ -61,7 +61,7 @@ router.post('/', function (req, res, next) {
                                         "error": e4
                                     });
                                 } else {
-                                    db.query('UPDATE user_tasks_ot set cf = ? , wu_status = 1 , wu = ( CASE WHEN noofdevice = 2 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 3 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 4 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 5 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 6 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 1 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice IS NULL THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') END)  WHERE team_id = ? AND tasks_id = ? AND sub_task_id = ? AND date between ? and ? ', [conversionFactor, team, task, subTask, formatDate2, endDate],
+                                    db.query('UPDATE user_tasks_ot set cf = ? , wu_status = 1 , wu = ( CASE WHEN noofdevice = 2 THEN ((count + (count * ' + (multiplier2 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 3 THEN ((count + (count * ' + (multiplier3 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 4 THEN ((count + (count * ' + (multiplier4 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 5 THEN ((count + (count * ' + (multiplier5 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 6 THEN ((count + (count * ' + (multiplier6 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 1 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice IS NULL THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') END)  WHERE team_id = ? AND tasks_id = ? AND sub_task_id = ? AND date between ? and ? ', [conversionFactor, team, task, subTask, formatDate2, endDate],
                                         function (err1, result1, field1) {
                                             if (err1) {
                                                 queryError.push({
@@ -101,8 +101,8 @@ router.post('/', function (req, res, next) {
                     }
                     // callback();
                 } else {
-                    if (conversionFactor != undefined) {
-                        db.query('UPDATE user_tasks set cf = ? ,  wu_status = 1 , wu = ( CASE WHEN noofdevice = 2 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 3 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 4 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 5 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 6 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 1 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice IS NULL THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') END) WHERE team_id = ? AND tasks_id = ?  AND date between ? and ?', [conversionFactor, team, task, formatDate2, endDate],
+                    if (conversionFactor != null) {
+                        db.query('UPDATE user_tasks set cf = ? ,  wu_status = 1 , wu = ( CASE WHEN noofdevice = 2 THEN ((count + (count * ' + (multiplier2 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 3 THEN ((count + (count * ' + (multiplier3 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 4 THEN ((count + (count * ' + (multiplier4 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 5 THEN ((count + (count * ' + (multiplier5 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 6 THEN ((count + (count * ' + (multiplier6 / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice = 1 THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') WHEN noofdevice IS NULL THEN ((count + (count * ' + (multiplier / 100) + ')) * ' + (100 / conversionFactor) + ') END) WHERE team_id = ? AND tasks_id = ?  AND date between ? and ?', [conversionFactor, team, task, formatDate2, endDate],
                             function (e2, r2, f2) {
                                 if (e2) {
                                     queryError.push({
@@ -113,27 +113,27 @@ router.post('/', function (req, res, next) {
                                 } else {
                                     db.query(
                                         "UPDATE user_tasks_ot set cf = ? , wu_status = 1 ,  wu = ( CASE WHEN noofdevice = 2 THEN ((count + (count * " +
-                                        multiplier / 100 +
+                                        multiplier2 / 100 +
                                         ")) * " +
                                         100 /
                                         conversionFactor +
                                         ") WHEN noofdevice = 3 THEN ((count + (count * " +
-                                        multiplier / 100 +
+                                        multiplier3 / 100 +
                                         ")) * " +
                                         100 /
                                         conversionFactor +
                                         ") WHEN noofdevice = 4 THEN ((count + (count * " +
-                                        multiplier / 100 +
+                                        multiplier4 / 100 +
                                         ")) * " +
                                         100 /
                                         conversionFactor +
                                         ") WHEN noofdevice = 5 THEN ((count + (count * " +
-                                        multiplier / 100 +
+                                        multiplier5 / 100 +
                                         ")) * " +
                                         100 /
                                         conversionFactor +
                                         ") WHEN noofdevice = 6 THEN ((count + (count * " +
-                                        multiplier / 100 +
+                                        multiplier6 / 100 +
                                         ")) * " +
                                         100 /
                                         conversionFactor +

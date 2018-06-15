@@ -175,6 +175,7 @@
                                 <th st-sort="sub_task_name">Subtask Name</th>
                                 <!-- <th st-sort="task_info">Leave Type</th> -->
                                 <th st-sort="count">count</th>
+                                <th st-sort="noofdevice">Device Count</th>
                                 <th st-sort="cf">Target</th>
                                 <th st-sort="wu">Work Unit</th>
                                 <th st-sort="time">time</th>
@@ -207,10 +208,14 @@
                                     <span ng-if="row.task_desc == 0" class="label label-primary">Not a leave</span>
                                 </td> -->
                                 <td>{{ row.count}}</td>
+                                  <td>
+                                         <span ng-if="row.noofdevice == null" class="label label-primary">Null</span>
+                                        {{ row.noofdevice }}
+                                         </td>
                                 <td>{{ row.cf }}</td>
                                 <td>{{ row.wu }}</td>
                                 <td>{{ row.time}}</td>
-                                <td>{{ row.date | date : 'dd/MM/yyyy' }}</td>
+                                <td>{{ row.date | date : 'MM/dd/yyyy' }}</td>
                                 <td>{{ row.cmds}}</td>
                                 <!-- <td>
                             <button type="button" ng-click="editSdaReportModel(row)" class="btn btn-sm btn-primary">
@@ -313,6 +318,7 @@
                                                     <th st-sort="SubTaskName" ng-if="isSubTask && !hideProd">SubTask Name</th>
                                                     <th st-sort="total">Total Time</th>
                                                     <th st-sort="Count">Count</th>
+                                            
                                                     <th st-sort="workunit">Total Per Day Productivity</th>
                                                     <th st-sort="AverageWorkUnit">Average Productivity(Excluding Absence)</th>
                                                 </tr>
@@ -330,6 +336,7 @@
                                                     <td ng-if="isSubTask && !hideProd"> {{row.SubTaskName}} </td>
                                                     <td>{{ row.total }}</td>
                                                     <td>{{ row.Count }}</td>
+                                                  
                                                     <td>{{ row.workunit }}</td>
                                                     <td>{{ row.AverageWorkUnit }}</td>
                                                 </tr>
