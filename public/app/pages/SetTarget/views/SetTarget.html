@@ -1,0 +1,165 @@
+<div class="jumbotron modal-header">
+    <h3 class="modal-title" id="modal-title">Define Daily Target Type</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <form name="myForm" role="form" class="well well-sm">
+        <div class="row">
+            <div ng-show="$root.team_count > 1">
+                <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                    <label for="Team">Select Team</label>
+                    <div class="dropdown">
+                        <select class="form-control" id="Team" name="Team" data-ng-options="Team.team_id as Team.team_name for Team in TeamList "
+                            data-ng-change="loadGrid(); selectTask();" data-ng-model="team.selected" data-ng-value="team.selected">
+                            <option value="">Select the Team</option>
+                        </select>
+                    </div>
+                    <div ng-show="myForm.Team.$touched && myForm.Team.$invalid" class="text-danger">*required Team</div>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="month">Change Month</label>
+                <div class="dropdown">
+                    <select class="form-control" id="month" name="month" data-ng-options="month.name for month in months" data-ng-value="myMonth"
+                        data-ng-change="loadGrid()" data-ng-model="myMonth">
+                        <option selected="myMonth">Select the Month</option>
+                    </select>
+                </div>
+                <div ng-show="myForm.month.$touched && myForm.month.$invalid" class="text-danger">*required Month</div>
+            </div>
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="year">Change Year</label>
+                <div class="dropdown">
+                    <select class="form-control" id="year" name="year" data-ng-options="year for year in years" data-ng-init="myYear = myYear"
+                        data-ng-change="loadGrid()" data-ng-model="myYear">
+                        <option value=""> Select the year</option>
+                    </select>
+                </div>
+                <div ng-show="myForm.year.$touched && myForm.year.$invalid" class="text-danger">*required Year</div>
+            </div>
+
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="task">Task Name</label>
+                <div class="dropdown">
+                    <select class="form-control" id="task" name="task" data-ng-options="Task.task_id as Task.task_name for Task in TaskList"
+                        data-ng-model="task.selected" data-ng-init="task.selected = SetTarget.task" required>
+                        <option value="">Select the Task</option>
+                    </select>
+                </div>
+                <div ng-show="myForm.task.$touched && myForm.task.$invalid" class="text-danger">*required Task</div>
+            </div>
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="op_off">Operational/Offload</label>
+                <select class="form-control" id="op_off" name="op_off" data-ng-model="SetTarget.op_off" data-ng-options="v.id as v.Name for v in loadOperational ">
+                </select>
+                <div ng-show="myForm.op_off.$touched && myForm.op_off.$invalid" class="text-danger">*required Field</div>
+            </div>
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="ms_non_msms_non_ms">Measurables/Non-Measurables</label>
+                <select class="form-control" id="ms_non_ms" name="ms_non_ms" data-ng-model="SetTarget.ms_non_ms" data-ng-options="v.id as v.Name for v in loadMeasurables">
+                </select>
+                <div ng-show="myForm.ms_non_ms.$touched && myForm.ms_non_ms.$invalid" class="text-danger">*required Field</div>
+            </div>
+
+            <div class="form-group col-sm-3 col-md-3 col-lg-3">
+                <label for="rele_non_rele">Release/Non-Relase</label>
+                <select class="form-control" id="rele_non_rele" name="rele_non_rele" data-ng-model="SetTarget.rele_non_rele" data-ng-options="v.id as v.Name for v in loadReleases">
+                </select>
+                <div ng-show="myForm.rele_non_rele.$touched && myForm.rele_non_rele.$invalid" class="text-danger">*required Field</div>
+            </div>
+
+        </div>
+
+</div>
+</div>
+</form>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-disabled="myForm.$invalid" type="button" ng-click="saveSetTarget(SetTarget)">Save</button>
+
+</div>
+
+
+<div class="row">
+    <div data-ng-show="showLoader">
+        <div class="col-xs-12 text-center">
+            <img src="../../../../vendor/ajax-loader.gif"> Getting data please wait...
+        </div>
+    </div>
+
+    <div ng-if='resultList == ""' ng-hide="showLoader" class="text-center">
+        <h3 class="text-muted">No Daily target is available for "{{myMonth.name}} {{ myYear }}" for the
+            <span ng-show="$root.team_count > 1">selected</span> team</small>
+    </div>
+    <div ng-if='resultList != ""' ng-hide="showLoader">
+        <button class="btn btn-link" ng-click="exportToExcel('#dailyData')">
+            <span class="glyphicon glyphicon-share"></span>
+            Export to Excel
+        </button>
+        <div class="panel panel-default">
+            <div class="panel-body" id="dailyData">
+                <div style="overflow-x:auto;">
+                    <table st-table="displayedCollection" st-safe-src="resultList" class="table table-striped table-responsive">
+                        <thead>
+                            <tr>
+                                <th colspan="3">
+                                    <input st-search="" class="input-sm form-control" placeholder="Search text" type="text" />
+                                </th>
+                            </tr>
+                            <tr>
+                                <th st-sort="month_from">Month</th>
+                                <th st-sort="team_name">Team Name</th>
+                                <th st-sort="task_name">Task Name</th>
+                                <th st-sort="op_off">Operational/Offload</th>
+                                <th st-sort="ms_non_ms">Measurables/Non-Measurables</th>
+                                <th st-sort="rele_non_rele">Release/Non-Release</th>
+                                <th st-sort="ModifiedBy">Modified By</th>
+                                <th st-sort="maintain_date">Modified Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in displayedCollection">
+                                <td>{{ row.month_from }}</td>
+                                <td>{{ row.team_name }}</td>
+                                <td>{{ row.task_name }}</td>
+                                <td>
+                                    <select class="form-control" id="op_off" name="op_off"  data-ng-model="row.op_off[$index]" 
+                                    ng-change="saveSetTarget(row , $index)">
+                                        <option value="0" ng-selected="row.op_off == '0'">None</option>
+                                        <option value="1" ng-selected="row.op_off == '1'">Operational</option>
+                                        <option value="2" ng-selected="row.op_off == '2'">Offload</option>
+                                    </select>
+
+                                </td>
+                                <td>
+                                    <select class="form-control" id="ms_non_ms" name="ms_non_ms"  data-ng-model="row.ms_non_ms[$index]"
+                                        ng-change="saveSetTarget(row , $index)">
+                                        <option value="0" ng-selected="row.ms_non_ms == '0'">None</option>
+                                        <option value="1" ng-selected="row.ms_non_ms == '1'">Measurable</option>
+                                        <option value="2" ng-selected="row.ms_non_ms == '2'">Non-Measurable</option>
+                                    </select>
+
+                                </td>
+                                <td>
+                                    <select class="form-control" id="rele_non_rele" name="rele_non_rele"  data-ng-model="row.rele_non_rele[$index]"
+                                        ng-change="saveSetTarget(row , $index)">
+                                        <option value="0" ng-selected="row.rele_non_rele == '0'">None</option>
+                                        <option value="1" ng-selected="row.rele_non_rele == '1'">Release</option>
+                                        <option value="2" ng-selected="row.rele_non_rele == '2'">Non-Release</option>
+                                    </select>
+                                </td>
+                                <td>{{ row.ModifiedBy}}</td>
+                                <td>{{ row.maintain_date | date : 'MM/dd/yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

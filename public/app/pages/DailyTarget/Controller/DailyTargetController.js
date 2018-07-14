@@ -362,7 +362,7 @@
                         Notification.success("Loaded Successful");
                         $timeout(function () {
                             window.location.replace("/main.html#/SdaReport/master");
-                        }, 250);
+                        }, 750);
 
                     } else {
                         Notification.error("Error while saving! Try Again.");

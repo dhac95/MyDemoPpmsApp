@@ -28,7 +28,7 @@
         this.setDeviceCountByPrev = setDeviceCountByPrev;
         //////////////////
         function setTargets($scope, $rootScope, $http, obj) {
-            return $http.post($rootScope.endPoint + 'mwu/', obj);
+            return $http.post($rootScope.endPoint + 'calcwu/', obj);
         }
 
         function getAllDailyTarget($scope, $rootScope, $http) {

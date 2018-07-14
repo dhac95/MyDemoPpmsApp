@@ -8,7 +8,7 @@
         </div>
         <div class="pull-left info">
             <p>{{$root.first_name}} {{$root.last_name}}</p>
-            <a href="">
+            <a href="https://app.chime.aws/" target="_blank">
                 <i class="fa fa-circle text-success"></i> Online</a>
         </div>
     </div>
@@ -45,6 +45,12 @@
             <a href="#/DailyTarget/master">
                 <i class="fa fa-cogs"></i>
                 <span>Work Unit Calculation</span>
+            </a>
+        </li>
+          <li data-ng-if="$root.user_type != 1">
+            <a href="#/SetTarget/master">
+                <i class="fa fa-bank"></i>
+                <span>Define Daily Target Type</span>
             </a>
         </li>
 

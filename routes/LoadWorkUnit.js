@@ -22,7 +22,7 @@ function secondsToAvg(num) {
 
     var h = Math.floor(num / 3600);
     var m = Math.floor(num % 3600 / 60);
-    var value = (h + m) / 8;
+    var value = (h + (m / 60)) / 8;
     return value;
 }
 
@@ -73,7 +73,7 @@ router.post('/', function (req, res, next) {
         // var secs = 0;
         // var count = 0;
         // var wu = 0;
-        db.query("SELECT user_tasks_ot.time , user_tasks_ot.count, user_tasks_ot.wu , amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id where " + whereN + " and task_name NOT LIKE '%Absence' and wu_status = 1", [d1, d2], function (error, results, fields) {
+        db.query("SELECT user_tasks_ot.time , user_tasks_ot.count, user_tasks_ot.wu , amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id where " + whereN + " and task_name NOT LIKE '%Absence'", [d1, d2], function (error, results, fields) {
             if (error) {
                 res.send(error);
 
@@ -138,7 +138,7 @@ router.post('/', function (req, res, next) {
         // var secs = 0;
         // var count = 0;
         // var wu = 0;
-        db.query("SELECT user_tasks.time , user_tasks.count, user_tasks.wu , amz_tasks.task_name AS task_name FROM user_tasks INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id where " + whereN + " and task_name NOT LIKE '%Absence' and wu_status = 1", [d1, d2], function (error, results, fields) {
+        db.query("SELECT user_tasks.time , user_tasks.count, user_tasks.wu , amz_tasks.task_name AS task_name FROM user_tasks INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id where " + whereN + " and task_name NOT LIKE '%Absence'", [d1, d2], function (error, results, fields) {
             if (error) {
                 res.send(error);
 
@@ -231,7 +231,7 @@ router.post('/task', function (req, res, next) {
                 var wu = 0;
                 var TotalHours = 0;
 
-                db.query(" SELECT user_tasks_ot.time , user_tasks_ot.count, user_tasks_ot.wu , amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id where " + whereN + " AND user_tasks_ot.tasks_id = ? and wu_status = 1", [d1, d2, single.task_id], function (error, results, fields) {
+                db.query(" SELECT user_tasks_ot.time , user_tasks_ot.count, user_tasks_ot.wu , amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id where " + whereN + " AND user_tasks_ot.tasks_id = ?", [d1, d2, single.task_id], function (error, results, fields) {
                     if (error) {
                         queryError.push(error);
                     } else {
@@ -315,7 +315,7 @@ router.post('/task', function (req, res, next) {
                 var wu = 0;
                 var TotalHours = 0;
 
-                db.query("SELECT user_tasks.time , user_tasks.count, user_tasks.wu , amz_tasks.task_name AS task_name FROM user_tasks INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id where " + whereN + " AND user_tasks.tasks_id = ? and wu_status = 1", [d1, d2, single.task_id], function (error, results, fields) {
+                db.query("SELECT user_tasks.time , user_tasks.count, user_tasks.wu , amz_tasks.task_name AS task_name FROM user_tasks INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id where " + whereN + " AND user_tasks.tasks_id = ? ", [d1, d2, single.task_id], function (error, results, fields) {
                     if (error) {
                         queryError.push(error);
                     } else {
@@ -424,7 +424,7 @@ router.post('/subtask', function (req, res, next) {
                 var wu = 0;
                 var TotalHours = 0;
 
-                db.query("SELECT user_tasks_ot.time , user_tasks_ot.count, user_tasks_ot.wu , amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id where " + whereN + " AND user_tasks_ot.sub_task_id = ? and wu_status = 1", [d1, d2, single.sub_task_id], function (error, results, fields) {
+                db.query("SELECT user_tasks_ot.time , user_tasks_ot.count, user_tasks_ot.wu , amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id where " + whereN + " AND user_tasks_ot.sub_task_id = ?", [d1, d2, single.sub_task_id], function (error, results, fields) {
                     if (error) {
                         queryError.push(error);
                     } else {
@@ -510,7 +510,7 @@ router.post('/subtask', function (req, res, next) {
                 var wu = 0;
                 var TotalHours = 0;
 
-                db.query("SELECT user_tasks.time , user_tasks.count, user_tasks.wu , amz_tasks.task_name AS task_name FROM user_tasks INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id  where " + whereN + " AND user_tasks.sub_task_id = ? and wu_status = 1", [d1, d2, single.sub_task_id], function (error, results, fields) {
+                db.query("SELECT user_tasks.time , user_tasks.count, user_tasks.wu , amz_tasks.task_name AS task_name FROM user_tasks INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id  where " + whereN + " AND user_tasks.sub_task_id = ? ", [d1, d2, single.sub_task_id], function (error, results, fields) {
                     if (error) {
                         queryError.push(error);
                     } else {
@@ -617,7 +617,7 @@ router.post('/user', function (req, res, next) {
                 var count = 0;
                 var wu = 0;
                 var TotalHours = 0;
-                db.query("SELECT user_tasks_ot.time , user_tasks_ot.count, user_tasks_ot.wu , amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id WHERE " + whereN + " AND user_tasks_ot.user_id = ? and (task_name NOT LIKE '%Absence') and wu_status = 1", [d1, d2, single.user_id], function (error, results, fields) {
+                db.query("SELECT user_tasks_ot.time , user_tasks_ot.count, user_tasks_ot.wu , amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id WHERE " + whereN + " AND user_tasks_ot.user_id = ? and (task_name NOT LIKE '%Absence') ", [d1, d2, single.user_id], function (error, results, fields) {
                     if (error) {
                         queryError.push(error);
                     } else {
@@ -694,7 +694,7 @@ router.post('/user', function (req, res, next) {
                 var wu = 0;
                 var TotalHours = 0;
 
-                db.query("SELECT user_tasks.time , user_tasks.count, user_tasks.wu , amz_tasks.task_name AS task_name FROM user_tasks INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id  where " + whereN + " AND user_tasks.user_id = ? and (task_name NOT LIKE '%Absence') and wu_status = 1 ", [d1, d2, single.user_id], function (error, results, fields) {
+                db.query("SELECT user_tasks.time , user_tasks.count, user_tasks.wu , amz_tasks.task_name AS task_name FROM user_tasks INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id  where " + whereN + " AND user_tasks.user_id = ? and (task_name NOT LIKE '%Absence') ", [d1, d2, single.user_id], function (error, results, fields) {
                     if (error) {
                         queryError.push(error);
                     } else {

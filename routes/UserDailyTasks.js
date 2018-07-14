@@ -36,6 +36,16 @@ router.post('/', function (req, res, next) {
     var ontime = "Y";
     var userType = req.body.user_type;
     var actionDate = datetime.create().format('Y-m-d');
+
+    if(subtask == '') {
+        subtask = null;
+    }
+    if(noOfDevice == '') {
+        noOfDevice = null;
+    }
+     if (Count == '') {
+         Count = null;
+     }
     //  var TasksID = req.body.tasks_id;
 
     var secs = 0;

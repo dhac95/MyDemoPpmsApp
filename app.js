@@ -59,6 +59,8 @@ var mapbuild = require('./routes/MapBuilds');
 var dccheck = require('./routes/DeviceCountCheck');
 var dcload = require('./routes/DeviceCountLoad');
 var oldProd = require('./routes/OldProductivity');
+var targettype = require('./routes/SetTargetType');
+var calcwu = require('./routes/WorkUnitCalculations');
 // var team = require('./routes/team');
 // Express init
 var app = express();
@@ -127,6 +129,8 @@ app.use('/mapbuild', mapbuild);
 app.use('/dccheck', dccheck);
 app.use('/dcload', dcload);
 app.use('/oldProd', oldProd);
+app.use('/targettype', targettype);
+app.use('/calcwu', calcwu);
 
 //process.env.NODE_ENV = 'production';
 

@@ -10,42 +10,211 @@
     </a>
     <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-            <!-- User Account: style can be found in dropdown.less -->
-            <li class="dropdown user user-menu">
+            <!-- Whats new: style can be found in dropdown.less-->
+
+            <li class="dropdown messages-menu">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                    <!-- <img src="../../AdminLTE/img/avatar04.png" class="user-image" alt="User Image"> -->
-                    <img ng-if='$root.below_on == "null"' class="user-image" src="../../AdminLTE/img/peccy-3.png" alt="User profile picture">
-                    <img ng-if="$root.below_on == 1" class="user-image" src="../../AdminLTE/img/peccy-1.gif" alt="User profile picture">
-                    <span class="hidden-xs">{{$root.first_name}}</span>
+                    <i class="fa fa-tag"></i>
+                    <span class="infinite  animated flipInY">
+                        <span class="label label-success">!</span>
+                    </span>
                 </a>
                 <ul class="dropdown-menu">
-                    <!-- User image -->
-                    <li class="user-header">
-                        <!-- <img src="../../AdminLTE/img/avatar04.png" class="img-circle" alt="User Image"> -->
-                        <img ng-if='$root.below_on == "null"' class="img-circle" src="../../AdminLTE/img/peccy-3.png" alt="User profile picture">
-                        <img ng-if="$root.below_on == 1" class="img-circle" src="../../AdminLTE/img/peccy-1.gif" alt="User profile picture">
-                        <p>
-                            {{$root.first_name}} -
-                            <span ng-if="$root.user_type == 1"> DA</span>
-                            <span ng-if="$root.user_type == 2"> SDA</span>
-                            <span ng-if="$root.user_type == 3"> Manager</span>
-                            <span ng-if="$root.user_type == 4"> Admin</span>
-                            <small>{{$root.user_mail}}</small>
-                        </p>
-                    </li>
+                    <li class="header">What's new in this version</li>
+                    <li>
+                        <!-- inner menu: contains the actual data -->
+                        <ul class="menu">
 
-                    <!-- Menu Footer-->
-                    <li class="user-footer">
-                        <div class="pull-left">
-                            <a href="#/Profile/master" class="btn btn-default btn-flat">View Profile</a>
-                        </div>
-                        <div class="pull-right">
-                            <a href="#" class="btn btn-default btn-flat" data-ng-click="$root.logout()">Sign out</a>
-                        </div>
-                    </li>
+                            <li>
+                                <a>
+                                    <div class="pull-left">
+                                        <img src="../../AdminLTE/img/32778.svg" class="img-circle" alt="User Image">
+                                    </div>
+                                    <h4>
+                                        Misc
+                                        <small>
+                                            <i class="fa fa-clock-o"></i> 07/24/2018</small>
+                                    </h4>
+                                    <p>Added validation on OT/Daily Task date </p>
+                                    <p> Prevent saving</p>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a>
+                                    <div class="pull-left">
+                                        <img src="../../AdminLTE/img/32778.svg" class="img-circle" alt="User Image">
+                                    </div>
+                                    <h4>
+                                        SDA - Productivity
+                                        <small>
+                                            <i class="fa fa-clock-o"></i> 06/24/2018</small>
+                                    </h4>
+                                    <p>Added an option to view Old style </p>
+                                    <p> productive data</p>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a>
+                                    <div class="pull-left">
+                                        <img src="../../AdminLTE/img/32778.svg" class="img-circle" alt="User Image">
+                                    </div>
+                                    <h4>
+                                        SDA - Daily Target Type
+                                        <small>
+                                            <i class="fa fa-clock-o"></i> 06/23/2018</small>
+                                    </h4>
+                                    <p>Now SDAs can define daily target type</p>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a>
+                                    <div class="pull-left">
+                                        <img src="../../AdminLTE/img/32778.svg" class="img-circle" alt="User Image">
+                                    </div>
+                                    <h4>
+                                        DA , SDA - Daily Entry
+                                        <small>
+                                            <i class="fa fa-clock-o"></i> 06/23/2018</small>
+                                    </h4>
+                                    <p>Added Next Date Button,</p>
+                                    <p>Now users can click button to go to the</p>
+                                    <p>next date instead of refreshing the page</p>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a>
+                                    <div class="pull-left">
+                                        <img src="../../AdminLTE/img/32778.svg" class="img-circle" alt="User Image">
+                                    </div>
+                                    <h4>
+                                        DA , SDA - Daily Entry
+                                        <small>
+                                            <i class="fa fa-clock-o"></i> 06/21/2018</small>
+                                    </h4>
+                                    <p>Added Reset button for Reset Entirs</p>
+                                </a>
+                            </li>
+                            <li>
+
+                                <li>
+                                    <a>
+                                        <div class="pull-left">
+                                            <img src="../../AdminLTE/img/32778.svg" class="img-circle" alt="User Image">
+                                        </div>
+                                        <h4>
+                                            SDA - Work Unit Calc
+                                            <small>
+                                                <i class="fa fa-clock-o"></i> 06/19/2018</small>
+                                        </h4>
+                                        <p>Added delete button for Auto targets</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <div class="pull-left">
+                                            <img src="../../AdminLTE/img/32778.svg" class="img-circle" alt="User Image">
+                                        </div>
+                                        <h4>
+                                            SDA - Work unit calc
+                                            <small>
+                                                <i class="fa fa-clock-o"></i> 06/14/2018</small>
+                                        </h4>
+                                        <p> Device count calculation bug fixes</p>
+                                    </a>
+                                </li>
+                                <li>
+
+                                    <a>
+                                        <div class="pull-left">
+                                            <img src="../../AdminLTE/img/32778.svg" class="img-circle" alt="User Image">
+                                        </div>
+                                        <h4>
+                                            DA - Daily Entries
+                                            <small>
+                                                <i class="fa fa-clock-o"></i> 06/08/2018</small>
+                                        </h4>
+                                        <p>Count,Time and commends will be
+                                        </p>
+                                        <p>reset after new entry</p>
+                                    </a>
+                                </li>
+                                <!-- end message -->
+                                <li>
+                                    <a>
+                                        <div class="pull-left">
+                                            <img src="../../AdminLTE/img/32778.svg" class="img-circle" alt="User Image">
+                                        </div>
+                                        <h4>
+                                            SDA - Charts
+                                            <small>
+                                                <i class="fa fa-clock-o"></i> 06/06/2018</small>
+                                        </h4>
+                                        <p>Added option to edit in high chart cloud API, </p>
+                                        <p> So can play with different charts online</p>
+                                    </a>
+                                </li>
+
+
+                                <li>
+                                    <a>
+                                        <div class="pull-left">
+                                            <img src="../../AdminLTE/img/32778.svg" class="img-circle" alt="User Image">
+                                        </div>
+                                        <h4>
+                                            DA , SDA - Misc
+                                            <small>
+                                                <i class="fa fa-clock-o"></i> 06/04/2018</small>
+                                        </h4>
+                                        <p>Links will open in new tab by default</p>
+                                    </a>
+                                </li>
+                        </ul>
+                        </li>
+                        <!-- <li class="footer"><a href="#">See All Messages</a></li> -->
                 </ul>
+                </li>
+                <!-- End of What's new -->
 
-            </li>
+                <!-- User Account: style can be found in dropdown.less -->
+                <li class="dropdown user user-menu">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                        <!-- <img src="../../AdminLTE/img/avatar04.png" class="user-image" alt="User Image"> -->
+                        <img ng-if='$root.below_on == "null"' class="user-image" src="../../AdminLTE/img/peccy-3.png" alt="User profile picture">
+                        <img ng-if="$root.below_on == 1" class="user-image" src="../../AdminLTE/img/peccy-1.gif" alt="User profile picture">
+                        <span class="hidden-xs">{{$root.first_name}}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+                            <!-- <img src="../../AdminLTE/img/avatar04.png" class="img-circle" alt="User Image"> -->
+                            <img ng-if='$root.below_on == "null"' class="img-circle" src="../../AdminLTE/img/peccy-3.png" alt="User profile picture">
+                            <img ng-if="$root.below_on == 1" class="img-circle" src="../../AdminLTE/img/peccy-1.gif" alt="User profile picture">
+                            <p>
+                                {{$root.first_name}} -
+                                <span ng-if="$root.user_type == 1"> DA</span>
+                                <span ng-if="$root.user_type == 2"> SDA</span>
+                                <span ng-if="$root.user_type == 3"> Manager</span>
+                                <span ng-if="$root.user_type == 4"> Admin</span>
+                                <small>{{$root.user_mail}}</small>
+                            </p>
+                        </li>
+
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="#/Profile/master" class="btn btn-default btn-flat">View Profile</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="#" class="btn btn-default btn-flat" data-ng-click="$root.logout()">Sign out</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                </li>
         </ul>
     </div>
 </nav>

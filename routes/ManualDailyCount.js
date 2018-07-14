@@ -9,18 +9,19 @@ var async = require("async");
 
 router.post('/', function (req, res, next) {
     var team = req.body.team_id,
-        task = req.body.task_id,
         subTask = req.body.sub_task_id;
+        task = req.body.task_id;
     var tempDate = req.body.month;
     var conversionFactor = req.body.con_fac;
     var actionBy = req.body.action;
+
     var formattedDate = moment(tempDate).format('YYYY-MM');
     var formatDate2 = moment(tempDate).format('YYYY-MM-DD');
     var today = moment().format('YYYY-MM-DD');
     if (subTask != undefined) {
-        db.query('SELECT * FROM amz_daily_target where team = ? AND task = ? AND sub_task = ? AND month_from = ? AND status= 1 AND deletion = 0 AND about_cf = 1', [team, task, subTask, tempDate], function (err, results, fields) {
+        db.query('SELECT s_no FROM amz_daily_target where team = ? AND task = ? AND sub_task = ? AND month_from = ? AND status= 1 AND deletion = 0 AND about_cf = 1  and wu_status = 1', [team, task, subTask, tempDate], function (err, results, fields) {
             if (results.length > 0) {
-                db.query('UPDATE amz_daily_target set modified_by = ? , about_cf = 1 ,  con_fac = ? , cf_updated = 1 , maintain_date = ? where team = ? AND task = ? AND sub_task = ? AND month_from = ?  ', [actionBy, conversionFactor, today, team, task, subTask, tempDate], function (e1, r1, f1) {
+                db.query('UPDATE amz_daily_target set modified_by = ? , about_cf = 1 ,  con_fac = ? , cf_updated = 1 , wu_status = 1 , maintain_date = ? where team = ? AND task = ? AND sub_task = ? AND month_from = ? ', [actionBy, conversionFactor, today, team, task, subTask, tempDate], function (e1, r1, f1) {
                     if (e1) {
                         res.send({
                             "code": 400,
@@ -47,7 +48,7 @@ router.post('/', function (req, res, next) {
                 // }
                 // });
             } else {
-                db.query('INSERT INTO amz_daily_target (month_from , team , task , sub_task , cf_updated , con_fac , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)', [tempDate, team, task, subTask, '1', conversionFactor, '1', '1', '0', actionBy, actionBy, today, today, '1'], function (e3, r3, f3) {
+                db.query('INSERT INTO amz_daily_target (month_from , team , task , sub_task , cf_updated , con_fac , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)', [tempDate, team, task, subTask, 1 , conversionFactor, 1 , 1, 0 , actionBy, actionBy, today, today, '1'], function (e3, r3, f3) {
                     if (e3) {
                         res.send({
                             "code": 400,
@@ -80,7 +81,7 @@ router.post('/', function (req, res, next) {
     else {
         db.query('SELECT con_fac FROM amz_daily_target where team = ? AND task = ?  AND month_from = ? AND status= 1 AND deletion = 0', [team, task, tempDate], function (err, results, fields) {
             if (results.length > 0) {
-                db.query('UPDATE amz_daily_target set modified_by = ? ,about_cf = 1 , con_fac = ? , cf_updated = 1 where team = ? AND task = ?  AND month_from = ?', [actionBy, conversionFactor, team, task, tempDate], function (e1, r1, f1) {
+                db.query('UPDATE amz_daily_target set modified_by = ? ,about_cf = 1 , con_fac = ? , cf_updated = 1 , wu_status = 1 where team = ? AND task = ?  AND month_from = ? ', [actionBy, conversionFactor, team, task, tempDate], function (e1, r1, f1) {
                     if (e1) {
                         res.send({
                             "code": 400,

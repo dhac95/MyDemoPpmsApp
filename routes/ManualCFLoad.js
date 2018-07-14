@@ -121,7 +121,7 @@ router.post('/prev', function (req, res, next) {
                     });
                 } else {
                     async.each(r, function (single, callback) {
-                        db.query('INSERT INTO amz_daily_target (month_from , team , task , sub_task , cf_updated , con_fac , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)', [tempDate, single.team, single.task, single.sub_task, single.cf_updated, single.con_fac, single.wu_status, single.status, single.deletion, actionBy, actionBy, today, today, '1'], function (e2, r2, f2) {
+                        db.query('INSERT INTO amz_daily_target (month_from , team , task , sub_task , cf_updated , con_fac , wu_status , status , deletion , added_by , modified_by , create_date , maintain_date , about_cf , op_off , ms_non_ms , rele_non_rele) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)', [tempDate, single.team, single.task, single.sub_task, single.cf_updated, single.con_fac, single.wu_status, single.status, single.deletion, actionBy, actionBy, today, today, '1', single.op_off, single.ms_non_ms, single.rele_non_rele], function (e2, r2, f2) {
                             if (e2) {
                                 queryError.push({
                                     "code": 400,

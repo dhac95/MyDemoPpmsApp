@@ -295,11 +295,13 @@
                                         <td>{{ row.AddedBy}}</td>
                                         <td>{{ row.ModifiedBy}}</td>
                                         <td>
-                                            <div class="col-md-offset-4" data-ng-if="row.about_cf == 1">
+                                            <div class="col-md-offset-4" >
+                                                <span data-ng-if="row.about_cf == 1">
                                                 <button type="button" ng-click="editDailyTargetModel(row)" class="btn btn-sm btn-primary">
                                                     <i class="glyphicon glyphicon-pencil">
                                                     </i>
                                                 </button>
+                                                </span>
                                                 <button type="button" ng-click="removeDailyTarget(row)" class="btn btn-sm btn-danger">
                                                     <i class="glyphicon glyphicon-trash">
                                                     </i>

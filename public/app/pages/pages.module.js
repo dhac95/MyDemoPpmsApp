@@ -17,7 +17,8 @@
             'ERP.pages.DailyTarget',
             'ERP.pages.Charts',
             'ERP.pages.TeamMate',
-            'ERP.pages.MapBuild'
+            'ERP.pages.MapBuild' , 
+            'ERP.pages.SetTarget',
 
         ]).config(['$urlRouterProvider', '$stateProvider', routeConfig])
         .run(function ($rootScope, $state) {

@@ -36,6 +36,8 @@
         $scope.getTeamList = getTeamList;
         $scope.getRemaingDate = getRemaingDate;
 
+        $scope.selectedDate = 0;
+
         //  loadGrid();
         $scope.LeaveTypes = [{
                 "id": 0,
@@ -110,22 +112,30 @@
             AddTask.build = $scope.build.selected;
             AddTask.date = $scope.date.selected;
             AddTask.user_type = $rootScope.user_type;
+            var myFormat = $filter('date')(new Date(), "fullDate");
             var now = new Date();
             var formatDate = $filter('date')(AddTask.date, 'yyyy-MM-dd');
             var today = $filter('date')(now, 'yyyy-MM-dd');
+            var verifyWeekend = new Date(AddTask.date);
 
             if (formatDate > today) {
-                Notification({
-                    message: 'That can\'t be allowed! wait for that day '
-                }, 'warning');
+                  Notification({
+                      message: 'Time travel is not invented yet!!! Can\'t go to the future!!! <div style="width:100%;height:0;padding-bottom:100%;position:relative;"><iframe src="https://giphy.com/embed/3o7aCS3lDsjrvTTsD6" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>'
+                  }, 'warning');
             } else {
+                if (verifyWeekend.getDay() == 6 || verifyWeekend.getDay() == 0) {
+                    Notification({
+                        message: ' Today is a weekend enjoy ' + myFormat,
+                        title: "You have completed all the pending dates!"
+                    });
+                }  else {
                 AddTaskService.addAddTask($scope, $rootScope, $http, $scope.AddTask).then(function (res) {
                     if (res.data.code == 200) {
                         Notification.success("Task Added");
                         $scope.AddTask.count = "";
                         $scope.AddTask.time = "";
                         $scope.AddTask.cmds = "";
-
+                        $scope.AddTask.noofdevice = "";
                         $scope.getTaskbyDate();
                         getTotalTime();
                     } else if (res.data.results) {
@@ -141,6 +151,7 @@
                 }, function (err) {
                     Notification("Error in processing sever error 500! Try Again.");
                 });
+            }
             }
         }
 
@@ -162,7 +173,7 @@
                             title: "You have pending dates!"
                         });
                         $scope.DateList = $filter('orderBy')(pl.data);
-                        var formatmyDate = $scope.DateList[0];
+                        var formatmyDate = $scope.DateList[$scope.selectedDate];
                         $scope.date.selected = new Date(formatmyDate);
 
                         $scope.getTaskbyDate();
@@ -172,6 +183,7 @@
                         $scope.date.selected = new Date();
                         $scope.getTaskbyDate();
                         getTotalTime();
+                        Notification('You have completed all the pending dates....');
                     }
                 },
                 function (errorPl) {
@@ -183,6 +195,20 @@
 
         //  getTaskbyDate();
 
+        $scope.nextDate = function(){
+                // $scope.selectedDate += 1;
+                getRemaingDate();
+        };
+
+        $scope.resetFields = function(){
+            $scope.AddTask.cmds = "";
+            $scope.AddTask.time = "";
+            $scope.AddTask.count = "";
+            $scope.task.selected = "";
+            $scope.subtask.selected = "";
+            $scope.build.selected = "";
+            $scope.AddTask.noofdevice = "";
+        };
 
 
         $scope.getTaskbyDate = function () {
@@ -192,7 +218,6 @@
                 date: formatDate,
                 user_id: $rootScope.user_id
             };
-
             var creDate = $filter('date')($rootScope.create_date, "yyyy-MM-dd");
             if (creDate > formatDate) {
                 Notification({
@@ -208,7 +233,7 @@
                         if ($scope.isEditing) {
                             for (var i in $scope.Addedtasklist) {
                                 if ($scope.Addedtasklist[i].date == $scope.AddTask.date) {
-                                    $scope.date.selected = $scope.Addedtasklist[i];
+                                    $scope.date.selected = $scope.Addedtasklist[i].date;
                                 }
                             }
                         }

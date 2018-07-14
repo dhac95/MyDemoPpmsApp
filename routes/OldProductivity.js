@@ -20,7 +20,7 @@ function secondsToAvg(num) {
 
     var h = Math.floor(num / 3600);
     var m = Math.floor(num % 3600 / 60);
-    var value = (h + m) / 8;
+    var value = (h + (m / 60)) / 8;
     return value;
 }
 
@@ -42,7 +42,7 @@ router.post('/', function (req, res, next) {
             var TotalHours = 0;
             var sub_task_list = [];
             //   if (userOT) {
-                  db.query("select distinct sub_task from amz_daily_target where month_from in (? , ?) and team = ? and ms_non_ms = '1' and about_cf = 1 and wu_status = 1 and sub_task is NOT NULL;", [dateToMonthFirst, dateToMonthSecond, team], function (e, r, f) {
+                  db.query("select distinct sub_task from amz_daily_target where month_from in (? , ?) and team = ? and ms_non_ms = '1'  and about_cf = 1 and wu_status = 1 and sub_task is NOT NULL", [dateToMonthFirst, dateToMonthSecond, team], function (e, r, f) {
                       if(e) {
                           res.send(e);
                       } else {
@@ -268,13 +268,8 @@ router.post('/task' , function(req , res , next) {
   var team = req.body.team_id;
   var userOT = req.body.user_ot;
 
-  var secs = 0;
-   var count = 0;
-   var wu = 0;
-   var TotalHours = 0;
-
    var sub_task_list = [];
- db.query("select distinct sub_task from amz_daily_target where month_from in (? , ?) and team = ? and ms_non_ms = '1' and about_cf = '1' and sub_task is NOT NULL;", [dateToMonthFirst, dateToMonthSecond, team], function (e, r, f) {
+ db.query("select distinct sub_task from amz_daily_target where month_from in (? , ?) and team = ? and ms_non_ms = '1' and about_cf = '1' and wu_status = 1 and sub_task is NOT NULL;", [dateToMonthFirst, dateToMonthSecond, team], function (e, r, f) {
              if (e) {
                  res.send(e);
              } else if(r.length > 0) {
@@ -282,18 +277,18 @@ router.post('/task' , function(req , res , next) {
                        sub_task_list.push(r[i].sub_task);
                    }
                    if (userOT) {
-                        db.query("SELECT SEC_TO_TIME( SUM( TIME_TO_SEC( user_tasks_ot.time ) ) ) AS total   , user_tasks_ot.time , sum(user_tasks_ot.count) as Count , sum(user_tasks_ot.wu) as workunit,  (sum(user_tasks_ot.wu) / SUM( TIME_TO_SEC( user_tasks_ot.time ) ) * 28800 ) as AverageWorkUnit  , amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id where date between ? and ? and user_tasks_ot.sub_task_id in (?) group by user_tasks_ot.tasks_id ", [d1, d2, sub_task_list], function (error, results, fields) {
+                        db.query("SELECT SEC_TO_TIME( SUM( TIME_TO_SEC( user_tasks_ot.time ) ) ) AS total   , user_tasks_ot.time , sum(user_tasks_ot.count) as Count , sum(user_tasks_ot.wu) as workunit,  ROUND((sum(user_tasks_ot.wu) / SUM( TIME_TO_SEC( user_tasks_ot.time ) ) * 28800 ),2) as AverageWorkUnit  , amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks_ot.tasks_id = amz_tasks.task_id where date between ? and ? and wu_status = 1 and user_tasks_ot.sub_task_id in (?) group by user_tasks_ot.tasks_id ", [d1, d2, sub_task_list], function (error, results, fields) {
                             if(error) {
                                 res.send({
                                     "code" : 304,
                                     "message" : "Sql Error"
                                 });
                             } else {
-                                res.send(resultsa);
+                                res.send(results);
                             }
                         });
                    } else {
-                        db.query("SELECT SEC_TO_TIME( SUM( TIME_TO_SEC( user_tasks.time ) ) ) AS total   , user_tasks.time , sum(user_tasks.count) as Count, sum(user_tasks.wu) as workunit,  (sum(user_tasks.wu) / SUM( TIME_TO_SEC( user_tasks.time ) ) * 28800 ) as AverageWorkUnit , amz_tasks.task_name AS task_name FROM user_tasks INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id where date between ? and ? and sub_task_id in (?)  group by user_tasks.tasks_id ", [d1, d2, sub_task_list], function(e2 , r2 , f2){
+                        db.query("SELECT SEC_TO_TIME( SUM( TIME_TO_SEC( user_tasks.time ) ) ) AS total   , user_tasks.time , sum(user_tasks.count) as Count, sum(user_tasks.wu) as workunit,  ROUND((sum(user_tasks.wu) / SUM( TIME_TO_SEC( user_tasks.time ) ) * 28800 ),2) as AverageWorkUnit , amz_tasks.task_name AS task_name FROM user_tasks INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id where date between ? and ? and wu_status = 1 and sub_task_id in (?)  group by user_tasks.tasks_id ", [d1, d2, sub_task_list], function (e2, r2, f2) {
                                 if(e2) {
                                     res.send({
                                         "code" : 304 , 
@@ -326,7 +321,7 @@ router.post('/subtask' , function(req , res , next){
       var wu = 0;
       var TotalHours = 0;
 
-      db.query("select distinct sub_task from amz_daily_target where month_from in (? , ?) and team = ? and ms_non_ms = '1' and about_cf = '1' and sub_task is NOT NULL;", [dateToMonthFirst, dateToMonthSecond, team], function (e, r, f) {
+      db.query("select distinct sub_task from amz_daily_target where month_from in (? , ?) and team = ? and ms_non_ms = '1' and about_cf = '1' and wu_status = 1 and sub_task is NOT NULL;", [dateToMonthFirst, dateToMonthSecond, team], function (e, r, f) {
             if(e) {
                 res.send(e);
             } else if(r.length > 0) {
@@ -334,7 +329,7 @@ router.post('/subtask' , function(req , res , next){
                        sub_task_list.push(r[i].sub_task);
                    }
                    if(userOT) {
-                        db.query("SELECT SEC_TO_TIME( SUM( TIME_TO_SEC( user_tasks_ot.time ) ) ) AS total   , user_tasks_ot.time , sum(user_tasks_ot.count) as Count , sum(user_tasks_ot.wu) as workunit,  (sum(user_tasks_ot.wu) / SUM( TIME_TO_SEC( user_tasks_ot.time ) ) * 28800 ) as AverageWorkUnit  , amz_sub_tasks.sub_task_name AS sub_task_name ,  amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id LEFT JOIN amz_sub_tasks ON user_tasks_ot.sub_task_id = amz_sub_tasks.sub_task_id where date between ? and ? and user_tasks_ot.sub_task_id in (?) group by user_tasks_ot.sub_task_id ", [d1, d2, sub_task_list], function (error, results, fields) {
+                        db.query("SELECT SEC_TO_TIME( SUM( TIME_TO_SEC( user_tasks_ot.time ) ) ) AS total   , user_tasks_ot.time , sum(user_tasks_ot.count) as Count , sum(user_tasks_ot.wu) as workunit,  ROUND((sum(user_tasks_ot.wu) / SUM( TIME_TO_SEC( user_tasks_ot.time ) ) * 28800 ),2) as AverageWorkUnit  , amz_sub_tasks.sub_task_name AS sub_task_name ,  amz_tasks.task_name AS task_name FROM user_tasks_ot INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id LEFT JOIN amz_sub_tasks ON user_tasks_ot.sub_task_id = amz_sub_tasks.sub_task_id where date between ? and ? and wu_status = 1 and user_tasks_ot.sub_task_id in (?) group by user_tasks_ot.sub_task_id ", [d1, d2, sub_task_list], function (error, results, fields) {
                             if (error) {
                                 res.send({
                                     "code": 304,
@@ -346,7 +341,7 @@ router.post('/subtask' , function(req , res , next){
                             }
                         });
                    } else {
-                         db.query("SELECT SEC_TO_TIME( SUM( TIME_TO_SEC( user_tasks.time ) ) ) AS total   , user_tasks.time , sum(user_tasks.count) as Count, sum(user_tasks.wu) as workunit,  (sum(user_tasks.wu) / SUM( TIME_TO_SEC( user_tasks.time ) ) * 28800 ) as AverageWorkUnit , amz_sub_tasks.sub_task_name AS sub_task_name , amz_tasks.task_name AS task_name FROM user_tasks LEFT JOIN amz_sub_tasks ON user_tasks.sub_task_id = amz_sub_tasks.sub_task_id INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id  where date between ? and ? and user_tasks.sub_task_id in (?)  group by user_tasks.sub_task_id ", [d1, d2, sub_task_list], function (e2, r2, f2) {
+                         db.query("SELECT SEC_TO_TIME( SUM( TIME_TO_SEC( user_tasks.time ) ) ) AS total   , user_tasks.time , sum(user_tasks.count) as Count, sum(user_tasks.wu) as workunit,  ROUND((sum(user_tasks.wu) / SUM( TIME_TO_SEC( user_tasks.time ) ) * 28800 ) , 2) as AverageWorkUnit , amz_sub_tasks.sub_task_name AS sub_task_name , amz_tasks.task_name AS task_name FROM user_tasks LEFT JOIN amz_sub_tasks ON user_tasks.sub_task_id = amz_sub_tasks.sub_task_id INNER JOIN amz_tasks ON user_tasks.tasks_id = amz_tasks.task_id  where date between ? and ? and wu_status = 1 and user_tasks.sub_task_id in (?)  group by user_tasks.sub_task_id ", [d1, d2, sub_task_list], function (e2, r2, f2) {
                              if (e2) {
                                  res.send({
                                      "code": 304,

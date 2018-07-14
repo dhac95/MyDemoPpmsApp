@@ -161,16 +161,24 @@
             UserOT.date = $scope.date.selected;
             UserOT.user_type = $rootScope.user_type;
             $scope.showLoader = true;
-
+             var formatDate = $filter('date')(UserOT.date, 'yyyy-MM-dd');
+             var today = $filter('date')(new Date(), 'yyyy-MM-dd');
+             if (formatDate > today) {
+                 Notification({
+                     message: 'Time travel is not invented yet!!! Can\'t go to the future!!! <div style="width:100%;height:0;padding-bottom:100%;position:relative;"><iframe src="https://giphy.com/embed/3o7aCS3lDsjrvTTsD6" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>'
+                 }, 'warning');
+                  $scope.showLoader = false;
+                }
+                else {
             UserOTService.addUserOT($scope, $rootScope, $http, $scope.UserOT).then(function (res) {
                 if (res.data.code == 200) {
                     Notification.success("Added Successful");
                     getTaskbyDate();
                     getTotalTime();
+                    $scope.showLoader = false;
                     $scope.UserOT.time = "";
                     $scope.UserOT.cmds = "";
                     $scope.UserOT.count = "";
-                    $scope.showLoader = false;
                 } else if (res.data.results) {
                     Notification({
                         message: "Time must be total of 16 hours",
@@ -185,6 +193,7 @@
                 Notification("Error in processing sever error 500! Try Again.");
                 $scope.showLoader = false;
             });
+        }
         }
 
 
@@ -462,7 +471,7 @@
                 UserOT.tasks_id = $scope.task.selected;
                 UserOT.sub_task_id = $scope.subtask.selected;
                 UserOT.build = $scope.build.selected;
-                UserOT.date = $scope.date.selected;
+                UserOT.date = $scope.UserOT.date;
                 UserOT.user_type = $rootScope.user_type;
                 // $scope.UserOT.create_date = $rootScope.date;
                 UserOTService.updateUserOT($scope, $rootScope, $http, $scope.UserOT, id).then(function (res) {

@@ -17,7 +17,7 @@ var app = angular.module('ERP', [
 	//'ngTouch',
 	// 'ceibo.components.table.export',
 	'toastr',
-	'720kb.datepicker',
+	// '720kb.datepicker',
 	'smart-table',
 	'ngTable',
 	'ngIdle',

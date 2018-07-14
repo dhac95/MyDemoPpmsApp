@@ -23,6 +23,7 @@
         this.getUserWiseOldProductivity = getUserWiseOldProductivity;
         this.getTaskWiseOldProductivity = getTaskWiseOldProductivity;
         this.getSubtaskWiseOldProductivity = getSubtaskWiseOldProductivity;
+        // this.getGraphValue = getGraphValue;
 
         /////////////
 
@@ -74,6 +75,10 @@
         function getSubtaskWiseOldProductivity($scope, $rootScope, $http, obj) {
             return $http.post($rootScope.endPoint + 'oldProd/subtask/', obj);
         }
+
+        // function getGraphValue($scope , $rootScope , $http , obj) {
+        //     return $http.get('https://dev-dsk-yogeshw-1b-b8abc01b.us-east-1.amazon.com:8444/rds/KCCrashDB/nps_score');
+        // }
 
     }
 
